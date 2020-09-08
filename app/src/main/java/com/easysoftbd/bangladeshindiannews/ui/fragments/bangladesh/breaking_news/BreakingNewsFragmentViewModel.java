@@ -43,8 +43,11 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private Observer<List<BdBreaking>> allBreakingNewsObserver;
     private LiveData<List<BdBreaking>> bdBreakingLiveData;
     private MutableLiveData<List<RecyclerItemModel>> itemList;
+    private MutableLiveData<List<RecyclerItemModel>> shortedList;
     private List<RecyclerItemModel> temporaryList=new ArrayList<>();
     private boolean insertingDataFlag=false;
+    private List<BdBreaking> bdBreakingList=new ArrayList<>();
+    List<RecyclerItemModel> temporaryShortingList=new ArrayList<>();
 
 
 
@@ -118,6 +121,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     public void checkBreakingNewsDataInDb(List<String> nameList, List<String> urlList) {
         if (allBreakingNewsObserver==null) {
             allBreakingNewsObserver= bdBreakings -> {
+                bdBreakingList.clear();
+                bdBreakingList.addAll(bdBreakings);
                 Log.d(Constants.TAG,"db data size is:- "+bdBreakings.size());
                 if (bdBreakings.size()>0 && !insertingDataFlag) {
                     for (int i=0; i<bdBreakings.size(); i++) {
@@ -151,9 +156,26 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 
 
     public void shortingList(List<RecyclerItemModel> recyclerItemModelList) {
-        for (int i=0; i<recyclerItemModelList.size(); i++) {
-
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
         }
+        temporaryShortingList.clear();
+        String value;
+        for (int i=0; i<bdBreakingList.size(); i++) {
+            value=bdBreakingList.get(i).getPaperName();
+            for (int j=0; j<recyclerItemModelList.size(); j++) {
+                if (value.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    temporaryShortingList.add(recyclerItemModelList.get(j));
+                }
+            }
+        }
+    }
+
+    public MutableLiveData<List<RecyclerItemModel>> getShortedList() {
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
+        }
+        return shortedList;
     }
 
 

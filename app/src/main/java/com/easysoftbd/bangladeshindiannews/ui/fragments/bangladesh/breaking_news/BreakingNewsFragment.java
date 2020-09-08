@@ -67,9 +67,15 @@ public class BreakingNewsFragment extends Fragment {
         viewModel.getItemList().observe(this, new Observer<List<RecyclerItemModel>>() {
             @Override
             public void onChanged(List<RecyclerItemModel> recyclerItemModels) {
-//                viewModel.shortingList(recyclerItemModels);
+                viewModel.shortingList(recyclerItemModels);
+            }
+        });
+
+        viewModel.getShortedList().observe(this, new Observer<List<RecyclerItemModel>>() {
+            @Override
+            public void onChanged(List<RecyclerItemModel> recyclerItemModelList) {
                 list.clear();
-                list.addAll(recyclerItemModels);
+                list.addAll(recyclerItemModelList);
                 adapter.notifyDataSetChanged();
                 Log.d(Constants.TAG,"recycler list size:- "+list.size());
             }
