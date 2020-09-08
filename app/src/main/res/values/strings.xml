@@ -10,12 +10,12 @@
         <item>কালের কণ্ঠ (ব্রেকিং নিউজ)</item>
         <item>সমকাল (ব্রেকিং নিউজ)</item>
         <item>দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)</item>
-<!--        <item>ভোরের কাগজ (ব্রেকিং নিউজ)</item>-->
+        <!--        <item>ভোরের কাগজ (ব্রেকিং নিউজ)</item>-->
         <item>দৈনিক ইনকিলাব (ব্রেকিং নিউজ)</item>
         <item>নয়া দিগন্ত (ব্রেকিং নিউজ)</item>
         <item>আমার দেশ 24 (ব্রেকিং নিউজ)</item>
         <item>দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)</item>
-<!--        <item>মানবজমিন (ব্রেকিং নিউজ)</item>-->
+        <!--        <item>মানবজমিন (ব্রেকিং নিউজ)</item>-->
         <item>সংবাদ প্রতিদিন (ব্রেকিং নিউজ)</item>
         <item>মানবকণ্ঠ (ব্রেকিং নিউজ)</item>
         <item>বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)</item>
@@ -28,12 +28,12 @@
         <item>https://www.kalerkantho.com/</item>
         <item>https://samakal.com/</item>
         <item>https://www.dailyjanakantha.com/</item>
-<!--        <item>https://www.bhorerkagoj.com/</item>-->
+        <!--        <item>https://www.bhorerkagoj.com/</item>-->
         <item>https://www.dailyinqilab.com/</item>
         <item>https://www.dailynayadiganta.com/</item>
         <item>https://amar-desh24.com/bangla/</item>
         <item>https://www.ittefaq.com.bd/wholecountry/</item>
-<!--        <item>https://www.mzamin.com/</item>-->
+        <!--        <item>https://www.mzamin.com/</item>-->
         <item>https://www.sangbadpratidin.in/</item>
         <item>https://www.manobkantha.com.bd/</item>
         <item>https://www.bd-journal.com/</item>
@@ -41,19 +41,18 @@
     </string-array>
 
 
-
     <string name="bd_protidin">বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)</string>
     <string name="prothom_alo">প্রথম আলো (ব্রেকিং নিউজ)</string>
     <string name="kaler_khanto">কালের কণ্ঠ (ব্রেকিং নিউজ)</string>
     <string name="somokal">সমকাল (ব্রেকিং নিউজ)</string>
     <string name="daily_jana_khanto">দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)</string>
-<!--    <string name="bhorer_kagoj">ভোরের কাগজ (ব্রেকিং নিউজ)</string>-->
+    <!--    <string name="bhorer_kagoj">ভোরের কাগজ (ব্রেকিং নিউজ)</string>-->
     <string name="daily_inqilab">দৈনিক ইনকিলাব (ব্রেকিং নিউজ)</string>
     <string name="daily_naya_diganta">নয়া দিগন্ত (ব্রেকিং নিউজ)</string>
     <string name="amar_desh_24">আমার দেশ 24 (ব্রেকিং নিউজ)</string>
     <string name="daily_ittefaq">দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)</string>
-<!--    <string name="manobJomin">মানবজমিন (ব্রেকিং নিউজ)</string>-->
-<!--    <string name="manobJomin_corona_update">করোনা আপডেট</string>-->
+    <!--    <string name="manobJomin">মানবজমিন (ব্রেকিং নিউজ)</string>-->
+    <!--    <string name="manobJomin_corona_update">করোনা আপডেট</string>-->
     <string name="songbadProtidin">সংবাদ প্রতিদিন (ব্রেকিং নিউজ)</string>
     <string name="manobkantha">মানবকণ্ঠ (ব্রেকিং নিউজ)</string>
     <string name="bangladesh_journal">বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)</string>
@@ -111,8 +110,6 @@
     <string name="manob_kantha_entertainment_news">মানবকণ্ঠ (সর্বশেষ খবর)</string>
     <string name="bd_journal_entertainment_news">বাংলাদেশ জার্নাল (সর্বশেষ খবর)</string>
     <string name="dainik_amader_shomoy_entertainment_news">আমাদের সময় (সর্বশেষ খবর)</string>
-
-
 
 
     <string name="kaler_kantho_finance_news">কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>

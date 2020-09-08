@@ -1,6 +1,7 @@
 package com.easysoftbd.bangladeshindiannews.ui.fragments.bangladesh.breaking_news;
 
 import android.app.Application;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -22,6 +23,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentBreakingNewsBinding;
+import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import java.util.ArrayList;
@@ -96,6 +98,32 @@ public class BreakingNewsFragment extends Fragment {
             }
         });
     }
+
+    private void openUrl(String url) {
+        intent = new Intent(getContext(), WebViewActivity.class);
+        intent.putExtra(Constants.UrlTag, url);
+        startActivity(intent);
+    }
+
+    public void showItemChooseAlertDialog(List<NewsAndLinkModel> list) {
+        if (list != null && list.size() > 0) {
+            String[] items = new String[list.size()];
+            for (int i = 0; i < list.size(); i++) {
+                items[i] = list.get(i).getNews();
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                    .setTitle("Select an Item.")
+                    .setSingleChoiceItems(items, 0, (DialogInterface.OnClickListener) (dialog, which) -> {
+                        openUrl(list.get(which).getLink());
+                        dialog.dismiss();
+                    });
+            alertDialog = builder.create();
+            if (!isRemoving()) {
+                alertDialog.show();
+            }
+        }
+    }
+
 
 
 

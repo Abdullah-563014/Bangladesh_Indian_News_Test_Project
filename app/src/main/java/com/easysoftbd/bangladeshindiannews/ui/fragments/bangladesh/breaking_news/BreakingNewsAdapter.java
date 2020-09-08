@@ -11,22 +11,28 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.acoder.itemclickable.itemclickablemarqueeview.ItemClickAbleMarqueeView;
+import com.acoder.itemclickable.itemclickablemarqueeview.interfaces.ItemClickListener;
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.RecyclerViewModelLayoutBinding;
+import com.easysoftbd.bangladeshindiannews.ui.activities.home.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapter.BreakingViewHolder> {
+public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapter.BreakingViewHolder> implements ItemClickListener {
 
     private Context context;
     private List<RecyclerItemModel> list;
+    private HomeActivity homeActivity;
 
     public BreakingNewsAdapter(Context context, List<RecyclerItemModel> list) {
         this.context = context;
         this.list = list;
+        if (homeActivity==null) {
+            homeActivity= (HomeActivity) context;
+        }
     }
 
 
@@ -37,9 +43,6 @@ public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapte
         return new BreakingViewHolder(binding);
     }
 
-
-
-
     @Override
     public void onBindViewHolder(@NonNull BreakingViewHolder holder, int position) {
         holder.binding.titleTextView.setText(list.get(position).getTitle());
@@ -49,13 +52,24 @@ public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapte
             contents.add(newsAndLinkModels.get(i).getNews());
         }
         holder.binding.marqueeView.setContent(contents);
+        holder.binding.marqueeView.setOnMarqueeItemClickListener(list.get(position).getTitle(),this);
     }
-
-
 
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+
+
+
+    @Override
+    public void onMarqueeItemClickListener(String tag, int position) {
+        for (int i=0; i<list.size(); i++) {
+            if (tag.equalsIgnoreCase(list.get(i).getTitle())) {
+                homeActivity.showBreakingAlertDialog(list.get(i).getNewsAndLinkModelList());
+            }
+        }
     }
 
     static class BreakingViewHolder extends RecyclerView.ViewHolder{
