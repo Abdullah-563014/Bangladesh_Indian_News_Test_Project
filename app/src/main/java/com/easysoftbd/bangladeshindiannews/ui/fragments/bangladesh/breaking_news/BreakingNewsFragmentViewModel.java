@@ -38,9 +38,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class BreakingNewsFragmentViewModel extends ViewModel {
 
     private CompositeDisposable compositeDisposable;
+    private io.reactivex.rxjava3.disposables.CompositeDisposable anotherCompositeDisposable;
     private NewsDatabase newsDatabase;
     private MyResponse myResponse;
-    private Observer<List<BdBreaking>> allBreakingNewsObserver;
+    private Observer<List<BdBreaking>> bangladeshiAllBreakingNewsObserver;
     private LiveData<List<BdBreaking>> bdBreakingLiveData;
     private MutableLiveData<List<RecyclerItemModel>> itemList;
     private MutableLiveData<List<RecyclerItemModel>> shortedList;
@@ -59,6 +60,9 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
         if (compositeDisposable==null) {
             compositeDisposable=new CompositeDisposable();
+        }
+        if (anotherCompositeDisposable==null) {
+            anotherCompositeDisposable=new io.reactivex.rxjava3.disposables.CompositeDisposable();
         }
     }
 
@@ -118,9 +122,9 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 //====================================Primary method staying in above========================================
 
 
-    public void checkBreakingNewsDataInDb(List<String> nameList, List<String> urlList) {
-        if (allBreakingNewsObserver==null) {
-            allBreakingNewsObserver= bdBreakings -> {
+    public void checkBangladeshBreakingNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (bangladeshiAllBreakingNewsObserver==null) {
+            bangladeshiAllBreakingNewsObserver= bdBreakings -> {
                 bdBreakingList.clear();
                 bdBreakingList.addAll(bdBreakings);
                 Log.d(Constants.TAG,"db data size is:- "+bdBreakings.size());
@@ -142,18 +146,30 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                         Log.d(Constants.TAG,"data insert:- "+i);
                         Completable.fromAction(()->{
                             newsDatabase.bdBreakingDao().insertNews(bdBreaking);
-                        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe();
+                        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+                                anotherCompositeDisposable.add(d);
+                            }
 
+                            @Override
+                            public void onComplete() {
+
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+
+                            }
+                        });
                     }
                     insertingDataFlag=false;
                 }
             };
         }
         bdBreakingLiveData=newsDatabase.bdBreakingDao().getAllNews();
-        bdBreakingLiveData.observeForever(allBreakingNewsObserver);
-
+        bdBreakingLiveData.observeForever(bangladeshiAllBreakingNewsObserver);
     }
-
 
     public void shortingList(List<RecyclerItemModel> recyclerItemModelList) {
         if (shortedList==null) {
@@ -178,7 +194,6 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         return shortedList;
     }
 
-
     public LiveData<List<RecyclerItemModel>> getItemList() {
         if (itemList==null) {
             itemList=new MutableLiveData<>();
@@ -189,9 +204,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 
 
 
-/*
-From below all necessary newspaper's document load and set to temporary list for shoring.
- */
+
     private void setProthomAloBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -212,10 +225,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================ProthomAlo method staying in above========================================
-
-
-
     private void setBdProtidinBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -237,10 +246,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================BdProtidin method staying in above========================================
-
-
-
     private void setKalerKhantoBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -265,10 +270,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================KalerKhanto method staying in above========================================
-
-
-
     private void setSomokalBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -290,10 +291,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================Somokal method staying in above========================================
-
-
-
     private void setDailyJanaKhantoBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -316,16 +313,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================DailyJanaKhanto method staying in above========================================
-
-
-
-
-//====================================DailyJanaKhanto method staying in above========================================
-
-
-
-
     private void setDailyInqilabBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -347,10 +334,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================DailyJanaKhanto method staying in above========================================
-
-
-
     private void setDailyNayaDigantaBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -372,10 +355,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================DailyNayaDiganta method staying in above========================================
-
-
-
     private void setAmarDesh24BreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -397,9 +376,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================DailyNayaDiganta method staying in above========================================
-
-
     private void setDailyIttefaqBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -423,13 +399,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================DailyNayaDiganta method staying in above========================================
-
-
-
-//====================================DailyNayaDiganta method staying in above========================================
-
-
     private void setSongbadProtidinBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -453,9 +422,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================DailyNayaDiganta method staying in above========================================
-
-
     private void setManobKanthaBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -477,10 +443,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================ManobKantha method staying in above========================================
-
-
-
     private void setBangladeshJournalBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -502,9 +464,6 @@ From below all necessary newspaper's document load and set to temporary list for
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================BangladeshJournal method staying in above========================================
-
-
     private void setTheDailyVorerPataBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
@@ -528,18 +487,16 @@ From below all necessary newspaper's document load and set to temporary list for
         itemList.setValue(temporaryList);
     }
 //====================================BangladeshJournal method staying in above========================================
-/*
-From above all necessary newspaper's document load and set to temporary list for shoring.
- */
 
 
 
 
     @Override
     protected void onCleared() {
-        bdBreakingLiveData.removeObserver(allBreakingNewsObserver);
+        bdBreakingLiveData.removeObserver(bangladeshiAllBreakingNewsObserver);
         super.onCleared();
         compositeDisposable.dispose();
+        anotherCompositeDisposable.dispose();
     }
 
 

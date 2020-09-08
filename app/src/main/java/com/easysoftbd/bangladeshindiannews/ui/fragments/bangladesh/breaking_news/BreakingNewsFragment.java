@@ -64,21 +64,12 @@ public class BreakingNewsFragment extends Fragment {
 
         loadAllUrl();
 
-        viewModel.getItemList().observe(this, new Observer<List<RecyclerItemModel>>() {
-            @Override
-            public void onChanged(List<RecyclerItemModel> recyclerItemModels) {
-                viewModel.shortingList(recyclerItemModels);
-            }
-        });
+        viewModel.getItemList().observe(this, recyclerItemModels -> viewModel.shortingList(recyclerItemModels));
 
-        viewModel.getShortedList().observe(this, new Observer<List<RecyclerItemModel>>() {
-            @Override
-            public void onChanged(List<RecyclerItemModel> recyclerItemModelList) {
-                list.clear();
-                list.addAll(recyclerItemModelList);
-                adapter.notifyDataSetChanged();
-                Log.d(Constants.TAG,"recycler list size:- "+list.size());
-            }
+        viewModel.getShortedList().observe(this, recyclerItemModelList -> {
+            list.clear();
+            list.addAll(recyclerItemModelList);
+            adapter.notifyDataSetChanged();
         });
 
         initRecyclerView();
@@ -88,7 +79,7 @@ public class BreakingNewsFragment extends Fragment {
     private void loadAllUrl() {
         List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_url_list)));
         List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_news_list)));
-        viewModel.checkBreakingNewsDataInDb(nameList,urlList);
+        viewModel.checkBangladeshBreakingNewsDataInDb(nameList,urlList);
     }
 
     private void initRecyclerView() {
