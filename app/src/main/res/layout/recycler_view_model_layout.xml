@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/MarqueeParentStyle"
+        tools:ignore="MissingConstraints">
+        <ImageView
+            android:id="@+id/marqueeMoreOptionImageView"
+            style="@style/MarqueeNewsMoreOptionImageViewStyle"/>
+
+        <TextView
+            android:id="@+id/titleTextView"
+            style="@style/MarqueeNewsPaperNameTextViewStyle"
+            app:layout_constraintTop_toBottomOf="@+id/marqueeMoreOptionImageView" />
+
+        <com.acoder.itemclickable.itemclickablemarqueeview.ItemClickAbleMarqueeView
+            android:id="@+id/marqueeView"
+            style="@style/MarqueeViewCustomStyle"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,28 @@
+package com.easysoftbd.bangladeshindiannews.data.local.india.bangla;
+
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import java.util.List;
+
+@Dao
+public interface IndianBanglaBreakingDao {
+
+    @Query("SELECT * FROM indian_bangla_breaking")
+    List<IndianBanglaBreaking> getAllNews();
+
+    @Query("SELECT * FROM indian_bangla_breaking WHERE serial=:serial")
+    IndianBanglaBreaking getNews(int serial);
+
+    @Insert
+    void insertNews(IndianBanglaBreaking indianBanglaBreaking);
+
+    @Delete
+    void deleteNews(IndianBanglaBreaking indianBanglaBreaking);
+
+    @Update
+     void updateNews(IndianBanglaBreaking indianBanglaBreaking);
+}

@@ -1,0 +1,70 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="TabCustomStyle">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="MarqueeParentStyle">
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/_2sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_2sdp</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+    </style>
+
+
+    <style name="MarqueeNewsMoreOptionImageViewStyle">
+        <item name="android:src">@drawable/ic_more</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:layout_marginEnd">@dimen/_5sdp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="MarqueeNewsPaperNameTextViewStyle">
+        <item name="layout_constraintTop_toTopOf">parent</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:textSize">@dimen/_9ssp</item>
+        <item name="android:paddingStart">@dimen/_8sdp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
+    <style name="MarqueeViewCustomStyle">
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/_25sdp</item>
+        <item name="marqueeview_text_color">@color/colorWhite</item>
+    </style>
+
+
+
+    <style name="ButtonCustomStyle">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_marginTop">@dimen/_5sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_5sdp</item>
+    </style>
+
+</resources>

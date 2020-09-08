@@ -1,0 +1,141 @@
+<resources>
+    <string name="app_name">Breaking News</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="bd_breaking_news_list">
+        <item>বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)</item>
+        <item>প্রথম আলো (ব্রেকিং নিউজ)</item>
+        <item>কালের কণ্ঠ (ব্রেকিং নিউজ)</item>
+        <item>সমকাল (ব্রেকিং নিউজ)</item>
+        <item>দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)</item>
+<!--        <item>ভোরের কাগজ (ব্রেকিং নিউজ)</item>-->
+        <item>দৈনিক ইনকিলাব (ব্রেকিং নিউজ)</item>
+        <item>নয়া দিগন্ত (ব্রেকিং নিউজ)</item>
+        <item>আমার দেশ 24 (ব্রেকিং নিউজ)</item>
+        <item>দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)</item>
+<!--        <item>মানবজমিন (ব্রেকিং নিউজ)</item>-->
+        <item>সংবাদ প্রতিদিন (ব্রেকিং নিউজ)</item>
+        <item>মানবকণ্ঠ (ব্রেকিং নিউজ)</item>
+        <item>বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)</item>
+        <item>ভোরের পাতা (ব্রেকিং নিউজ)</item>
+    </string-array>
+
+    <string-array name="bd_breaking_url_list">
+        <item>https://www.bd-pratidin.com/</item>
+        <item>https://www.prothomalo.com/</item>
+        <item>https://www.kalerkantho.com/</item>
+        <item>https://samakal.com/</item>
+        <item>https://www.dailyjanakantha.com/</item>
+<!--        <item>https://www.bhorerkagoj.com/</item>-->
+        <item>https://www.dailyinqilab.com/</item>
+        <item>https://www.dailynayadiganta.com/</item>
+        <item>https://amar-desh24.com/bangla/</item>
+        <item>https://www.ittefaq.com.bd/wholecountry/</item>
+<!--        <item>https://www.mzamin.com/</item>-->
+        <item>https://www.sangbadpratidin.in/</item>
+        <item>https://www.manobkantha.com.bd/</item>
+        <item>https://www.bd-journal.com/</item>
+        <item>https://www.dailyvorerpata.com/</item>
+    </string-array>
+
+
+
+    <string name="bd_protidin">বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)</string>
+    <string name="prothom_alo">প্রথম আলো (ব্রেকিং নিউজ)</string>
+    <string name="kaler_khanto">কালের কণ্ঠ (ব্রেকিং নিউজ)</string>
+    <string name="somokal">সমকাল (ব্রেকিং নিউজ)</string>
+    <string name="daily_jana_khanto">দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)</string>
+<!--    <string name="bhorer_kagoj">ভোরের কাগজ (ব্রেকিং নিউজ)</string>-->
+    <string name="daily_inqilab">দৈনিক ইনকিলাব (ব্রেকিং নিউজ)</string>
+    <string name="daily_naya_diganta">নয়া দিগন্ত (ব্রেকিং নিউজ)</string>
+    <string name="amar_desh_24">আমার দেশ 24 (ব্রেকিং নিউজ)</string>
+    <string name="daily_ittefaq">দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)</string>
+<!--    <string name="manobJomin">মানবজমিন (ব্রেকিং নিউজ)</string>-->
+<!--    <string name="manobJomin_corona_update">করোনা আপডেট</string>-->
+    <string name="songbadProtidin">সংবাদ প্রতিদিন (ব্রেকিং নিউজ)</string>
+    <string name="manobkantha">মানবকণ্ঠ (ব্রেকিং নিউজ)</string>
+    <string name="bangladesh_journal">বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)</string>
+    <string name="the_daily_vorer_pata">ভোরের পাতা (ব্রেকিং নিউজ)</string>
+    <!--    Newspaper breaking news are staying above.-->
+
+
+    <string name="atn_news">এটিএন নিউজ (সর্বশেষ খবর)</string>
+    <string name="ekushey_television">একুশে টেলিভশন (সর্বশেষ খবর)</string>
+    <string name="ntv">এনটিভি (সর্বশেষ খবর)</string>
+    <string name="shomoyNews">সময় টিভি (সর্বশেষ খবর)</string>
+    <string name="channelI">চ্যানেল আই (সর্বশেষ খবর)</string>
+    <string name="banglaVision">বাংলা ভিশন (সর্বশেষ খবর)</string>
+    <string name="rtvNews">আরটিভি নিউস (সর্বশেষ খবর)</string>
+    <string name="boishakhiTv">বৈশাখী টিভি (সর্বশেষ খবর)</string>
+    <string name="mohonaTv">মোহনা টিভি (সর্বশেষ খবর)</string>
+    <string name="btv">বাংলাদেশ টেলিভিশন (সর্বশেষ খবর)</string>
+    <string name="masrangaTv">মাশরাঙা টিভি (সর্বশেষ খবর)</string>
+    <string name="channel24Bd">চ্যানেল ২৪ (সর্বশেষ খবর)</string>
+    <string name="myTvBd">মাই টিভি (সর্বশেষ খবর)</string>
+    <string name="jamunaTv">যমুনা টিভি (সর্বশেষ খবর)</string>
+    <string name="news24Bd">নিউস ২৪ (সর্বশেষ খবর)</string>
+    <!--Tv channel news are staying above.-->
+
+
+    <string name="kalerkhantho_sport_news">কালেরকণ্ঠ (খেলার খবর)</string>
+    <string name="samakal_sport_news">সমকাল (খেলার খবর)</string>
+    <string name="daily_janakantha_sport_news">দৈনিক জনকণ্ঠ (খেলার খবর)</string>
+    <string name="bd_news_24_sport_news">বিডি নিউস ২৪ (খেলার খবর)</string>
+    <string name="bangla_tribune_sport_news">বাংলা ট্রিবিউন (খেলার খবর)</string>
+    <string name="bhorer_kagoj_sport_news">ভোরের কাগজ (খেলার খবর)</string>
+    <string name="daily_inqilab_sport_news">দৈনিক ইনকিলাব (খেলার খবর)</string>
+    <string name="daily_naya_diganta_sport_news">নয়া দিগন্ত (খেলার খবর)</string>
+    <string name="amar_desh_24_sport_news">আমার দেশ 24 (খেলার খবর)</string>
+    <string name="daily_ittefaq_sport_news">দৈনিক ইত্তেফাক (খেলার খবর)</string>
+    <string name="daily_manob_jomin_sport_news">মানবজমিন (খেলার খবর)</string>
+    <string name="sangbad_pratidin_sport_news">সংবাদ প্রতিদিন (খেলার খবর)</string>
+    <string name="manobkantha_sport_news">মানবকণ্ঠ (খেলার খবর)</string>
+    <string name="bd_journal_sport_news">বাংলাদেশ জার্নাল (খেলার খবর)</string>
+    <string name="doinik_songram_sport_news">দৈনিক সংগ্রাম (খেলার খবর)</string>
+
+
+    <string name="kalerkantho_entertainment_news">কালের কণ্ঠ (সর্বশেষ খবর)</string>
+    <string name="samakal_entertainment_news">সমকাল (সর্বশেষ খবর)</string>
+    <string name="daily_janakantha_entertainment_news">দৈনিক জনকন্ঠ (সর্বশেষ খবর)</string>
+    <string name="bd_news_24_entertainment_news">বিডি নিউস ২৪ (সর্বশেষ খবর)</string>
+    <string name="bangla_tribune_entertainment_news">বাংলা ট্রিবিউন (সর্বশেষ খবর)</string>
+    <string name="bhorer_kagoj_entertainment_news">ভোরের কাগজ (সর্বশেষ খবর)</string>
+    <string name="daily_inqilab_entertainment_news">দৈনিক ইনকিলাব (সর্বশেষ খবর)</string>
+    <string name="daily_nayadiganta_entertainment_news">নয়া দিগন্ত (সর্বশেষ খবর)</string>
+    <string name="amar_desh_24_entertainment_news">আমার দেশ 24 (সর্বশেষ খবর)</string>
+    <string name="daily_ittefaq_entertainment_news">দৈনিক ইত্তেফাক (সর্বশেষ খবর)</string>
+    <string name="daily_manob_jomin_entertainment_news">মানবজমিন (সর্বশেষ খবর)</string>
+    <string name="sangbad_pratidin_entertainment_news">সংবাদ প্রতিদিন (সর্বশেষ খবর)</string>
+    <string name="manob_kantha_entertainment_news">মানবকণ্ঠ (সর্বশেষ খবর)</string>
+    <string name="bd_journal_entertainment_news">বাংলাদেশ জার্নাল (সর্বশেষ খবর)</string>
+    <string name="dainik_amader_shomoy_entertainment_news">আমাদের সময় (সর্বশেষ খবর)</string>
+
+
+
+
+    <string name="kaler_kantho_finance_news">কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="samakal_finance_news">সমকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="daily_janakantha_finance_news">দৈনিক জনকন্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="bd_news_24_finance_news">বিডি নিউস ২৪ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="bangla_tribune_finance_news">বাংলা ট্রিবিউন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="bhorer_kagoj_finance_news">ভোরের কাগজ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="daily_ittefaq_finance_news">দৈনিক ইত্তেফাক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="manob_kantha_finance_news">মানবকণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="bd_journal_finance_news">বাংলাদেশ জার্নাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="daily_vorer_pata_finance_news">ভোরের পাতা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="jai_jai_din_bd_finance_news">যায়যায় দিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="dainik_amader_shomoy_finance_news">আমাদের সময় (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="daily_sangram_finance_news">দৈনিক সংগ্রাম (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="amar_desh_24_finance_news">আমার দেশ 24 (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+    <string name="jugantor_finance_news">যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
+
+
+    <string name="read_write_permission_details">
+        To download content using this app, You need to provide Write_External_Storage permission to save the
+        downloaded file on your phone storage.
+    </string>
+
+
+</resources>
