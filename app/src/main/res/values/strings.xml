@@ -4,6 +4,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
+    <string-array name="more_option_item_list">
+        <item>Move to up</item>
+        <item>Move to down</item>
+        <item>Move to down</item>
+        <item>Show</item>
+        <item>Hide</item>
+    </string-array>
+
     <string-array name="bd_breaking_news_list">
         <item>বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)</item>
         <item>প্রথম আলো (ব্রেকিং নিউজ)</item>

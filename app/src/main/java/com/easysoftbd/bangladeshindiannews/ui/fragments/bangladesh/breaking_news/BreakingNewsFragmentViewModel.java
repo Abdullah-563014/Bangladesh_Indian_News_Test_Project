@@ -47,6 +47,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private MutableLiveData<List<RecyclerItemModel>> shortedList;
     private List<RecyclerItemModel> temporaryList=new ArrayList<>();
     private boolean insertingDataFlag=false;
+    private boolean dataStatusFlagInDb=false;
     private List<BdBreaking> bdBreakingList=new ArrayList<>();
     List<RecyclerItemModel> temporaryShortingList=new ArrayList<>();
 
@@ -122,69 +123,25 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 //====================================Primary method staying in above========================================
 
 
-    public void checkBangladeshBreakingNewsDataInDb(List<String> nameList, List<String> urlList) {
-        if (bangladeshiAllBreakingNewsObserver==null) {
-            bangladeshiAllBreakingNewsObserver= bdBreakings -> {
-                bdBreakingList.clear();
-                bdBreakingList.addAll(bdBreakings);
-                Log.d(Constants.TAG,"db data size is:- "+bdBreakings.size());
-                if (bdBreakings.size()>0 && !insertingDataFlag) {
-                    for (int i=0; i<bdBreakings.size(); i++) {
-                        if (bdBreakings.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
-                            loadPageDocument(bdBreakings.get(i).getPaperUrl());
-                            Log.d(Constants.TAG,"url call:- "+i);
-                        }
-                    }
-                } else {
-                    insertingDataFlag=true;
-                    for (int i=0; i<urlList.size(); i++) {
-                        BdBreaking bdBreaking=new BdBreaking();
-                        bdBreaking.setSerial(i);
-                        bdBreaking.setVisibilityStatus("visible");
-                        bdBreaking.setPaperUrl(urlList.get(i));
-                        bdBreaking.setPaperName(nameList.get(i));
-                        Log.d(Constants.TAG,"data insert:- "+i);
-                        Completable.fromAction(()->{
-                            newsDatabase.bdBreakingDao().insertNews(bdBreaking);
-                        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-                            @Override
-                            public void onSubscribe(@NonNull Disposable d) {
-                                anotherCompositeDisposable.add(d);
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-
-                            @Override
-                            public void onError(@NonNull Throwable e) {
-
-                            }
-                        });
-                    }
-                    insertingDataFlag=false;
-                }
-            };
-        }
-        bdBreakingLiveData=newsDatabase.bdBreakingDao().getAllNews();
-        bdBreakingLiveData.observeForever(bangladeshiAllBreakingNewsObserver);
-    }
-
     public void shortingList(List<RecyclerItemModel> recyclerItemModelList) {
         if (shortedList==null) {
             shortedList=new MutableLiveData<>();
         }
         temporaryShortingList.clear();
-        String value;
+        String title;
+        RecyclerItemModel recyclerItemModel;
         for (int i=0; i<bdBreakingList.size(); i++) {
-            value=bdBreakingList.get(i).getPaperName();
+            title=bdBreakingList.get(i).getPaperName();
             for (int j=0; j<recyclerItemModelList.size(); j++) {
-                if (value.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    recyclerItemModel=recyclerItemModelList.get(j);
+                    recyclerItemModel.setSerialNumber(bdBreakingList.get(i).getSerial());
                     temporaryShortingList.add(recyclerItemModelList.get(j));
+//                    Log.d(Constants.TAG,"name:- "+recyclerItemModelList.get(j).getTitle()+" serial="+recyclerItemModelList.get(j).getSerialNumber()+" counter:- "+j);
                 }
             }
         }
+        shortedList.setValue(temporaryShortingList);
     }
 
     public MutableLiveData<List<RecyclerItemModel>> getShortedList() {
@@ -200,6 +157,100 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
         return itemList;
     }
+
+    public void increaseSerialNumber(int serialNumber) {
+        if (serialNumber>0) {
+            BdBreaking currentItem=bdBreakingList.get(serialNumber);
+            BdBreaking upperItem=bdBreakingList.get(serialNumber-1);
+
+            currentItem.setSerial(serialNumber-1);
+            upperItem.setSerial(serialNumber);
+            insertingDataFlag=true;
+            dataStatusFlagInDb=true;
+
+
+
+            Completable.fromAction(()->{
+                newsDatabase.bdBreakingDao().updateNews(currentItem,upperItem);
+            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    anotherCompositeDisposable.add(d);
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+            });
+        }
+    }
+
+
+
+
+
+
+    public void checkBangladeshBreakingNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (bangladeshiAllBreakingNewsObserver==null) {
+            bangladeshiAllBreakingNewsObserver= bdBreakings -> {
+                bdBreakingList.clear();
+                bdBreakingList.addAll(bdBreakings);
+                if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
+                    itemList.setValue(itemList.getValue());
+                }
+                Log.d(Constants.TAG,"db data size is:- "+bdBreakings.size());
+                if (bdBreakings.size()>0 && !insertingDataFlag) {
+                    for (int i=0; i<bdBreakings.size(); i++) {
+                        if (bdBreakings.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(bdBreakings.get(i).getPaperUrl());
+                            Log.d(Constants.TAG,"url call:- "+i);
+                        }
+                    }
+                } else {
+                    insertingDataFlag=true;
+                    if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {
+                        for (int i=0; i<urlList.size(); i++) {
+                            BdBreaking bdBreaking=new BdBreaking();
+                            bdBreaking.setSerial(i);
+                            bdBreaking.setVisibilityStatus("visible");
+                            bdBreaking.setPaperUrl(urlList.get(i));
+                            bdBreaking.setPaperName(nameList.get(i));
+                            Log.d(Constants.TAG,"data insert:- "+i);
+                            Completable.fromAction(()->{
+                                newsDatabase.bdBreakingDao().insertNews(bdBreaking);
+                            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+                                    anotherCompositeDisposable.add(d);
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+
+                                }
+                            });
+                        }
+                        dataStatusFlagInDb=true;
+                    }
+                    insertingDataFlag=false;
+                }
+            };
+        }
+        bdBreakingLiveData=newsDatabase.bdBreakingDao().getAllNews();
+        bdBreakingLiveData.observeForever(bangladeshiAllBreakingNewsObserver);
+    }
+
 
 
 

@@ -62,7 +62,7 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    implementation 'com.github.Abdullah-563014:Item_Clickable_MarqueeView:1.1'
+    implementation 'com.github.Abdullah-563014:Item_Clickable_MarqueeView:1.2'
 
     implementation 'org.jsoup:jsoup:1.13.1'
 

@@ -29,4 +29,7 @@ public interface BdBreakingDao {
 
     @Update
     void updateNews(BdBreaking bdBreaking);
+
+    @Update
+    void updateNews(BdBreaking first, BdBreaking second);
 }

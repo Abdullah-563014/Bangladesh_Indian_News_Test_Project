@@ -52,6 +52,12 @@ public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapte
             contents.add(newsAndLinkModels.get(i).getNews());
         }
         holder.binding.marqueeView.setContent(contents);
+
+
+
+        holder.binding.marqueeMoreOptionImageView.setOnClickListener(view -> {
+            homeActivity.showBreakingMoreOption(list.get(position).getSerialNumber());
+        });
         holder.binding.marqueeView.setOnMarqueeItemClickListener(list.get(position).getTitle(),this);
     }
 

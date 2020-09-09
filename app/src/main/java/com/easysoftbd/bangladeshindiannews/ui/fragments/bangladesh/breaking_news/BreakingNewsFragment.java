@@ -66,14 +66,6 @@ public class BreakingNewsFragment extends Fragment {
 
         loadAllUrl();
 
-        viewModel.getItemList().observe(this, recyclerItemModels -> viewModel.shortingList(recyclerItemModels));
-
-        viewModel.getShortedList().observe(this, recyclerItemModelList -> {
-            list.clear();
-            list.addAll(recyclerItemModelList);
-            adapter.notifyDataSetChanged();
-        });
-
         initRecyclerView();
 
     }
@@ -89,13 +81,17 @@ public class BreakingNewsFragment extends Fragment {
         linearLayoutManager=new LinearLayoutManager(getContext());
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
-        viewModel.getItemList().observe(this, new Observer<List<RecyclerItemModel>>() {
-            @Override
-            public void onChanged(List<RecyclerItemModel> recyclerItemModels) {
-                list.clear();
-                list.addAll(recyclerItemModels);
-                adapter.notifyDataSetChanged();
+        viewModel.getItemList().observe(this, recyclerItemModels -> {
+            viewModel.shortingList(recyclerItemModels);
+            for (int i=0; i<recyclerItemModels.size();i++) {
+                Log.d(Constants.TAG,"Item serial:- "+recyclerItemModels.get(i).getSerialNumber());
             }
+        });
+
+        viewModel.getShortedList().observe(this, recyclerItemModelList -> {
+            list.clear();
+            list.addAll(recyclerItemModelList);
+            adapter.notifyDataSetChanged();
         });
     }
 
@@ -124,7 +120,33 @@ public class BreakingNewsFragment extends Fragment {
         }
     }
 
+    public void showMoreOptionAlertDialog(int position) {
+        String[] items=getResources().getStringArray(R.array.more_option_item_list);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                    .setTitle("Select an Item.")
+                    .setItems(items, (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                        switch (i) {
+                            case 0:
+                                viewModel.increaseSerialNumber(position);
+                                break;
 
+                            case 1:
+                                break;
+
+                            case 2:
+                                break;
+
+                            case 3:
+                                break;
+                        }
+                    });
+            alertDialog = builder.create();
+            if (!isRemoving()) {
+                alertDialog.show();
+            }
+
+    }
 
 
 

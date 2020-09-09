@@ -42,6 +42,11 @@ public class HomeActivity extends AppCompatActivity {
         breakingNewsFragment.showItemChooseAlertDialog(newsAndLinkModels);
     }
 
+    public void showBreakingMoreOption(int serialNo) {
+        BreakingNewsFragment breakingNewsFragment= (BreakingNewsFragment) activityFragmentStateAdapter.createFragment(0);
+        breakingNewsFragment.showMoreOptionAlertDialog(serialNo);
+    }
+
 
 
 }
