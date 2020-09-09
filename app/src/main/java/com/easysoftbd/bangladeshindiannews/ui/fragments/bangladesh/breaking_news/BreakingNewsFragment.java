@@ -85,6 +85,7 @@ public class BreakingNewsFragment extends Fragment {
             viewModel.shortingList(recyclerItemModels);
             for (int i=0; i<recyclerItemModels.size();i++) {
                 Log.d(Constants.TAG,"Item serial:- "+recyclerItemModels.get(i).getSerialNumber());
+                Log.d(Constants.TAG,"Item data size:- "+recyclerItemModels.size());
             }
         });
 
@@ -136,9 +137,11 @@ public class BreakingNewsFragment extends Fragment {
                                 break;
 
                             case 2:
+
                                 break;
 
                             case 3:
+                                viewModel.hideItem(position);
                                 break;
                         }
                     });

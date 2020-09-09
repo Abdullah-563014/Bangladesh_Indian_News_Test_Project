@@ -137,7 +137,6 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel=recyclerItemModelList.get(j);
                     recyclerItemModel.setSerialNumber(bdBreakingList.get(i).getSerial());
                     temporaryShortingList.add(recyclerItemModelList.get(j));
-//                    Log.d(Constants.TAG,"name:- "+recyclerItemModelList.get(j).getTitle()+" serial="+recyclerItemModelList.get(j).getSerialNumber()+" counter:- "+j);
                 }
             }
         }
@@ -224,7 +223,36 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
     }
 
+    public void hideItem(int serialNumber) {
+        if (serialNumber<=(bdBreakingList.size()-1) && serialNumber>=0) {
+            BdBreaking currentItem=bdBreakingList.get(serialNumber);
 
+            currentItem.setVisibilityStatus("hidden");
+            insertingDataFlag=false;
+            dataStatusFlagInDb=true;
+
+
+
+            Completable.fromAction(()->{
+                newsDatabase.bdBreakingDao().updateNews(currentItem);
+            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    anotherCompositeDisposable.add(d);
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+            });
+        }
+    }
 
 
 
@@ -239,12 +267,15 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 }
                 Log.d(Constants.TAG,"db data size is:- "+bdBreakings.size());
                 if (bdBreakings.size()>0 && !insertingDataFlag) {
+                    temporaryList.clear();
+                    itemList.setValue(temporaryList);
                     for (int i=0; i<bdBreakings.size(); i++) {
                         if (bdBreakings.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
                             loadPageDocument(bdBreakings.get(i).getPaperUrl());
                             Log.d(Constants.TAG,"url call:- "+i);
                         }
                     }
+                    insertingDataFlag=true;
                 } else {
                     insertingDataFlag=true;
                     if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {

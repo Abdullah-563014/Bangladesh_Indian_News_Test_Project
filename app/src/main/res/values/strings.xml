@@ -7,7 +7,6 @@
     <string-array name="more_option_item_list">
         <item>Move to up</item>
         <item>Move to down</item>
-        <item>Move to down</item>
         <item>Show</item>
         <item>Hide</item>
     </string-array>
