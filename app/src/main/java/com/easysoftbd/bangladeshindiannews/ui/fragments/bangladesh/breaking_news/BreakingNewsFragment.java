@@ -132,6 +132,7 @@ public class BreakingNewsFragment extends Fragment {
                                 break;
 
                             case 1:
+                                viewModel.decreaseSerialNumber(position);
                                 break;
 
                             case 2:

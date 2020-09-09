@@ -191,6 +191,39 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
     }
 
+    public void decreaseSerialNumber(int serialNumber) {
+        if (serialNumber<(bdBreakingList.size()-1)) {
+            BdBreaking currentItem=bdBreakingList.get(serialNumber);
+            BdBreaking downItem=bdBreakingList.get(serialNumber+1);
+
+            currentItem.setSerial(serialNumber+1);
+            downItem.setSerial(serialNumber);
+            insertingDataFlag=true;
+            dataStatusFlagInDb=true;
+
+
+
+            Completable.fromAction(()->{
+                newsDatabase.bdBreakingDao().updateNews(currentItem,downItem);
+            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    anotherCompositeDisposable.add(d);
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+            });
+        }
+    }
+
 
 
 
