@@ -1,22 +1,19 @@
 package com.easysoftbd.bangladeshindiannews.ui.fragments.bangladesh.breaking_news;
 
-import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
@@ -38,7 +35,6 @@ public class BreakingNewsFragment extends Fragment {
     private Intent intent;
     private BreakingNewsFragmentViewModel viewModel;
     private FragmentBreakingNewsBinding binding;
-    private List<NewsAndLinkModel> prothomAloBreakingNewsList = new ArrayList<>();
     private BreakingNewsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
