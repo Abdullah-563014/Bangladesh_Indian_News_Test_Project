@@ -45,6 +45,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private LiveData<List<BdBreaking>> bdBreakingLiveData;
     private MutableLiveData<List<RecyclerItemModel>> itemList;
     private MutableLiveData<List<RecyclerItemModel>> shortedList;
+    private MutableLiveData<List<BdBreaking>> bdBreakingUnVisibleList;
+    private List<BdBreaking> bdBreakingUnVisibleTemporaryList=new ArrayList<>();
     private List<RecyclerItemModel> temporaryList=new ArrayList<>();
     private boolean insertingDataFlag=false;
     private boolean dataStatusFlagInDb=false;
@@ -143,7 +145,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         shortedList.setValue(temporaryShortingList);
     }
 
-    public MutableLiveData<List<RecyclerItemModel>> getShortedList() {
+    public LiveData<List<RecyclerItemModel>> getShortedList() {
         if (shortedList==null) {
             shortedList=new MutableLiveData<>();
         }
@@ -155,6 +157,13 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             itemList=new MutableLiveData<>();
         }
         return itemList;
+    }
+
+    public LiveData<List<BdBreaking>> getBdBreakingUnVisibleList() {
+        if (bdBreakingUnVisibleList==null) {
+            bdBreakingUnVisibleList=new MutableLiveData<>();
+        }
+        return bdBreakingUnVisibleList;
     }
 
     public void increaseSerialNumber(int serialNumber) {
@@ -254,6 +263,39 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
     }
 
+    public void visibleItem(String paperName) {
+        for (int i=0; i<bdBreakingUnVisibleTemporaryList.size(); i++) {
+            if (paperName.equalsIgnoreCase(bdBreakingUnVisibleTemporaryList.get(i).getPaperName())) {
+                BdBreaking currentItem=bdBreakingUnVisibleTemporaryList.get(i);
+
+                currentItem.setVisibilityStatus("visible");
+                insertingDataFlag=false;
+                dataStatusFlagInDb=true;
+
+
+
+                Completable.fromAction(()->{
+                    newsDatabase.bdBreakingDao().updateNews(currentItem);
+                }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        anotherCompositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+                });
+            }
+        }
+    }
+
 
 
 
@@ -262,6 +304,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             bangladeshiAllBreakingNewsObserver= bdBreakings -> {
                 bdBreakingList.clear();
                 bdBreakingList.addAll(bdBreakings);
+                bdBreakingUnVisibleTemporaryList.clear();
                 if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
                     itemList.setValue(itemList.getValue());
                 }
@@ -273,8 +316,14 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                         if (bdBreakings.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
                             loadPageDocument(bdBreakings.get(i).getPaperUrl());
                             Log.d(Constants.TAG,"url call:- "+i);
+                        } else {
+                            bdBreakingUnVisibleTemporaryList.add(bdBreakings.get(i));
                         }
                     }
+                    if (bdBreakingUnVisibleList==null) {
+                        bdBreakingUnVisibleList=new MutableLiveData<>();
+                    }
+                    bdBreakingUnVisibleList.setValue(bdBreakingUnVisibleTemporaryList);
                     insertingDataFlag=true;
                 } else {
                     insertingDataFlag=true;

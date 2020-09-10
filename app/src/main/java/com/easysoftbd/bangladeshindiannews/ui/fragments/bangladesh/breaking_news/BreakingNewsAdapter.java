@@ -70,7 +70,7 @@ public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapte
 
 
     @Override
-    public void onMarqueeItemClickListener(String tag, int position) {
+    public void onMarqueeItemClickListener(String tag) {
         for (int i=0; i<list.size(); i++) {
             if (tag.equalsIgnoreCase(list.get(i).getTitle())) {
                 homeActivity.showBreakingAlertDialog(list.get(i).getNewsAndLinkModelList());

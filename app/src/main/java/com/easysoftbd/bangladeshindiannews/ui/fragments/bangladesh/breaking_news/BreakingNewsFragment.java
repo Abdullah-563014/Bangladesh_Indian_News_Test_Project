@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentBreakingNewsBinding;
@@ -41,6 +42,7 @@ public class BreakingNewsFragment extends Fragment {
     private BreakingNewsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
+    private List<BdBreaking> bdBreakingUnVisibleList=new ArrayList<>();
 
 
     public BreakingNewsFragment() {
@@ -64,9 +66,13 @@ public class BreakingNewsFragment extends Fragment {
 
 
 
+        initAll();
+
         loadAllUrl();
 
         initRecyclerView();
+
+
 
     }
 
@@ -137,7 +143,7 @@ public class BreakingNewsFragment extends Fragment {
                                 break;
 
                             case 2:
-
+                                showUnVisibleList();
                                 break;
 
                             case 3:
@@ -150,6 +156,34 @@ public class BreakingNewsFragment extends Fragment {
                 alertDialog.show();
             }
 
+    }
+
+    private void initAll() {
+        viewModel.getBdBreakingUnVisibleList().observe(this, bdBreakings -> {
+            bdBreakingUnVisibleList.clear();
+            bdBreakingUnVisibleList.addAll(bdBreakings);
+        });
+    }
+
+    private void showUnVisibleList() {
+        String[] list=new String[bdBreakingUnVisibleList.size()];
+        for (int i=0; i<bdBreakingUnVisibleList.size(); i++) {
+            list[i]=bdBreakingUnVisibleList.get(i).getPaperName();
+        }
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
+                .setCancelable(true)
+                .setTitle("Please choose an item")
+                .setItems(list, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        viewModel.visibleItem(list[i]);
+                    }
+                });
+        AlertDialog alertDialog=builder.create();
+        if (!isRemoving()) {
+            alertDialog.show();
+        }
     }
 
 
