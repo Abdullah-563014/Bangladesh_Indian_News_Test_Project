@@ -21,9 +21,9 @@ public interface BdTvChannelDao {
     @Insert
     void insertNews(BdTvChannel bdTvChannel);
 
-    @Delete
-    void deleteNews(BdTvChannel bdTvChannel);
-
     @Update
     void updateNews(BdTvChannel bdTvChannel);
+
+    @Update
+    void updateNews(BdTvChannel first, BdTvChannel second);
 }

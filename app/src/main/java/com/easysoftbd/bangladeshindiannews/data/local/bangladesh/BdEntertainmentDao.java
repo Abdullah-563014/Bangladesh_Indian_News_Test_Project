@@ -24,9 +24,9 @@ public interface BdEntertainmentDao {
     @Insert
     void insertNews(BdEntertainment bdEntertainment);
 
-    @Delete
-    void deleteNews(BdEntertainment bdEntertainment);
-
     @Update
     void updateNews(BdEntertainment bdEntertainment);
+
+    @Update
+    void updateNews(BdEntertainment first, BdEntertainment second);
 }

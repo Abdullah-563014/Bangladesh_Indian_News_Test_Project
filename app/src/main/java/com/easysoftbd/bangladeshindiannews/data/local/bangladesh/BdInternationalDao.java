@@ -21,9 +21,9 @@ public interface BdInternationalDao {
     @Insert
     void insertNews(BdInternational bdInternational);
 
-    @Delete
-    void deleteNews(BdInternational bdInternational);
-
     @Update
     void updateNews(BdInternational bdInternational);
+
+    @Update
+    void updateNews(BdInternational first, BdInternational second);
 }

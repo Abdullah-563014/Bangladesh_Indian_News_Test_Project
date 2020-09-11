@@ -24,9 +24,6 @@ public interface BdBreakingDao {
     @Insert
     void insertNews(BdBreaking bdBreaking);
 
-    @Delete
-    void deleteNews(BdBreaking bdBreaking);
-
     @Update
     void updateNews(BdBreaking bdBreaking);
 

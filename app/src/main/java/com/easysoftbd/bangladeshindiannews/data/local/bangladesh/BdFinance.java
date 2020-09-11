@@ -19,6 +19,9 @@ public class BdFinance implements Serializable {
     @ColumnInfo(name = "paperName")
     private String paperName;
 
+    @ColumnInfo(name = "paperUrl")
+    private String paperUrl;
+
     @ColumnInfo(name = "visibilityStatus")
     private String visibilityStatus;
 
@@ -45,6 +48,14 @@ public class BdFinance implements Serializable {
 
     public void setPaperName(String paperName) {
         this.paperName = paperName;
+    }
+
+    public String getPaperUrl() {
+        return paperUrl;
+    }
+
+    public void setPaperUrl(String paperUrl) {
+        this.paperUrl = paperUrl;
     }
 
     public String getVisibilityStatus() {

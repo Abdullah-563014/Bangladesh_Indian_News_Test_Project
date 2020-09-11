@@ -21,9 +21,9 @@ public interface BdFinanceDao {
     @Insert
     void insertNews(BdFinance bdFinance);
 
-    @Delete
-    void deleteNews(BdFinance bdFinance);
-
     @Update
     void updateNews(BdFinance bdFinance);
+
+    @Update
+    void updateNews(BdFinance first, BdFinance second);
 }

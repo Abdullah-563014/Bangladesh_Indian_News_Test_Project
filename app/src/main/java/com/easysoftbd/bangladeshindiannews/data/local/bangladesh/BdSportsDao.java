@@ -21,10 +21,10 @@ public interface BdSportsDao {
     @Insert
     void insertNews(BdSports bdSports);
 
-    @Delete
-    void deleteNews(BdSports bdSports);
-
     @Update
     void updateNews(BdSports bdSports);
+
+    @Update
+    void updateNews(BdSports first, BdSports second);
 }
 
