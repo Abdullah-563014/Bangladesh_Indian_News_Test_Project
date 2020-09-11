@@ -47,93 +47,150 @@
         <item>https://www.dailyvorerpata.com/</item>
     </string-array>
 
+    <string-array name="bd_tv_channel_news_list">
+        <item>এটিএন নিউজ (সর্বশেষ খবর)</item>
+        <item>একুশে টেলিভশন (সর্বশেষ খবর)</item>
+        <item>এনটিভি (সর্বশেষ খবর)</item>
+        <item>সময় টিভি (সর্বশেষ খবর)</item>
+        <item>চ্যানেল আই (সর্বশেষ খবর)</item>
+        <item>বাংলা ভিশন (সর্বশেষ খবর)</item>
+        <item>আরটিভি নিউস (সর্বশেষ খবর)</item>
+        <item>বৈশাখী টিভি (সর্বশেষ খবর)</item>
+        <item>মোহনা টিভি (সর্বশেষ খবর)</item>
+        <item>বাংলাদেশ টেলিভিশন (সর্বশেষ খবর)</item>
+        <item>মাশরাঙা টিভি (সর্বশেষ খবর)</item>
+        <item>চ্যানেল ২৪ (সর্বশেষ খবর)</item>
+        <item>মাই টিভি (সর্বশেষ খবর)</item>
+        <item>যমুনা টিভি (সর্বশেষ খবর)</item>
+        <item>নিউস ২৪ (সর্বশেষ খবর)</item>
+    </string-array>
 
-    <string name="bd_protidin">বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)</string>
-    <string name="prothom_alo">প্রথম আলো (ব্রেকিং নিউজ)</string>
-    <string name="kaler_khanto">কালের কণ্ঠ (ব্রেকিং নিউজ)</string>
-    <string name="somokal">সমকাল (ব্রেকিং নিউজ)</string>
-    <string name="daily_jana_khanto">দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)</string>
-    <!--    <string name="bhorer_kagoj">ভোরের কাগজ (ব্রেকিং নিউজ)</string>-->
-    <string name="daily_inqilab">দৈনিক ইনকিলাব (ব্রেকিং নিউজ)</string>
-    <string name="daily_naya_diganta">নয়া দিগন্ত (ব্রেকিং নিউজ)</string>
-    <string name="amar_desh_24">আমার দেশ 24 (ব্রেকিং নিউজ)</string>
-    <string name="daily_ittefaq">দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)</string>
-    <!--    <string name="manobJomin">মানবজমিন (ব্রেকিং নিউজ)</string>-->
-    <!--    <string name="manobJomin_corona_update">করোনা আপডেট</string>-->
-    <string name="songbadProtidin">সংবাদ প্রতিদিন (ব্রেকিং নিউজ)</string>
-    <string name="manobkantha">মানবকণ্ঠ (ব্রেকিং নিউজ)</string>
-    <string name="bangladesh_journal">বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)</string>
-    <string name="the_daily_vorer_pata">ভোরের পাতা (ব্রেকিং নিউজ)</string>
-    <!--    Newspaper breaking news are staying above.-->
+    <string-array name="bd_tv_channel_url_list">
+        <item>http://www.atnnewstv.com/?app=home</item>
+        <item>https://www.ekushey-tv.com/</item>
+        <item>https://www.ntvbd.com/</item>
+        <item>https://www.somoynews.tv/</item>
+        <item>https://www.channelionline.com/</item>
+        <item>https://banglavision.tv/</item>
+        <item>https://www.rtvonline.com/</item>
+        <item>http://www.boishakhionline.com/</item>
+        <item>http://www.mohona.tv/</item>
+        <item>http://www.btv.gov.bd/</item>
+        <item>http://maasranga.tv/</item>
+        <item>https://www.channel24bd.tv/</item>
+        <item>http://mytvbd.tv/</item>
+        <item>http://www.jamuna.tv/</item>
+        <item>https://www.news24bd.tv/</item>
+    </string-array>
 
+    <string-array name="bd_sports_news_list">
+        <item>কালেরকণ্ঠ (খেলার খবর)</item>
+        <item>সমকাল (খেলার খবর)</item>
+        <item>দৈনিক জনকণ্ঠ (খেলার খবর)</item>
+        <item>বিডি নিউস ২৪ (খেলার খবর)</item>
+        <item>বাংলা ট্রিবিউন (খেলার খবর)</item>
+        <item>ভোরের কাগজ (খেলার খবর)</item>
+        <item>দৈনিক ইনকিলাব (খেলার খবর)</item>
+        <item>নয়া দিগন্ত (খেলার খবর)</item>
+        <item>আমার দেশ 24 (খেলার খবর)</item>
+        <item>দৈনিক ইত্তেফাক (খেলার খবর)</item>
+        <item>মানবজমিন (খেলার খবর)</item>
+        <item>সংবাদ প্রতিদিন (খেলার খবর)</item>
+        <item>মানবকণ্ঠ (খেলার খবর)</item>
+        <item>বাংলাদেশ জার্নাল (খেলার খবর)</item>
+        <item>দৈনিক সংগ্রাম (খেলার খবর)</item>
+    </string-array>
 
-    <string name="atn_news">এটিএন নিউজ (সর্বশেষ খবর)</string>
-    <string name="ekushey_television">একুশে টেলিভশন (সর্বশেষ খবর)</string>
-    <string name="ntv">এনটিভি (সর্বশেষ খবর)</string>
-    <string name="shomoyNews">সময় টিভি (সর্বশেষ খবর)</string>
-    <string name="channelI">চ্যানেল আই (সর্বশেষ খবর)</string>
-    <string name="banglaVision">বাংলা ভিশন (সর্বশেষ খবর)</string>
-    <string name="rtvNews">আরটিভি নিউস (সর্বশেষ খবর)</string>
-    <string name="boishakhiTv">বৈশাখী টিভি (সর্বশেষ খবর)</string>
-    <string name="mohonaTv">মোহনা টিভি (সর্বশেষ খবর)</string>
-    <string name="btv">বাংলাদেশ টেলিভিশন (সর্বশেষ খবর)</string>
-    <string name="masrangaTv">মাশরাঙা টিভি (সর্বশেষ খবর)</string>
-    <string name="channel24Bd">চ্যানেল ২৪ (সর্বশেষ খবর)</string>
-    <string name="myTvBd">মাই টিভি (সর্বশেষ খবর)</string>
-    <string name="jamunaTv">যমুনা টিভি (সর্বশেষ খবর)</string>
-    <string name="news24Bd">নিউস ২৪ (সর্বশেষ খবর)</string>
-    <!--Tv channel news are staying above.-->
+    <string-array name="bd_sports_url_list">
+        <item>https://www.kalerkantho.com/online/sport/</item>
+        <item>https://samakal.com/sports</item>
+        <item>https://www.dailyjanakantha.com/online/sports/</item>
+        <item>https://bangla.bdnews24.com/cricket/</item>
+        <item>https://www.banglatribune.com/sport</item>
+        <item>https://www.bhorerkagoj.com/category/sports/</item>
+        <item>https://www.dailyinqilab.com/newscategory/sports/</item>
+        <item>https://www.dailynayadiganta.com/sports/11</item>
+        <item>https://amar-desh24.com/bangla/index.php/sports</item>
+        <item>https://www.ittefaq.com.bd/sports</item>
+        <item>https://www.mzamin.com/category.php?cid=4</item>
+        <item>https://www.sangbadpratidin.in/category/sports/</item>
+        <item>https://www.manobkantha.com.bd/</item>
+        <item>https://www.bd-journal.com/</item>
+        <item>https://dailysangram.com/section/sports</item>
+    </string-array>
 
+    <string-array name="bd_entertainment_news_list">
+        <item>কালের কণ্ঠ (সর্বশেষ খবর)</item>
+        <item>সমকাল (সর্বশেষ খবর)</item>
+        <item>দৈনিক জনকন্ঠ (সর্বশেষ খবর)</item>
+        <item>বিডি নিউস ২৪ (সর্বশেষ খবর)</item>
+        <item>বাংলা ট্রিবিউন (সর্বশেষ খবর)</item>
+        <item>ভোরের কাগজ (সর্বশেষ খবর)</item>
+        <item>দৈনিক ইনকিলাব (সর্বশেষ খবর)</item>
+        <item>নয়া দিগন্ত (সর্বশেষ খবর)</item>
+        <item>আমার দেশ 24 (সর্বশেষ খবর)</item>
+        <item>দৈনিক ইত্তেফাক (সর্বশেষ খবর)</item>
+        <item>মানবজমিন (সর্বশেষ খবর)</item>
+        <item>সংবাদ প্রতিদিন (সর্বশেষ খবর)</item>
+        <item>মানবকণ্ঠ (সর্বশেষ খবর)</item>
+        <item>বাংলাদেশ জার্নাল (সর্বশেষ খবর)</item>
+        <item>আমাদের সময় (সর্বশেষ খবর)</item>
+    </string-array>
 
-    <string name="kalerkhantho_sport_news">কালেরকণ্ঠ (খেলার খবর)</string>
-    <string name="samakal_sport_news">সমকাল (খেলার খবর)</string>
-    <string name="daily_janakantha_sport_news">দৈনিক জনকণ্ঠ (খেলার খবর)</string>
-    <string name="bd_news_24_sport_news">বিডি নিউস ২৪ (খেলার খবর)</string>
-    <string name="bangla_tribune_sport_news">বাংলা ট্রিবিউন (খেলার খবর)</string>
-    <string name="bhorer_kagoj_sport_news">ভোরের কাগজ (খেলার খবর)</string>
-    <string name="daily_inqilab_sport_news">দৈনিক ইনকিলাব (খেলার খবর)</string>
-    <string name="daily_naya_diganta_sport_news">নয়া দিগন্ত (খেলার খবর)</string>
-    <string name="amar_desh_24_sport_news">আমার দেশ 24 (খেলার খবর)</string>
-    <string name="daily_ittefaq_sport_news">দৈনিক ইত্তেফাক (খেলার খবর)</string>
-    <string name="daily_manob_jomin_sport_news">মানবজমিন (খেলার খবর)</string>
-    <string name="sangbad_pratidin_sport_news">সংবাদ প্রতিদিন (খেলার খবর)</string>
-    <string name="manobkantha_sport_news">মানবকণ্ঠ (খেলার খবর)</string>
-    <string name="bd_journal_sport_news">বাংলাদেশ জার্নাল (খেলার খবর)</string>
-    <string name="doinik_songram_sport_news">দৈনিক সংগ্রাম (খেলার খবর)</string>
+    <string-array name="bd_entertainment_url_list">
+        <item>https://www.kalerkantho.com/online/entertainment/</item>
+        <item>https://samakal.com/entertainment</item>
+        <item>https://www.dailyjanakantha.com/online/culture/</item>
+        <item>https://bangla.bdnews24.com/glitz/</item>
+        <item>https://www.banglatribune.com/entertainment</item>
+        <item>https://www.bhorerkagoj.com/category/entertainment/</item>
+        <item>https://www.dailyinqilab.com/newscategory/daily-entertainment/</item>
+        <item>https://www.dailynayadiganta.com/entertainment/16</item>
+        <item>https://amar-desh24.com/bangla/index.php/entertainment</item>
+        <item>https://www.ittefaq.com.bd/entertainment</item>
+        <item>https://www.mzamin.com/category.php?cid=5</item>
+        <item>https://www.sangbadpratidin.in/category/entertainment/</item>
+        <item>https://www.manobkantha.com.bd/category/entertainment/2</item>
+        <item>https://www.bd-journal.com/entertainment</item>
+        <item>http://www.dainikamadershomoy.com/entertainment</item>
+    </string-array>
 
+    <string-array name="bd_finance_news_list">
+        <item>কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>সমকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>দৈনিক জনকন্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>বিডি নিউস ২৪ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>বাংলা ট্রিবিউন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>ভোরের কাগজ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>দৈনিক ইত্তেফাক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>মানবকণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>বাংলাদেশ জার্নাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>ভোরের পাতা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>যায়যায় দিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>আমাদের সময় (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>দৈনিক সংগ্রাম (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>আমার দেশ 24 (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+    </string-array>
 
-    <string name="kalerkantho_entertainment_news">কালের কণ্ঠ (সর্বশেষ খবর)</string>
-    <string name="samakal_entertainment_news">সমকাল (সর্বশেষ খবর)</string>
-    <string name="daily_janakantha_entertainment_news">দৈনিক জনকন্ঠ (সর্বশেষ খবর)</string>
-    <string name="bd_news_24_entertainment_news">বিডি নিউস ২৪ (সর্বশেষ খবর)</string>
-    <string name="bangla_tribune_entertainment_news">বাংলা ট্রিবিউন (সর্বশেষ খবর)</string>
-    <string name="bhorer_kagoj_entertainment_news">ভোরের কাগজ (সর্বশেষ খবর)</string>
-    <string name="daily_inqilab_entertainment_news">দৈনিক ইনকিলাব (সর্বশেষ খবর)</string>
-    <string name="daily_nayadiganta_entertainment_news">নয়া দিগন্ত (সর্বশেষ খবর)</string>
-    <string name="amar_desh_24_entertainment_news">আমার দেশ 24 (সর্বশেষ খবর)</string>
-    <string name="daily_ittefaq_entertainment_news">দৈনিক ইত্তেফাক (সর্বশেষ খবর)</string>
-    <string name="daily_manob_jomin_entertainment_news">মানবজমিন (সর্বশেষ খবর)</string>
-    <string name="sangbad_pratidin_entertainment_news">সংবাদ প্রতিদিন (সর্বশেষ খবর)</string>
-    <string name="manob_kantha_entertainment_news">মানবকণ্ঠ (সর্বশেষ খবর)</string>
-    <string name="bd_journal_entertainment_news">বাংলাদেশ জার্নাল (সর্বশেষ খবর)</string>
-    <string name="dainik_amader_shomoy_entertainment_news">আমাদের সময় (সর্বশেষ খবর)</string>
+    <string-array name="bd_finance_url_list">
+        <item>https://www.kalerkantho.com/online/business</item>
+        <item>https://samakal.com/economics</item>
+        <item>https://www.dailyjanakantha.com/online/trade/</item>
+        <item>https://bangla.bdnews24.com/economy/</item>
+        <item>https://www.banglatribune.com/business</item>
+        <item>https://www.bhorerkagoj.com/category/economics/</item>
+        <item>https://www.ittefaq.com.bd/economy</item>
+        <item>https://www.manobkantha.com.bd/category/bank-insurance/31</item>
+        <item>https://www.bd-journal.com/stock-market</item>
+        <item>https://www.dailyvorerpata.com/cat.php?cd=130</item>
+        <item>https://www.jaijaidinbd.com/todays-paper/trade-commerce</item>
+        <item>http://www.dainikamadershomoy.com/economy</item>
+        <item>https://dailysangram.com/section/economics</item>
+        <item>https://amar-desh24.com/bangla/index.php/trading</item>
+        <item>https://www.jugantor.com/economics</item>
+    </string-array>
 
-
-    <string name="kaler_kantho_finance_news">কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="samakal_finance_news">সমকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="daily_janakantha_finance_news">দৈনিক জনকন্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="bd_news_24_finance_news">বিডি নিউস ২৪ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="bangla_tribune_finance_news">বাংলা ট্রিবিউন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="bhorer_kagoj_finance_news">ভোরের কাগজ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="daily_ittefaq_finance_news">দৈনিক ইত্তেফাক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="manob_kantha_finance_news">মানবকণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="bd_journal_finance_news">বাংলাদেশ জার্নাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="daily_vorer_pata_finance_news">ভোরের পাতা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="jai_jai_din_bd_finance_news">যায়যায় দিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="dainik_amader_shomoy_finance_news">আমাদের সময় (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="daily_sangram_finance_news">দৈনিক সংগ্রাম (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="amar_desh_24_finance_news">আমার দেশ 24 (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
-    <string name="jugantor_finance_news">যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</string>
 
 
     <string name="read_write_permission_details">

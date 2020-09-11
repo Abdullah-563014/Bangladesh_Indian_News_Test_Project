@@ -650,7 +650,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-//====================================BangladeshJournal method staying in above========================================
+//====================================Bangladesh Breaking News method staying in above========================================
 
 
 
