@@ -22,6 +22,12 @@ public class BdTvChannel implements Serializable {
     @ColumnInfo(name = "paperUrl")
     private String paperUrl;
 
+    @ColumnInfo(name = "backgroundColor")
+    private String backgroundColor;
+
+    @ColumnInfo(name = "textColor")
+    private String textColor;
+
     @ColumnInfo(name = "visibilityStatus")
     private String visibilityStatus;
 
@@ -56,6 +62,22 @@ public class BdTvChannel implements Serializable {
 
     public void setPaperUrl(String paperUrl) {
         this.paperUrl = paperUrl;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public String getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
     }
 
     public String getVisibilityStatus() {

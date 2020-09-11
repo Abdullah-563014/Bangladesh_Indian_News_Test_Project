@@ -1,4 +1,4 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.bangladesh.breaking_news;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news;
 
 
 
@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
@@ -19,7 +18,6 @@ import com.easysoftbd.bangladeshindiannews.data.repositories.MyResponse;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -30,7 +28,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -46,6 +43,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private MutableLiveData<List<RecyclerItemModel>> itemList;
     private MutableLiveData<List<RecyclerItemModel>> shortedList;
     private MutableLiveData<List<BdBreaking>> bdBreakingUnVisibleList;
+    private MutableLiveData<Integer> itemMovePosition;
     private List<BdBreaking> bdBreakingUnVisibleTemporaryList=new ArrayList<>();
     private List<RecyclerItemModel> temporaryList=new ArrayList<>();
     private boolean insertingDataFlag=false;
@@ -125,7 +123,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 //====================================Primary method staying in above========================================
 
 
-    public void shortingList(List<RecyclerItemModel> recyclerItemModelList) {
+    public void shortingBdBreakingList(List<RecyclerItemModel> recyclerItemModelList) {
         if (shortedList==null) {
             shortedList=new MutableLiveData<>();
         }
@@ -138,7 +136,9 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
                     recyclerItemModel=recyclerItemModelList.get(j);
                     recyclerItemModel.setSerialNumber(bdBreakingList.get(i).getSerial());
-                    temporaryShortingList.add(recyclerItemModelList.get(j));
+                    recyclerItemModel.setBackgroundColor(bdBreakingList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(bdBreakingList.get(i).getTextColor());
+                    temporaryShortingList.add(recyclerItemModel);
                 }
             }
         }
@@ -166,7 +166,14 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         return bdBreakingUnVisibleList;
     }
 
-    public void increaseSerialNumber(int serialNumber) {
+    public LiveData<Integer> getItemMovedPosition() {
+        if (itemMovePosition==null) {
+            itemMovePosition=new MutableLiveData<>();
+        }
+        return itemMovePosition;
+    }
+
+    public void itemMoveToUp(int serialNumber) {
         if (serialNumber>0) {
             BdBreaking currentItem=bdBreakingList.get(serialNumber);
             BdBreaking upperItem=bdBreakingList.get(serialNumber-1);
@@ -188,7 +195,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 
                 @Override
                 public void onComplete() {
-
+                    itemMovePosition.setValue(serialNumber);
                 }
 
                 @Override
@@ -199,7 +206,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
     }
 
-    public void decreaseSerialNumber(int serialNumber) {
+    public void itemMoveToDown(int serialNumber) {
         if (serialNumber<(bdBreakingList.size()-1)) {
             BdBreaking currentItem=bdBreakingList.get(serialNumber);
             BdBreaking downItem=bdBreakingList.get(serialNumber+1);
@@ -221,7 +228,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 
                 @Override
                 public void onComplete() {
-
+                    itemMovePosition.setValue(serialNumber+2);
                 }
 
                 @Override
@@ -296,6 +303,64 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
     }
 
+    public void changeItemBackgroundColor(int serialNumber,String colorName) {
+        BdBreaking currentItem=bdBreakingList.get(serialNumber);
+
+        currentItem.setBackgroundColor(colorName);
+        insertingDataFlag=false;
+        dataStatusFlagInDb=true;
+
+
+
+        Completable.fromAction(()->{
+            newsDatabase.bdBreakingDao().updateNews(currentItem);
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                anotherCompositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+
+    public void changeItemTextColor(int serialNumber,String colorName) {
+        BdBreaking currentItem=bdBreakingList.get(serialNumber);
+
+        currentItem.setTextColor(colorName);
+        insertingDataFlag=false;
+        dataStatusFlagInDb=true;
+
+
+
+        Completable.fromAction(()->{
+            newsDatabase.bdBreakingDao().updateNews(currentItem);
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                anotherCompositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+
 
 
 
@@ -334,6 +399,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             bdBreaking.setVisibilityStatus("visible");
                             bdBreaking.setPaperUrl(urlList.get(i));
                             bdBreaking.setPaperName(nameList.get(i));
+                            bdBreaking.setBackgroundColor("SkyBlue");
+                            bdBreaking.setTextColor("White");
                             Log.d(Constants.TAG,"data insert:- "+i);
                             Completable.fromAction(()->{
                                 newsDatabase.bdBreakingDao().insertNews(bdBreaking);
@@ -386,6 +453,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("প্রথম আলো (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }

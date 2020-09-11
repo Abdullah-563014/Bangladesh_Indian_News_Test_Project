@@ -1,4 +1,4 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.bangladesh.breaking_news;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -84,7 +85,7 @@ public class BreakingNewsFragment extends Fragment {
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingList(recyclerItemModels);
+            viewModel.shortingBdBreakingList(recyclerItemModels);
             for (int i=0; i<recyclerItemModels.size();i++) {
                 Log.d(Constants.TAG,"Item serial:- "+recyclerItemModels.get(i).getSerialNumber());
                 Log.d(Constants.TAG,"Item data size:- "+recyclerItemModels.size());
@@ -126,16 +127,16 @@ public class BreakingNewsFragment extends Fragment {
     public void showMoreOptionAlertDialog(int position) {
         String[] items=getResources().getStringArray(R.array.more_option_item_list);
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                    .setTitle("Select an Item.")
+                    .setTitle("Current Item Position:- "+(position+1))
                     .setItems(items, (dialogInterface, i) -> {
                         dialogInterface.dismiss();
                         switch (i) {
                             case 0:
-                                viewModel.increaseSerialNumber(position);
+                                viewModel.itemMoveToUp(position);
                                 break;
 
                             case 1:
-                                viewModel.decreaseSerialNumber(position);
+                                viewModel.itemMoveToDown(position);
                                 break;
 
                             case 2:
@@ -144,6 +145,14 @@ public class BreakingNewsFragment extends Fragment {
 
                             case 3:
                                 viewModel.hideItem(position);
+                                break;
+
+                            case 4:
+                                showColorChooseAlertDialog(position,"background");
+                                break;
+
+                            case 5:
+                                showColorChooseAlertDialog(position,"text");
                                 break;
                         }
                     });
@@ -154,10 +163,32 @@ public class BreakingNewsFragment extends Fragment {
 
     }
 
+    public void showColorChooseAlertDialog(int itemPosition, String colorType) {
+        String[] list=getResources().getStringArray(R.array.color_list);
+        AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
+                .setCancelable(true)
+                .setTitle("Please choose a color")
+                .setItems(list, (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    if (colorType.equalsIgnoreCase("background")) {
+                        viewModel.changeItemBackgroundColor(itemPosition,list[i]);
+                    } else {
+                        viewModel.changeItemTextColor(itemPosition,list[i]);
+                    }
+                });
+        AlertDialog alertDialog=builder.create();
+        if (!isRemoving()) {
+            alertDialog.show();
+        }
+    }
+
     private void initAll() {
         viewModel.getBdBreakingUnVisibleList().observe(this, bdBreakings -> {
             bdBreakingUnVisibleList.clear();
             bdBreakingUnVisibleList.addAll(bdBreakings);
+        });
+        viewModel.getItemMovedPosition().observe(this,(position) -> {
+            Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
         });
     }
 

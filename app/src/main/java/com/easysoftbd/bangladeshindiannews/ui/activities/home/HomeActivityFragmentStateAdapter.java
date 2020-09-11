@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.easysoftbd.bangladeshindiannews.ui.fragments.bangladesh.breaking_news.BreakingNewsFragment;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNewsFragment;
 
 import java.util.ArrayList;
 import java.util.List;

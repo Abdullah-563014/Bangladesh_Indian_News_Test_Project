@@ -18,6 +18,15 @@ public class IndianBanglaBreaking implements Serializable {
     @ColumnInfo(name = "paperName")
     private String paperName;
 
+    @ColumnInfo(name = "paperUrl")
+    private String paperUrl;
+
+    @ColumnInfo(name = "backgroundColor")
+    private String backgroundColor;
+
+    @ColumnInfo(name = "textColor")
+    private String textColor;
+
     @ColumnInfo(name = "visibilityStatus")
     private String visibilityStatus;
 
@@ -44,6 +53,30 @@ public class IndianBanglaBreaking implements Serializable {
 
     public void setPaperName(String paperName) {
         this.paperName = paperName;
+    }
+
+    public String getPaperUrl() {
+        return paperUrl;
+    }
+
+    public void setPaperUrl(String paperUrl) {
+        this.paperUrl = paperUrl;
+    }
+
+    public String getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public String getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(String textColor) {
+        this.textColor = textColor;
     }
 
     public String getVisibilityStatus() {

@@ -6,6 +6,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
+
 import java.util.List;
 
 @Dao
@@ -20,9 +22,9 @@ public interface IndianBanglaBreakingDao {
     @Insert
     void insertNews(IndianBanglaBreaking indianBanglaBreaking);
 
-    @Delete
-    void deleteNews(IndianBanglaBreaking indianBanglaBreaking);
-
     @Update
      void updateNews(IndianBanglaBreaking indianBanglaBreaking);
+
+    @Update
+    void updateNews(IndianBanglaBreaking first, IndianBanglaBreaking second);
 }

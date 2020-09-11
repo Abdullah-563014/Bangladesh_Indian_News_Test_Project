@@ -1,16 +1,16 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.bangladesh.breaking_news;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.acoder.itemclickable.itemclickablemarqueeview.ItemClickAbleMarqueeView;
 import com.acoder.itemclickable.itemclickablemarqueeview.interfaces.ItemClickListener;
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
@@ -53,6 +53,9 @@ public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapte
         }
         holder.binding.marqueeView.setContent(contents);
 
+        holder.binding.marqueeView.setTextColor(getColorCode(list.get(position).getTextColor()));
+        holder.binding.titleTextView.setTextColor(ContextCompat.getColor(context,getColorCode(list.get(position).getTextColor())));
+        holder.binding.recyclerViewModelRootLayout.setBackgroundColor(ContextCompat.getColor(context,getColorCode(list.get(position).getBackgroundColor())));
 
 
         holder.binding.marqueeMoreOptionImageView.setOnClickListener(view -> {
@@ -88,4 +91,86 @@ public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapte
             this.binding=binding;
         }
     }
+
+
+    private int getColorCode(String colorName) {
+        int color;
+        switch (colorName) {
+            case "White":
+                color= R.color.colorWhite;
+                break;
+
+            case "Silver":
+                color= R.color.colorSilver;
+                break;
+
+            case "Gray":
+                color= R.color.colorGray;
+                break;
+
+            case "Black":
+                color= R.color.colorBlack;
+                break;
+
+            case "Red":
+                color= R.color.colorRed;
+                break;
+
+            case "Maroon":
+                color= R.color.colorMaroon;
+                break;
+
+            case "Yellow":
+                color= R.color.colorYellow;
+                break;
+
+            case "Olive":
+                color= R.color.colorOlive;
+                break;
+
+            case "Lime":
+                color= R.color.colorLime;
+                break;
+
+            case "Green":
+                color= R.color.colorGreen;
+                break;
+
+            case "Aqua":
+                color= R.color.colorAqua;
+                break;
+
+            case "Teal":
+                color= R.color.colorTeal;
+                break;
+
+            case "Blue":
+                color= R.color.colorBlue;
+                break;
+
+            case "Navy":
+                color= R.color.colorNavy;
+                break;
+
+            case "Fuchsia":
+                color= R.color.colorFuchsia;
+                break;
+
+            case "Purple":
+                color= R.color.colorPurple;
+                break;
+
+            case "SkyBlue":
+                color= R.color.colorSkyBlue;
+                break;
+
+            default:
+                color= R.color.colorWhite;
+                break;
+        }
+        return color;
+    }
+
+
+
 }

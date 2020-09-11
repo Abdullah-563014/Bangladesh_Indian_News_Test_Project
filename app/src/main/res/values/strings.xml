@@ -9,6 +9,28 @@
         <item>Move to down</item>
         <item>Show</item>
         <item>Hide</item>
+        <item>Set Background Color</item>
+        <item>Set Text Color</item>
+    </string-array>
+
+    <string-array name="color_list">
+        <item>White</item>
+        <item>Silver</item>
+        <item>Gray</item>
+        <item>Black</item>
+        <item>Red</item>
+        <item>Maroon</item>
+        <item>Yellow</item>
+        <item>Olive</item>
+        <item>Lime</item>
+        <item>Green</item>
+        <item>Aqua</item>
+        <item>Teal</item>
+        <item>Blue</item>
+        <item>Navy</item>
+        <item>Fuchsia</item>
+        <item>Purple</item>
+        <item>SkyBlue</item>
     </string-array>
 
     <string-array name="bd_breaking_news_list">
@@ -190,7 +212,6 @@
         <item>https://amar-desh24.com/bangla/index.php/trading</item>
         <item>https://www.jugantor.com/economics</item>
     </string-array>
-
 
 
     <string name="read_write_permission_details">

@@ -1,7 +1,4 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.bangladesh.breaking_news;
-
-import android.app.Application;
-import android.content.Context;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

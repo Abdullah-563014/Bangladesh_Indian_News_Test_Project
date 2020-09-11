@@ -8,7 +8,7 @@ import android.os.Bundle;
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.databinding.ActivityHomeBinding;
-import com.easysoftbd.bangladeshindiannews.ui.fragments.bangladesh.breaking_news.BreakingNewsFragment;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNewsFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.List;
