@@ -1,4 +1,4 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.sports;
+package com.easysoftbd.bangladeshindiannews.ui.activities.favourite_list;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -6,17 +6,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 
-public class SportsNewsViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class FavouriteListViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private NewsDatabase newsDatabase;
 
-    public SportsNewsViewModelFactory(NewsDatabase newsDatabase) {
+    public FavouriteListViewModelFactory(NewsDatabase newsDatabase) {
         this.newsDatabase = newsDatabase;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new SportNewsFragmentViewModel(newsDatabase);
+        return (T) new FavouriteListActivityViewModel(newsDatabase);
     }
 }

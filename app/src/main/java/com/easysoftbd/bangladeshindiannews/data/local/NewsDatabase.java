@@ -15,8 +15,10 @@ import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdSports;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdSportsDao;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannelDao;
+import com.easysoftbd.bangladeshindiannews.data.local.favourite_list.FavouriteList;
+import com.easysoftbd.bangladeshindiannews.data.local.favourite_list.FavouriteListDao;
 
-@Database(entities = {BdBreaking.class, BdSports.class, BdFinance.class, BdInternational.class, BdTvChannel.class, BdEntertainment.class}, version = 1, exportSchema = false)
+@Database(entities = {BdBreaking.class, BdSports.class, BdFinance.class, BdInternational.class, BdTvChannel.class, BdEntertainment.class, FavouriteList.class}, version = 1, exportSchema = false)
 public abstract class NewsDatabase extends RoomDatabase {
     public abstract BdBreakingDao bdBreakingDao();
     public abstract BdSportsDao bdSportsDao();
@@ -24,6 +26,7 @@ public abstract class NewsDatabase extends RoomDatabase {
     public abstract BdInternationalDao bdInternationalDao();
     public abstract BdTvChannelDao bdTvChannelDao();
     public abstract BdEntertainmentDao bdEntertainmentDao();
+    public abstract FavouriteListDao favouriteListDao();
 
 
 

@@ -23,11 +23,11 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -35,21 +35,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class BreakingNewsFragmentViewModel extends ViewModel {
 
     private CompositeDisposable compositeDisposable;
-    private io.reactivex.rxjava3.disposables.CompositeDisposable anotherCompositeDisposable;
     private NewsDatabase newsDatabase;
     private MyResponse myResponse;
-    private Observer<List<BdBreaking>> bangladeshiAllBreakingNewsObserver;
-    private LiveData<List<BdBreaking>> bdBreakingLiveData;
     private MutableLiveData<List<RecyclerItemModel>> itemList;
     private MutableLiveData<List<RecyclerItemModel>> shortedList;
-    private MutableLiveData<List<BdBreaking>> bdBreakingUnVisibleList;
     private MutableLiveData<Integer> itemMovePosition;
-    private List<BdBreaking> bdBreakingUnVisibleTemporaryList=new ArrayList<>();
     private List<RecyclerItemModel> temporaryList=new ArrayList<>();
+    private List<RecyclerItemModel> temporaryShortingList=new ArrayList<>();
     private boolean insertingDataFlag=false;
     private boolean dataStatusFlagInDb=false;
+    private Observer<List<BdBreaking>> bangladeshiAllBreakingNewsObserver;
+    private LiveData<List<BdBreaking>> bdBreakingLiveData;
+    private MutableLiveData<List<BdBreaking>> bdBreakingUnVisibleList;
     private List<BdBreaking> bdBreakingList=new ArrayList<>();
-    List<RecyclerItemModel> temporaryShortingList=new ArrayList<>();
+    private List<BdBreaking> bdBreakingUnVisibleTemporaryList=new ArrayList<>();
 
 
 
@@ -62,9 +61,6 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         if (compositeDisposable==null) {
             compositeDisposable=new CompositeDisposable();
         }
-        if (anotherCompositeDisposable==null) {
-            anotherCompositeDisposable=new io.reactivex.rxjava3.disposables.CompositeDisposable();
-        }
     }
 
     public void loadPageDocument(String pageUrl) {
@@ -74,7 +70,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 .subscribe(new io.reactivex.rxjava3.core.Observer<Document>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -190,7 +186,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
-                    anotherCompositeDisposable.add(d);
+                    compositeDisposable.add(d);
                 }
 
                 @Override
@@ -223,7 +219,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
-                    anotherCompositeDisposable.add(d);
+                    compositeDisposable.add(d);
                 }
 
                 @Override
@@ -254,7 +250,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
-                    anotherCompositeDisposable.add(d);
+                    compositeDisposable.add(d);
                 }
 
                 @Override
@@ -286,7 +282,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        anotherCompositeDisposable.add(d);
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -317,7 +313,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                anotherCompositeDisposable.add(d);
+                compositeDisposable.add(d);
             }
 
             @Override
@@ -346,7 +342,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                anotherCompositeDisposable.add(d);
+                compositeDisposable.add(d);
             }
 
             @Override
@@ -407,7 +403,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                                 @Override
                                 public void onSubscribe(@NonNull Disposable d) {
-                                    anotherCompositeDisposable.add(d);
+                                    compositeDisposable.add(d);
                                 }
 
                                 @Override
@@ -728,7 +724,6 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         bdBreakingLiveData.removeObserver(bangladeshiAllBreakingNewsObserver);
         super.onCleared();
         compositeDisposable.dispose();
-        anotherCompositeDisposable.dispose();
     }
 
 

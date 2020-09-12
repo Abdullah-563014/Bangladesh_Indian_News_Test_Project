@@ -220,4 +220,6 @@ public class BreakingNewsFragment extends Fragment {
         binding.unbind();
         super.onDestroyView();
     }
+
+
 }

@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
-        <activity android:name=".ui.activities.my_webview.WebViewActivity"></activity>
+        <activity android:name=".ui.activities.favourite_list.FavouriteListActivity"></activity>
+        <activity android:name=".ui.activities.my_webview.WebViewActivity" />
         <activity android:name=".ui.activities.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
