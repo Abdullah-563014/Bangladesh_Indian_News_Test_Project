@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNewsFragment;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.sports.SportsNewsFragment;
 
 import java.util.ArrayList;
@@ -38,12 +39,14 @@ public class HomeActivityFragmentStateAdapter extends FragmentStateAdapter {
         fragmentList.clear();
         fragmentList.add(new BreakingNewsFragment());
         fragmentList.add(new SportsNewsFragment());
+        fragmentList.add(new EntertainmentFragment());
     }
 
     private void addAllTitleForTabLayout() {
         titleList.clear();
         titleList.add("Breaking News");
         titleList.add("Sports News");
+        titleList.add("Entertainment News");
     }
 
     public String getTitle(int position) {
