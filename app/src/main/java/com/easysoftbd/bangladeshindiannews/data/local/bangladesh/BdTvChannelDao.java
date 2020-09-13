@@ -1,6 +1,7 @@
 package com.easysoftbd.bangladeshindiannews.data.local.bangladesh;
 
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface BdTvChannelDao {
 
     @Query("SELECT * FROM bd_tv_channel")
-    List<BdTvChannel> getAllNews();
+    LiveData<List<BdTvChannel>> getAllNews();
 
     @Query("SELECT * FROM bd_tv_channel WHERE serial=:serial")
     BdTvChannel getNews(int serial);

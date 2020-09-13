@@ -93,11 +93,7 @@ public class SportsNewsFragment extends Fragment {
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingBdBreakingList(recyclerItemModels);
-            for (int i=0; i<recyclerItemModels.size();i++) {
-                Log.d(Constants.TAG,"Bd Sport Item serial:- "+recyclerItemModels.get(i).getSerialNumber());
-                Log.d(Constants.TAG,"Bd Sport Item data size:- "+recyclerItemModels.size());
-            }
+            viewModel.shortingBdSportsList(recyclerItemModels);
         });
 
         viewModel.getShortedList().observe(this, recyclerItemModelList -> {
@@ -191,9 +187,9 @@ public class SportsNewsFragment extends Fragment {
     }
 
     private void initAll() {
-        viewModel.getBdBreakingUnVisibleList().observe(this, bdBreakings -> {
+        viewModel.getBdSportsUnVisibleList().observe(this, bdSports -> {
             bdSportsUnVisibleList.clear();
-            bdSportsUnVisibleList.addAll(bdBreakings);
+            bdSportsUnVisibleList.addAll(bdSports);
         });
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();

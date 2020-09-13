@@ -9,6 +9,8 @@ import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.databinding.ActivityHomeBinding;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNewsFragment;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentFragment;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.sports.SportsNewsFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.List;
@@ -45,6 +47,26 @@ public class HomeActivity extends AppCompatActivity {
     public void showBreakingMoreOption(int serialNo) {
         BreakingNewsFragment breakingNewsFragment= (BreakingNewsFragment) activityFragmentStateAdapter.createFragment(0);
         breakingNewsFragment.showMoreOptionAlertDialog(serialNo);
+    }
+
+    public void showSportsAlertDialog(List<NewsAndLinkModel> newsAndLinkModels) {
+        SportsNewsFragment sportsNewsFragment= (SportsNewsFragment) activityFragmentStateAdapter.createFragment(1);
+        sportsNewsFragment.showItemChooseAlertDialog(newsAndLinkModels);
+    }
+
+    public void showSportsMoreOption(int serialNo) {
+        SportsNewsFragment sportsNewsFragment= (SportsNewsFragment) activityFragmentStateAdapter.createFragment(1);
+        sportsNewsFragment.showMoreOptionAlertDialog(serialNo);
+    }
+
+    public void showEntertainmentAlertDialog(List<NewsAndLinkModel> newsAndLinkModels) {
+        EntertainmentFragment entertainmentFragment= (EntertainmentFragment) activityFragmentStateAdapter.createFragment(2);
+        entertainmentFragment.showItemChooseAlertDialog(newsAndLinkModels);
+    }
+
+    public void showEntertainmentMoreOption(int serialNo) {
+        EntertainmentFragment entertainmentFragment= (EntertainmentFragment) activityFragmentStateAdapter.createFragment(2);
+        entertainmentFragment.showMoreOptionAlertDialog(serialNo);
     }
 
 

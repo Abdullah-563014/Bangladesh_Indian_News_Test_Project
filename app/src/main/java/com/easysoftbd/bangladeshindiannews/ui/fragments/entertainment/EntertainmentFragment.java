@@ -1,4 +1,4 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
-import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
-import com.easysoftbd.bangladeshindiannews.databinding.FragmentBreakingNewsBinding;
+import com.easysoftbd.bangladeshindiannews.databinding.FragmentEntertainmentBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
@@ -30,28 +30,28 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class BreakingNewsFragment extends Fragment {
+public class EntertainmentFragment extends Fragment {
+
 
     private AlertDialog alertDialog;
     private Intent intent;
-    private BreakingNewsFragmentViewModel viewModel;
-    private FragmentBreakingNewsBinding binding;
-    private BreakingNewsAdapter adapter;
+    private EntertainmentFragmentViewModel viewModel;
+    private FragmentEntertainmentBinding binding;
+    private EntertainmentNewsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
-    private List<BdBreaking> bdBreakingUnVisibleList=new ArrayList<>();
+    private List<BdEntertainment> bdEntertainmentUnVisibleList=new ArrayList<>();
 
 
-    public BreakingNewsFragment() {
+    public EntertainmentFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        BreakingNewsViewModelFactory factory=new BreakingNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
-        viewModel = new ViewModelProvider(this,factory).get(BreakingNewsFragmentViewModel.class);
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_breaking_news, container, false);
+        EntertainmentNewsViewModelFactory factory=new EntertainmentNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
+        viewModel = new ViewModelProvider(this,factory).get(EntertainmentFragmentViewModel.class);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_entertainment, container, false);
         binding.setLifecycleOwner(this);
         return binding.getRoot();
     }
@@ -74,18 +74,22 @@ public class BreakingNewsFragment extends Fragment {
     }
 
     private void loadAllUrl() {
-        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_url_list)));
-        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_news_list)));
-        viewModel.checkBangladeshBreakingNewsDataInDb(nameList,urlList);
+        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_entertainment_url_list)));
+        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_entertainment_news_list)));
+        viewModel.checkBangladeshEntertainmentNewsDataInDb(nameList,urlList);
     }
 
     private void initRecyclerView() {
-        adapter=new BreakingNewsAdapter(getContext(),list);
+        adapter=new EntertainmentNewsAdapter(getContext(),list);
         linearLayoutManager=new LinearLayoutManager(getContext());
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingBdBreakingList(recyclerItemModels);
+            viewModel.shortingBdEntertainmentList(recyclerItemModels);
+            for (int i=0; i<recyclerItemModels.size();i++) {
+                Log.d(Constants.TAG,"Bd Sport Item serial:- "+recyclerItemModels.get(i).getSerialNumber());
+                Log.d(Constants.TAG,"Bd Sport Item data size:- "+recyclerItemModels.size());
+            }
         });
 
         viewModel.getShortedList().observe(this, recyclerItemModelList -> {
@@ -122,40 +126,40 @@ public class BreakingNewsFragment extends Fragment {
 
     public void showMoreOptionAlertDialog(int position) {
         String[] items=getResources().getStringArray(R.array.more_option_item_list);
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                    .setTitle("Current Item Position:- "+(position+1))
-                    .setItems(items, (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                        switch (i) {
-                            case 0:
-                                viewModel.itemMoveToUp(position);
-                                break;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                .setTitle("Current Item Position:- "+(position+1))
+                .setItems(items, (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    switch (i) {
+                        case 0:
+                            viewModel.itemMoveToUp(position);
+                            break;
 
-                            case 1:
-                                viewModel.itemMoveToDown(position);
-                                break;
+                        case 1:
+                            viewModel.itemMoveToDown(position);
+                            break;
 
-                            case 2:
-                                showUnVisibleList();
-                                break;
+                        case 2:
+                            showUnVisibleList();
+                            break;
 
-                            case 3:
-                                viewModel.hideItem(position);
-                                break;
+                        case 3:
+                            viewModel.hideItem(position);
+                            break;
 
-                            case 4:
-                                showColorChooseAlertDialog(position,"background");
-                                break;
+                        case 4:
+                            showColorChooseAlertDialog(position,"background");
+                            break;
 
-                            case 5:
-                                showColorChooseAlertDialog(position,"text");
-                                break;
-                        }
-                    });
-            alertDialog = builder.create();
-            if (!isRemoving()) {
-                alertDialog.show();
-            }
+                        case 5:
+                            showColorChooseAlertDialog(position,"text");
+                            break;
+                    }
+                });
+        alertDialog = builder.create();
+        if (!isRemoving()) {
+            alertDialog.show();
+        }
 
     }
 
@@ -179,9 +183,9 @@ public class BreakingNewsFragment extends Fragment {
     }
 
     private void initAll() {
-        viewModel.getBdBreakingUnVisibleList().observe(this, bdBreakings -> {
-            bdBreakingUnVisibleList.clear();
-            bdBreakingUnVisibleList.addAll(bdBreakings);
+        viewModel.getBdEntertainmentUnVisibleList().observe(this, bdSports -> {
+            bdEntertainmentUnVisibleList.clear();
+            bdEntertainmentUnVisibleList.addAll(bdSports);
         });
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -189,9 +193,9 @@ public class BreakingNewsFragment extends Fragment {
     }
 
     private void showUnVisibleList() {
-        String[] list=new String[bdBreakingUnVisibleList.size()];
-        for (int i=0; i<bdBreakingUnVisibleList.size(); i++) {
-            list[i]=bdBreakingUnVisibleList.get(i).getPaperName();
+        String[] list=new String[bdEntertainmentUnVisibleList.size()];
+        for (int i=0; i<bdEntertainmentUnVisibleList.size(); i++) {
+            list[i]=bdEntertainmentUnVisibleList.get(i).getPaperName();
         }
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
                 .setCancelable(true)

@@ -1,4 +1,4 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.sports;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment;
 
 import android.util.Log;
 
@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdSports;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -29,7 +30,8 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class SportNewsFragmentViewModel extends ViewModel {
+public class EntertainmentFragmentViewModel extends ViewModel {
+
 
     private CompositeDisposable compositeDisposable;
     private NewsDatabase newsDatabase;
@@ -41,16 +43,16 @@ public class SportNewsFragmentViewModel extends ViewModel {
     private List<RecyclerItemModel> temporaryShortingList=new ArrayList<>();
     private boolean insertingDataFlag=false;
     private boolean dataStatusFlagInDb=false;
-    private Observer<List<BdSports>> bangladeshiAllSportsNewsObserver;
-    private LiveData<List<BdSports>> bdSportsLiveData;
-    private MutableLiveData<List<BdSports>> bdSportsUnVisibleList;
-    private List<BdSports> bdSportsList=new ArrayList<>();
-    private List<BdSports> bdSportsUnVisibleTemporaryList=new ArrayList<>();
+    private Observer<List<BdEntertainment>> bangladeshiAllEntertainmentNewsObserver;
+    private LiveData<List<BdEntertainment>> bdEntertainmentLiveData;
+    private MutableLiveData<List<BdEntertainment>> bdEntertainmentUnVisibleList;
+    private List<BdEntertainment> bdEntertainmentList=new ArrayList<>();
+    private List<BdEntertainment> bdEntertainmentUnVisibleTemporaryList=new ArrayList<>();
 
 
 
 
-    public SportNewsFragmentViewModel(NewsDatabase newsDatabase) {
+    public EntertainmentFragmentViewModel(NewsDatabase newsDatabase) {
         this.newsDatabase=newsDatabase;
         if (myResponse == null) {
             myResponse = new MyResponse();
@@ -73,35 +75,35 @@ public class SportNewsFragmentViewModel extends ViewModel {
                     @Override
                     public void onNext(@NonNull Document document) {
                         if (document.baseUri().equalsIgnoreCase(MyUrl.kalerKhanto)){
-                            setKalerkhanthoSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.samakalSports)){
-                            setSamakalSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyJanakanthaSports)){
-                            setDailyJanakanthaSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bdNews24Sports)){
-                            setBdNews24SportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.banglaTribunesSports)){
-                            setBanglaTribuneSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bhorerKagojSports)){
-                            setBhorerKagojSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyInqilabSports)){
-                            setDailyInqilabSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyNayaDigantaSports)){
-                            setDailyNayaDigantaSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.amarDesh24Sports)){
-                            setAmarDesh24SportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyIttefaqSports)){
-                            setDailyIttefaqSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyManobJominSports)){
-                            setDailyManobJominSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.sangbadPratidinSports)){
-                            setSangbadPratidinSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.manobKantha)){
-                            setManobKanthaSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bangladeshJournal)){
-                            setBdJournalSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailySangramSports)){
-                            setDailySangramSportNews(document);
+                            setKalerkanthoEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.samakalEntertainment)){
+                            setSamakalEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyJanakanthaEntertainment)){
+                            setDailyJanakanthaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bdNews24Entertainment)){
+                            setBdNews24EntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.banglaTribuneEntertainment)){
+                            setBanglaTribuneEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bhorerKagojEntertainment)){
+                            setBhorerKagojEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyInqilabEntertainment)){
+                            setDailyInqilabEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyNayaDigantaEntertainment)){
+                            setDailyNayaDigantaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.amarDesh24Entertainment)){
+                            setAmarDesh24EntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyIttefaqEntertainment)){
+                            setDailyIttefaqEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyManobJominEntertainment)){
+                            setDailyManobJominEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.sangbadpratidinEntertainment)){
+                            setSangbadPratidinEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.manobkanthaEntertainment)){
+                            setManobKanthaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bdJournalEntertainment)){
+                            setBdJournalEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dainikAmaderShomoyEntertainment)){
+                            setDailyAmaderShomoyEntertainmentNews(document);
                         }
 //                        Log.d(Constants.TAG,"sports:- "+document.baseUri());
                     }
@@ -121,21 +123,21 @@ public class SportNewsFragmentViewModel extends ViewModel {
 //====================================Primary method staying in above========================================
 
 
-    public void shortingBdSportsList(List<RecyclerItemModel> recyclerItemModelList) {
+    public void shortingBdEntertainmentList(List<RecyclerItemModel> recyclerItemModelList) {
         if (shortedList==null) {
             shortedList=new MutableLiveData<>();
         }
         temporaryShortingList.clear();
         String title;
         RecyclerItemModel recyclerItemModel;
-        for (int i=0; i<bdSportsList.size(); i++) {
-            title=bdSportsList.get(i).getPaperName();
+        for (int i=0; i<bdEntertainmentList.size(); i++) {
+            title=bdEntertainmentList.get(i).getPaperName();
             for (int j=0; j<recyclerItemModelList.size(); j++) {
                 if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
                     recyclerItemModel=recyclerItemModelList.get(j);
-                    recyclerItemModel.setSerialNumber(bdSportsList.get(i).getSerial());
-                    recyclerItemModel.setBackgroundColor(bdSportsList.get(i).getBackgroundColor());
-                    recyclerItemModel.setTextColor(bdSportsList.get(i).getTextColor());
+                    recyclerItemModel.setSerialNumber(bdEntertainmentList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(bdEntertainmentList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(bdEntertainmentList.get(i).getTextColor());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -157,11 +159,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
         return itemList;
     }
 
-    public LiveData<List<BdSports>> getBdSportsUnVisibleList() {
-        if (bdSportsUnVisibleList==null) {
-            bdSportsUnVisibleList=new MutableLiveData<>();
+    public LiveData<List<BdEntertainment>> getBdEntertainmentUnVisibleList() {
+        if (bdEntertainmentUnVisibleList==null) {
+            bdEntertainmentUnVisibleList=new MutableLiveData<>();
         }
-        return bdSportsUnVisibleList;
+        return bdEntertainmentUnVisibleList;
     }
 
     public LiveData<Integer> getItemMovedPosition() {
@@ -173,8 +175,8 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
     public void itemMoveToUp(int serialNumber) {
         if (serialNumber>0) {
-            BdSports currentItem=bdSportsList.get(serialNumber);
-            BdSports upperItem=bdSportsList.get(serialNumber-1);
+            BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
+            BdEntertainment upperItem=bdEntertainmentList.get(serialNumber-1);
 
             currentItem.setSerial(serialNumber-1);
             upperItem.setSerial(serialNumber);
@@ -184,7 +186,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
             Completable.fromAction(()->{
-                newsDatabase.bdSportsDao().updateNews(currentItem,upperItem);
+                newsDatabase.bdEntertainmentDao().updateNews(currentItem,upperItem);
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -205,9 +207,9 @@ public class SportNewsFragmentViewModel extends ViewModel {
     }
 
     public void itemMoveToDown(int serialNumber) {
-        if (serialNumber<(bdSportsList.size()-1)) {
-            BdSports currentItem=bdSportsList.get(serialNumber);
-            BdSports downItem=bdSportsList.get(serialNumber+1);
+        if (serialNumber<(bdEntertainmentList.size()-1)) {
+            BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
+            BdEntertainment downItem=bdEntertainmentList.get(serialNumber+1);
 
             currentItem.setSerial(serialNumber+1);
             downItem.setSerial(serialNumber);
@@ -217,7 +219,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
             Completable.fromAction(()->{
-                newsDatabase.bdSportsDao().updateNews(currentItem,downItem);
+                newsDatabase.bdEntertainmentDao().updateNews(currentItem,downItem);
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -238,8 +240,8 @@ public class SportNewsFragmentViewModel extends ViewModel {
     }
 
     public void hideItem(int serialNumber) {
-        if (serialNumber<=(bdSportsList.size()-1) && serialNumber>=0) {
-            BdSports currentItem=bdSportsList.get(serialNumber);
+        if (serialNumber<=(bdEntertainmentList.size()-1) && serialNumber>=0) {
+            BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
 
             currentItem.setVisibilityStatus("hidden");
             insertingDataFlag=false;
@@ -248,7 +250,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
             Completable.fromAction(()->{
-                newsDatabase.bdSportsDao().updateNews(currentItem);
+                newsDatabase.bdEntertainmentDao().updateNews(currentItem);
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -269,9 +271,9 @@ public class SportNewsFragmentViewModel extends ViewModel {
     }
 
     public void visibleItem(String paperName) {
-        for (int i=0; i<bdSportsUnVisibleTemporaryList.size(); i++) {
-            if (paperName.equalsIgnoreCase(bdSportsUnVisibleTemporaryList.get(i).getPaperName())) {
-                BdSports currentItem=bdSportsUnVisibleTemporaryList.get(i);
+        for (int i=0; i<bdEntertainmentUnVisibleTemporaryList.size(); i++) {
+            if (paperName.equalsIgnoreCase(bdEntertainmentUnVisibleTemporaryList.get(i).getPaperName())) {
+                BdEntertainment currentItem=bdEntertainmentUnVisibleTemporaryList.get(i);
 
                 currentItem.setVisibilityStatus("visible");
                 insertingDataFlag=false;
@@ -280,7 +282,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
                 Completable.fromAction(()->{
-                    newsDatabase.bdSportsDao().updateNews(currentItem);
+                    newsDatabase.bdEntertainmentDao().updateNews(currentItem);
                 }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -302,7 +304,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
     }
 
     public void changeItemBackgroundColor(int serialNumber,String colorName) {
-        BdSports currentItem=bdSportsList.get(serialNumber);
+        BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
 
         currentItem.setBackgroundColor(colorName);
         insertingDataFlag=false;
@@ -311,7 +313,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
         Completable.fromAction(()->{
-            newsDatabase.bdSportsDao().updateNews(currentItem);
+            newsDatabase.bdEntertainmentDao().updateNews(currentItem);
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -331,7 +333,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
     }
 
     public void changeItemTextColor(int serialNumber,String colorName) {
-        BdSports currentItem=bdSportsList.get(serialNumber);
+        BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
 
         currentItem.setTextColor(colorName);
         insertingDataFlag=false;
@@ -340,7 +342,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
         Completable.fromAction(()->{
-            newsDatabase.bdSportsDao().updateNews(currentItem);
+            newsDatabase.bdEntertainmentDao().updateNews(currentItem);
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -362,43 +364,46 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
 
-    public void checkBangladeshSportsNewsDataInDb(List<String> nameList, List<String> urlList) {
-        if (bangladeshiAllSportsNewsObserver==null) {
-            bangladeshiAllSportsNewsObserver= bdSports -> {
-                bdSportsList.clear();
-                bdSportsList.addAll(bdSports);
-                bdSportsUnVisibleTemporaryList.clear();
+    public void checkBangladeshEntertainmentNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (bangladeshiAllEntertainmentNewsObserver==null) {
+            bangladeshiAllEntertainmentNewsObserver= bdEntertainments -> {
+                bdEntertainmentList.clear();
+                bdEntertainmentList.addAll(bdEntertainments);
+                bdEntertainmentUnVisibleTemporaryList.clear();
                 if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
                     itemList.setValue(itemList.getValue());
                 }
-                if (bdSports.size()>0 && !insertingDataFlag) {
+                Log.d(Constants.TAG,"bd sports data size is:- "+bdEntertainments.size());
+                if (bdEntertainments.size()>0 && !insertingDataFlag) {
                     temporaryList.clear();
                     itemList.setValue(temporaryList);
-                    for (int i=0; i<bdSports.size(); i++) {
-                        if (bdSports.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
-                            loadPageDocument(bdSports.get(i).getPaperUrl());
+                    for (int i=0; i<bdEntertainments.size(); i++) {
+                        if (bdEntertainments.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(bdEntertainments.get(i).getPaperUrl());
+                            Log.d(Constants.TAG,"bd sports url call:- "+i);
                         } else {
-                            bdSportsUnVisibleTemporaryList.add(bdSports.get(i));
+                            bdEntertainmentUnVisibleTemporaryList.add(bdEntertainments.get(i));
                         }
                     }
-                    if (bdSportsUnVisibleList==null) {
-                        bdSportsUnVisibleList=new MutableLiveData<>();
+                    if (bdEntertainmentUnVisibleList==null) {
+                        bdEntertainmentUnVisibleList=new MutableLiveData<>();
                     }
-                    bdSportsUnVisibleList.setValue(bdSportsUnVisibleTemporaryList);
+                    bdEntertainmentUnVisibleList.setValue(bdEntertainmentUnVisibleTemporaryList);
                     insertingDataFlag=true;
                 } else {
                     insertingDataFlag=true;
                     if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {
                         for (int i=0; i<urlList.size(); i++) {
-                            BdSports bdSport=new BdSports();
-                            bdSport.setSerial(i);
-                            bdSport.setVisibilityStatus("visible");
-                            bdSport.setPaperUrl(urlList.get(i));
-                            bdSport.setPaperName(nameList.get(i));
-                            bdSport.setBackgroundColor("SkyBlue");
-                            bdSport.setTextColor("White");
+                            BdEntertainment bdEntertainment=new BdEntertainment();
+                            bdEntertainment.setSerial(i);
+                            bdEntertainment.setVisibilityStatus("visible");
+                            bdEntertainment.setPaperUrl(urlList.get(i));
+                            bdEntertainment.setPaperName(nameList.get(i));
+                            bdEntertainment.setBackgroundColor("SkyBlue");
+                            bdEntertainment.setTextColor("White");
+                            Log.d(Constants.TAG,"data insert:- "+i);
                             Completable.fromAction(()->{
-                                newsDatabase.bdSportsDao().insertNews(bdSport);
+                                newsDatabase.bdEntertainmentDao().insertNews(bdEntertainment);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                                 @Override
                                 public void onSubscribe(@NonNull Disposable d) {
@@ -422,318 +427,321 @@ public class SportNewsFragmentViewModel extends ViewModel {
                 }
             };
         }
-        bdSportsLiveData=newsDatabase.bdSportsDao().getAllNews();
-        bdSportsLiveData.observeForever(bangladeshiAllSportsNewsObserver);
+        bdEntertainmentLiveData=newsDatabase.bdEntertainmentDao().getAllNews();
+        bdEntertainmentLiveData.observeForever(bangladeshiAllEntertainmentNewsObserver);
     }
 
 
 
-
-    private void setDailySangramSportNews(Document document) {
+    private void setDailyAmaderShomoyEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("a#news-detail[title]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
+            Elements newsList = document.select("div.w3-col.m4 a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailySangramSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dainikAmaderShomoyEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("দৈনিক সংগ্রাম (খেলার খবর)");
+        itemModel.setTitle("আমাদের সময় (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setBdJournalSportNews(Document document) {
+    private void setBdJournalEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.col-md-4.col-sm-4.khela_news_block a[href^=https://www.bd-journal.com/sports/]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bangladeshJournal);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("বাংলাদেশ জার্নাল (খেলার খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setManobKanthaSportNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("section.special div.recent-news.margin-bottom-10 h3 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                if (link.startsWith("https://www.manobkantha.com.bd/cricket/") || link.startsWith("https://www.manobkantha.com.bd/football/")) {
-                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                    list.add(newsAndLinkModel);
-                }
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.manobKantha);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("মানবকণ্ঠ (খেলার খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setSangbadPratidinSportNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("p.news_title a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.sangbadPratidinSports);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("সংবাদ প্রতিদিন (খেলার খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setDailyManobJominSportNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("h4 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
-                String link="https://www.mzamin.com/"+temporaryLink;
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyManobJominSports);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("মানবজমিন (খেলার খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setDailyIttefaqSportNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("a[href^=https://www.ittefaq.com.bd/sports/]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
+            Elements newsList = document.select("h4 a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
                 if (news.length()>=15) {
                     NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                     list.add(newsAndLinkModel);
                 }
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyIttefaqSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bdJournalEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("দৈনিক ইত্তেফাক (খেলার খবর)");
+        itemModel.setTitle("বাংলাদেশ জার্নাল (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setAmarDesh24SportNews(Document document) {
+    private void setManobKanthaEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("h3 a.default[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
+            Elements newsList = document.select("h2 a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.amarDesh24Sports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.manobkanthaEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("আমার দেশ 24 (খেলার খবর)");
+        itemModel.setTitle("মানবকণ্ঠ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setDailyNayaDigantaSportNews(Document document) {
+    private void setSangbadPratidinEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.row.sub-lead-list div.col-md-5.column-no-left-padding a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
+            Elements newsList = document.select("p.news_title a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyNayaDigantaSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.sangbadpratidinEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("নয়া দিগন্ত (খেলার খবর)");
+        itemModel.setTitle("সংবাদ প্রতিদিন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setDailyInqilabSportNews(Document document) {
+    private void setDailyManobJominEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.row.news_list div.col-xs-12.col-sm-6 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).select("h2").text();
+            Elements newsList = document.select("div.col-sm-6 h4 > a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String temporaryLink=newsList.get(i).attr("href");
+                String link=MyUrl.manobJomin+temporaryLink;
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyInqilabSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyManobJominEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("দৈনিক ইনকিলাব (খেলার খবর)");
+        itemModel.setTitle("মানবজমিন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setBhorerKagojSportNews(Document document) {
+    private void setDailyIttefaqEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.cat-normal-content-other-item.col-sm-3.col-xs-6 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).select("h4").text();
+            Elements newsList = document.select("a[href^=https://www.ittefaq.com.bd/entertainment/]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
+                if (news.length()>=15) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyIttefaqEntertainment);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("দৈনিক ইত্তেফাক (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setAmarDesh24EntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements newsList = document.select("a.default[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bhorerKagojSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.amarDesh24Entertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("ভোরের কাগজ (খেলার খবর)");
+        itemModel.setTitle("আমার দেশ 24 (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setBanglaTribuneSportNews(Document document) {
+    private void setDailyNayaDigantaEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.title_time_author_holder h2.title_holder a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
-                String link=MyUrl.banglaTribunesSports+temporaryLink.substring(6);
-                String news = allList.get(i).text();
+            Elements newsList = document.select("div.col-md-5.column-no-left-padding a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.banglaTribunesSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyNayaDigantaEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("বাংলা ট্রিবিউন (খেলার খবর)");
+        itemModel.setTitle("নয়া দিগন্ত (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setBdNews24SportNews(Document document) {
+    private void setDailyInqilabEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.text h6 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
+            Elements newsList = document.select("div.row.news_list a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.select("h2").get(i).text();
+                String link=newsList.get(i).attr("href");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bdNews24Sports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyInqilabEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("বিডি নিউস ২৪ (খেলার খবর)");
+        itemModel.setTitle("দৈনিক ইনকিলাব (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setDailyJanakanthaSportNews(Document document) {
+    private void setBhorerKagojEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.list-article");
-            for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).select("a+a").attr("href");
-                String link=MyUrl.dailyJonoKhanto+temporaryLink;
-                String news = allList.get(i).select("a+a h2").text();
+            Elements newsList = document.select("div.cat-normal-content-other-item.col-sm-3.col-xs-6 a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyJanakanthaSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bhorerKagojEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("দৈনিক জনকণ্ঠ (খেলার খবর)");
+        itemModel.setTitle("ভোরের কাগজ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setSamakalSportNews(Document document) {
+    private void setBanglaTribuneEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.media.news-content.child-cat-list");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).select("a").attr("href");
-                String news = allList.get(i).select("h4.heading").text();
+            Elements newsList = document.select("h2.title_holder a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String temporaryLink=newsList.get(i).attr("href");
+                String link="https://www.banglatribune.com"+temporaryLink;
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.samakalSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.banglaTribuneEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("সমকাল (খেলার খবর)");
+        itemModel.setTitle("বাংলা ট্রিবিউন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setKalerkhanthoSportNews(Document document) {
+    private void setBdNews24EntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.col-xs-12.col-sm-6.col-md-6.n_row a[href]");
+            Elements newsList = document.select("div.text h3 a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String link=newsList.get(i).attr("href");
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bdNews24Entertainment);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("বিডি নিউস ২৪ (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setDailyJanakanthaEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements newsList = document.select("div.list-article a[href]+a[href]");
+            for (int i = 0; i < newsList.size(); i++) {
+                String news = newsList.get(i).text();
+                String temporaryLink=newsList.get(i).attr("href");
+                String link = "https://www.dailyjanakantha.com"+temporaryLink;
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyJanakanthaEntertainment);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("দৈনিক জনকন্ঠ (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setSamakalEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements newsList = document.select("div.info h3");
+            Elements linkList = document.select("div.info+a.link-overlay[href]");
+            String news,link;
+            for (int i = 0; i < newsList.size(); i++) {
+                news = newsList.get(i).text();
+                if (i<linkList.size()) {
+                    link = linkList.get(i).attr("href");
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.samakalEntertainment);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("সমকাল (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setKalerkanthoEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("a.title.hidden-xs[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
                 String link=MyUrl.kalerKhanto+temporaryLink;
@@ -742,11 +750,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.kalerkhanthoSports);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.kalerKanthoEntertainment);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("কালেরকণ্ঠ (খেলার খবর)");
+        itemModel.setTitle("কালের কণ্ঠ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
@@ -755,16 +763,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
 
-
     @Override
     protected void onCleared() {
-        bdSportsLiveData.removeObserver(bangladeshiAllSportsNewsObserver);
+        bdEntertainmentLiveData.removeObserver(bangladeshiAllEntertainmentNewsObserver);
         super.onCleared();
         compositeDisposable.dispose();
     }
-
-
-
-
 
 }

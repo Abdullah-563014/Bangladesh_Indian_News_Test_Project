@@ -1,5 +1,6 @@
 package com.easysoftbd.bangladeshindiannews.data.local.india.bangla;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface IndianBanglaBreakingDao {
 
     @Query("SELECT * FROM indian_bangla_breaking")
-    List<IndianBanglaBreaking> getAllNews();
+    LiveData<List<IndianBanglaBreaking>> getAllNews();
 
     @Query("SELECT * FROM indian_bangla_breaking WHERE serial=:serial")
     IndianBanglaBreaking getNews(int serial);

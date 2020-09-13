@@ -369,14 +369,12 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
                     itemList.setValue(itemList.getValue());
                 }
-                Log.d(Constants.TAG,"db data size is:- "+bdBreakings.size());
                 if (bdBreakings.size()>0 && !insertingDataFlag) {
                     temporaryList.clear();
                     itemList.setValue(temporaryList);
                     for (int i=0; i<bdBreakings.size(); i++) {
                         if (bdBreakings.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
                             loadPageDocument(bdBreakings.get(i).getPaperUrl());
-                            Log.d(Constants.TAG,"url call:- "+i);
                         } else {
                             bdBreakingUnVisibleTemporaryList.add(bdBreakings.get(i));
                         }
@@ -397,7 +395,6 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             bdBreaking.setPaperName(nameList.get(i));
                             bdBreaking.setBackgroundColor("SkyBlue");
                             bdBreaking.setTextColor("White");
-                            Log.d(Constants.TAG,"data insert:- "+i);
                             Completable.fromAction(()->{
                                 newsDatabase.bdBreakingDao().insertNews(bdBreaking);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

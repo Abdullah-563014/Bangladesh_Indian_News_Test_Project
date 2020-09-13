@@ -19,7 +19,7 @@ public interface BdEntertainmentDao {
     LiveData<List<BdEntertainment>> getAllNews();
 
     @Query("SELECT * FROM bd_entertainment WHERE serial=:serial")
-    LiveData<BdEntertainment> getNews(int serial);
+    BdEntertainment getNews(int serial);
 
     @Insert
     void insertNews(BdEntertainment bdEntertainment);

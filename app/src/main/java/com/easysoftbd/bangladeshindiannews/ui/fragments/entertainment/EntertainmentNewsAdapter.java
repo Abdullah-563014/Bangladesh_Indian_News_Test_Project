@@ -1,4 +1,4 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.sports;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,18 +15,17 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.RecyclerViewModelLayoutBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.home.HomeActivity;
-import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNewsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SportsNewsAdapter extends RecyclerView.Adapter<SportsNewsAdapter.SportsViewHolder> implements ItemClickListener {
+public class EntertainmentNewsAdapter extends RecyclerView.Adapter<EntertainmentNewsAdapter.EntertainmentViewHolder> implements ItemClickListener {
 
     private Context context;
     private List<RecyclerItemModel> list;
     private HomeActivity homeActivity;
 
-    public SportsNewsAdapter(Context context, List<RecyclerItemModel> list) {
+    public EntertainmentNewsAdapter(Context context, List<RecyclerItemModel> list) {
         this.context = context;
         this.list = list;
         if (homeActivity==null) {
@@ -35,16 +34,15 @@ public class SportsNewsAdapter extends RecyclerView.Adapter<SportsNewsAdapter.Sp
     }
 
 
-
     @NonNull
     @Override
-    public SportsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EntertainmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerViewModelLayoutBinding binding= DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.recycler_view_model_layout,parent,false);
-        return new SportsViewHolder(binding);
+        return new EntertainmentViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SportsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull EntertainmentViewHolder holder, int position) {
         holder.binding.titleTextView.setText(list.get(position).getTitle());
         List<String> contents=new ArrayList<>();
         List<NewsAndLinkModel> newsAndLinkModels=list.get(position).getNewsAndLinkModelList();
@@ -59,7 +57,7 @@ public class SportsNewsAdapter extends RecyclerView.Adapter<SportsNewsAdapter.Sp
 
 
         holder.binding.marqueeMoreOptionImageView.setOnClickListener(view -> {
-            homeActivity.showSportsMoreOption(list.get(position).getSerialNumber());
+            homeActivity.showEntertainmentMoreOption(list.get(position).getSerialNumber());
         });
         holder.binding.marqueeView.setOnMarqueeItemClickListener(list.get(position).getTitle(),this);
     }
@@ -76,17 +74,17 @@ public class SportsNewsAdapter extends RecyclerView.Adapter<SportsNewsAdapter.Sp
     public void onMarqueeItemClickListener(String tag) {
         for (int i=0; i<list.size(); i++) {
             if (tag.equalsIgnoreCase(list.get(i).getTitle())) {
-                homeActivity.showSportsAlertDialog(list.get(i).getNewsAndLinkModelList());
+                homeActivity.showEntertainmentAlertDialog(list.get(i).getNewsAndLinkModelList());
             }
         }
     }
 
 
-    static class SportsViewHolder extends RecyclerView.ViewHolder{
+    static class EntertainmentViewHolder extends RecyclerView.ViewHolder{
 
         private RecyclerViewModelLayoutBinding binding;
 
-        public SportsViewHolder(@NonNull RecyclerViewModelLayoutBinding binding) {
+        public EntertainmentViewHolder(@NonNull RecyclerViewModelLayoutBinding binding) {
             super(binding.getRoot());
 
             this.binding=binding;
