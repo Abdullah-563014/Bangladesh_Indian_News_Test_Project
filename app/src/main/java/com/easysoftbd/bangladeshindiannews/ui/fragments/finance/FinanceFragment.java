@@ -1,13 +1,8 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.finance;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -16,13 +11,24 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentEntertainmentBinding;
+import com.easysoftbd.bangladeshindiannews.databinding.FragmentFinanceBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentFragmentViewModel;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentNewsAdapter;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentNewsViewModelFactory;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import java.util.ArrayList;
@@ -30,28 +36,29 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class EntertainmentFragment extends Fragment {
-
+public class FinanceFragment extends Fragment {
 
     private AlertDialog alertDialog;
     private Intent intent;
-    private EntertainmentFragmentViewModel viewModel;
-    private FragmentEntertainmentBinding binding;
-    private EntertainmentNewsAdapter adapter;
+    private FinanceFragmentViewModel viewModel;
+    private FragmentFinanceBinding binding;
+    private FinanceNewsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
-    private List<BdEntertainment> bdEntertainmentUnVisibleList=new ArrayList<>();
+    private List<BdFinance> bdFinanceUnVisibleList=new ArrayList<>();
 
 
-    public EntertainmentFragment() {
+    public FinanceFragment() {
         // Required empty public constructor
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        EntertainmentNewsViewModelFactory factory=new EntertainmentNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
-        viewModel = new ViewModelProvider(this,factory).get(EntertainmentFragmentViewModel.class);
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_entertainment, container, false);
+        FinanceNewsViewModelFactory factory=new FinanceNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
+        viewModel = new ViewModelProvider(this,factory).get(FinanceFragmentViewModel.class);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_finance, container, false);
         binding.setLifecycleOwner(this);
         return binding.getRoot();
     }
@@ -74,18 +81,22 @@ public class EntertainmentFragment extends Fragment {
     }
 
     private void loadAllUrl() {
-        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_entertainment_url_list)));
-        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_entertainment_news_list)));
-        viewModel.checkBangladeshEntertainmentNewsDataInDb(nameList,urlList);
+        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_finance_url_list)));
+        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_finance_news_list)));
+        viewModel.checkBangladeshFinanceNewsDataInDb(nameList,urlList);
     }
 
     private void initRecyclerView() {
-        adapter=new EntertainmentNewsAdapter(getContext(),list);
+        adapter=new FinanceNewsAdapter(getContext(),list);
         linearLayoutManager=new LinearLayoutManager(getContext());
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingBdEntertainmentList(recyclerItemModels);
+            viewModel.shortingBdFinanceList(recyclerItemModels);
+            for (int i=0; i<recyclerItemModels.size();i++) {
+                Log.d(Constants.TAG,"Bd Sport Item serial:- "+recyclerItemModels.get(i).getSerialNumber());
+                Log.d(Constants.TAG,"Bd Sport Item data size:- "+recyclerItemModels.size());
+            }
         });
 
         viewModel.getShortedList().observe(this, recyclerItemModelList -> {
@@ -179,9 +190,9 @@ public class EntertainmentFragment extends Fragment {
     }
 
     private void initAll() {
-        viewModel.getBdEntertainmentUnVisibleList().observe(this, bdSports -> {
-            bdEntertainmentUnVisibleList.clear();
-            bdEntertainmentUnVisibleList.addAll(bdSports);
+        viewModel.getBdFinanceUnVisibleList().observe(this, bdFinance -> {
+            bdFinanceUnVisibleList.clear();
+            bdFinanceUnVisibleList.addAll(bdFinance);
         });
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -189,9 +200,9 @@ public class EntertainmentFragment extends Fragment {
     }
 
     private void showUnVisibleList() {
-        String[] list=new String[bdEntertainmentUnVisibleList.size()];
-        for (int i=0; i<bdEntertainmentUnVisibleList.size(); i++) {
-            list[i]=bdEntertainmentUnVisibleList.get(i).getPaperName();
+        String[] list=new String[bdFinanceUnVisibleList.size()];
+        for (int i=0; i<bdFinanceUnVisibleList.size(); i++) {
+            list[i]=bdFinanceUnVisibleList.get(i).getPaperName();
         }
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
                 .setCancelable(true)

@@ -10,6 +10,7 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.databinding.ActivityHomeBinding;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNewsFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentFragment;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.sports.SportsNewsFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -67,6 +68,16 @@ public class HomeActivity extends AppCompatActivity {
     public void showEntertainmentMoreOption(int serialNo) {
         EntertainmentFragment entertainmentFragment= (EntertainmentFragment) activityFragmentStateAdapter.createFragment(2);
         entertainmentFragment.showMoreOptionAlertDialog(serialNo);
+    }
+
+    public void showFinanceAlertDialog(List<NewsAndLinkModel> newsAndLinkModels) {
+        FinanceFragment financeFragment= (FinanceFragment) activityFragmentStateAdapter.createFragment(3);
+        financeFragment.showItemChooseAlertDialog(newsAndLinkModels);
+    }
+
+    public void showFinanceMoreOption(int serialNo) {
+        FinanceFragment financeFragment= (FinanceFragment) activityFragmentStateAdapter.createFragment(3);
+        financeFragment.showMoreOptionAlertDialog(serialNo);
     }
 
 
