@@ -3,6 +3,7 @@ package com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -17,6 +18,7 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.RecyclerViewModelLayoutBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.home.HomeActivity;
+import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;

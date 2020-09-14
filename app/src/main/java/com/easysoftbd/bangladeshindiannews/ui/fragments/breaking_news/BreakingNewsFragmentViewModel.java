@@ -498,10 +498,10 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private void setSomokalBreekingNews(Document document) {
         List<NewsAndLinkModel> list=new ArrayList<>();
         try {
-            Elements allList=document.select("marquee a");
+            Elements allList=document.select("div.bn-title+ul li a[href]");
             for (int i=0; i<allList.size(); i++) {
                 String link=allList.get(i).attr("href");
-                String news=allList.get(i).select("a").text();
+                String news=allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel=new NewsAndLinkModel(news,link);
                 list.add(newsAndLinkModel);
             }

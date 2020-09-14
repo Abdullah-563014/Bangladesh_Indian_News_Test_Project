@@ -16,16 +16,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
-        <activity android:name=".ui.activities.no_internet.NoInternetActivity"></activity>
-        <activity android:name=".ui.activities.favourite_list.FavouriteListActivity" />
-        <activity android:name=".ui.activities.my_webview.WebViewActivity" />
-        <activity android:name=".ui.activities.home.HomeActivity">
+        <activity android:name=".ui.activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activities.no_internet.NoInternetActivity" />
+        <activity android:name=".ui.activities.favourite_list.FavouriteListActivity" />
+        <activity android:name=".ui.activities.my_webview.WebViewActivity" />
+        <activity android:name=".ui.activities.home.HomeActivity" />
     </application>
 
 </manifest>

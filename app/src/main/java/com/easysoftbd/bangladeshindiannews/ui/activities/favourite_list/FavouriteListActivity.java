@@ -50,13 +50,15 @@ public class FavouriteListActivity extends AppCompatActivity implements OnFavour
         binding.favouriteListRecyclerView.setLayoutManager(new LinearLayoutManager(FavouriteListActivity.this));
         binding.favouriteListRecyclerView.setHasFixedSize(true);
         binding.favouriteListRecyclerView.setAdapter(favouriteListRecyclerAdapter);
-        if (list.size()>0){
-            binding.favouriteListActivityNoItemTextView.setVisibility(View.GONE);
-        }
         viewModel.getFavouriteList().observe(this, favouriteLists -> {
             list.clear();
             list.addAll(favouriteLists);
             favouriteListRecyclerAdapter.notifyDataSetChanged();
+            if (list.size()>0){
+                binding.favouriteListActivityNoItemTextView.setVisibility(View.GONE);
+            } else {
+                binding.favouriteListActivityNoItemTextView.setVisibility(View.VISIBLE);
+            }
         });
     }
 
