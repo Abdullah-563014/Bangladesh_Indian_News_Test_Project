@@ -1,8 +1,13 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.finance;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -11,24 +16,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
-import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
-import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
-import com.easysoftbd.bangladeshindiannews.databinding.FragmentEntertainmentBinding;
-import com.easysoftbd.bangladeshindiannews.databinding.FragmentFinanceBinding;
+import com.easysoftbd.bangladeshindiannews.databinding.FragmentTvChannelNewsBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
-import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentFragmentViewModel;
-import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentNewsAdapter;
-import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentNewsViewModelFactory;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceFragmentViewModel;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceNewsAdapter;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceNewsViewModelFactory;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import java.util.ArrayList;
@@ -36,29 +33,27 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class FinanceFragment extends Fragment {
+public class TvChannelNewsFragment extends Fragment {
 
     private AlertDialog alertDialog;
     private Intent intent;
-    private FinanceFragmentViewModel viewModel;
-    private FragmentFinanceBinding binding;
-    private FinanceNewsAdapter adapter;
+    private TvChannelNewsFragmentViewModel viewModel;
+    private FragmentTvChannelNewsBinding binding;
+    private TvChannelNewsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
-    private List<BdFinance> bdFinanceUnVisibleList=new ArrayList<>();
+    private List<BdTvChannel> bdTvChannelUnVisibleList=new ArrayList<>();
 
-
-    public FinanceFragment() {
+    public TvChannelNewsFragment() {
         // Required empty public constructor
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FinanceNewsViewModelFactory factory=new FinanceNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
-        viewModel = new ViewModelProvider(this,factory).get(FinanceFragmentViewModel.class);
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_finance, container, false);
+        TvChannelNewsViewModelFactory factory=new TvChannelNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
+        viewModel = new ViewModelProvider(this,factory).get(TvChannelNewsFragmentViewModel.class);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tv_channel_news, container, false);
         binding.setLifecycleOwner(this);
         return binding.getRoot();
     }
@@ -81,18 +76,22 @@ public class FinanceFragment extends Fragment {
     }
 
     private void loadAllUrl() {
-        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_finance_url_list)));
-        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_finance_news_list)));
-        viewModel.checkBangladeshFinanceNewsDataInDb(nameList,urlList);
+        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_tv_channel_url_list)));
+        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_tv_channel_news_list)));
+        viewModel.checkBangladeshTvChannelNewsDataInDb(nameList,urlList);
     }
 
     private void initRecyclerView() {
-        adapter=new FinanceNewsAdapter(getContext(),list);
+        adapter=new TvChannelNewsAdapter(getContext(),list);
         linearLayoutManager=new LinearLayoutManager(getContext());
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingBdFinanceList(recyclerItemModels);
+            viewModel.shortingBdTvChannelList(recyclerItemModels);
+            for (int i=0; i<recyclerItemModels.size();i++) {
+                Log.d(Constants.TAG,"Bd Sport Item serial:- "+recyclerItemModels.get(i).getSerialNumber());
+                Log.d(Constants.TAG,"Bd Sport Item data size:- "+recyclerItemModels.size());
+            }
         });
 
         viewModel.getShortedList().observe(this, recyclerItemModelList -> {
@@ -186,9 +185,9 @@ public class FinanceFragment extends Fragment {
     }
 
     private void initAll() {
-        viewModel.getBdFinanceUnVisibleList().observe(this, bdFinance -> {
-            bdFinanceUnVisibleList.clear();
-            bdFinanceUnVisibleList.addAll(bdFinance);
+        viewModel.getBdTvChannelUnVisibleList().observe(this, tvChannel -> {
+            bdTvChannelUnVisibleList.clear();
+            bdTvChannelUnVisibleList.addAll(tvChannel);
         });
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -196,9 +195,9 @@ public class FinanceFragment extends Fragment {
     }
 
     private void showUnVisibleList() {
-        String[] list=new String[bdFinanceUnVisibleList.size()];
-        for (int i=0; i<bdFinanceUnVisibleList.size(); i++) {
-            list[i]=bdFinanceUnVisibleList.get(i).getPaperName();
+        String[] list=new String[bdTvChannelUnVisibleList.size()];
+        for (int i=0; i<bdTvChannelUnVisibleList.size(); i++) {
+            list[i]=bdTvChannelUnVisibleList.get(i).getPaperName();
         }
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
                 .setCancelable(true)
@@ -223,6 +222,7 @@ public class FinanceFragment extends Fragment {
         binding.unbind();
         super.onDestroyView();
     }
+
 
 
 }

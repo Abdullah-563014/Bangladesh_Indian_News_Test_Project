@@ -70,7 +70,7 @@
     </string-array>
 
     <string-array name="bd_tv_channel_news_list">
-        <item>এটিএন নিউজ (সর্বশেষ খবর)</item>
+<!--        <item>এটিএন নিউজ (সর্বশেষ খবর)</item>-->
         <item>একুশে টেলিভশন (সর্বশেষ খবর)</item>
         <item>এনটিভি (সর্বশেষ খবর)</item>
         <item>সময় টিভি (সর্বশেষ খবর)</item>
@@ -79,16 +79,16 @@
         <item>আরটিভি নিউস (সর্বশেষ খবর)</item>
         <item>বৈশাখী টিভি (সর্বশেষ খবর)</item>
         <item>মোহনা টিভি (সর্বশেষ খবর)</item>
-        <item>বাংলাদেশ টেলিভিশন (সর্বশেষ খবর)</item>
-        <item>মাশরাঙা টিভি (সর্বশেষ খবর)</item>
-        <item>চ্যানেল ২৪ (সর্বশেষ খবর)</item>
+<!--        <item>বাংলাদেশ টেলিভিশন (সর্বশেষ খবর)</item>-->
+<!--        <item>মাশরাঙা টিভি (সর্বশেষ খবর)</item>-->
+<!--        <item>চ্যানেল ২৪ (সর্বশেষ খবর)</item>-->
         <item>মাই টিভি (সর্বশেষ খবর)</item>
         <item>যমুনা টিভি (সর্বশেষ খবর)</item>
         <item>নিউস ২৪ (সর্বশেষ খবর)</item>
     </string-array>
 
     <string-array name="bd_tv_channel_url_list">
-        <item>http://www.atnnewstv.com/?app=home</item>
+<!--        <item>http://www.atnnewstv.com/?app=home</item>-->
         <item>https://www.ekushey-tv.com/</item>
         <item>https://www.ntvbd.com/</item>
         <item>https://www.somoynews.tv/</item>
@@ -97,9 +97,9 @@
         <item>https://www.rtvonline.com/</item>
         <item>http://www.boishakhionline.com/</item>
         <item>http://www.mohona.tv/</item>
-        <item>http://www.btv.gov.bd/</item>
-        <item>http://maasranga.tv/</item>
-        <item>https://www.channel24bd.tv/</item>
+<!--        <item>http://www.btv.gov.bd/</item>-->
+<!--        <item>http://maasranga.tv/</item>-->
+<!--        <item>https://www.channel24bd.tv/</item>-->
         <item>http://mytvbd.tv/</item>
         <item>http://www.jamuna.tv/</item>
         <item>https://www.news24bd.tv/</item>

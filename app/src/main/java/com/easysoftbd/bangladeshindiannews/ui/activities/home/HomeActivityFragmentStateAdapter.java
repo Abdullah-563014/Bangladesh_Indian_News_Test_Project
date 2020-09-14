@@ -9,6 +9,7 @@ import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNe
 import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.sports.SportsNewsFragment;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel.TvChannelNewsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class HomeActivityFragmentStateAdapter extends FragmentStateAdapter {
         fragmentList.add(new SportsNewsFragment());
         fragmentList.add(new EntertainmentFragment());
         fragmentList.add(new FinanceFragment());
+        fragmentList.add(new TvChannelNewsFragment());
     }
 
     private void addAllTitleForTabLayout() {
@@ -50,6 +52,7 @@ public class HomeActivityFragmentStateAdapter extends FragmentStateAdapter {
         titleList.add("Sports News");
         titleList.add("Entertainment News");
         titleList.add("Finance News");
+        titleList.add("TvChannel News");
     }
 
     public String getTitle(int position) {

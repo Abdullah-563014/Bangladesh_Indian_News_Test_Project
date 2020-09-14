@@ -1,4 +1,4 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.finance;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel;
 
 import android.util.Log;
 
@@ -8,8 +8,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
-import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
@@ -30,7 +30,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class FinanceFragmentViewModel extends ViewModel {
+public class TvChannelNewsFragmentViewModel extends ViewModel {
 
 
     private CompositeDisposable compositeDisposable;
@@ -43,16 +43,16 @@ public class FinanceFragmentViewModel extends ViewModel {
     private List<RecyclerItemModel> temporaryShortingList=new ArrayList<>();
     private boolean insertingDataFlag=false;
     private boolean dataStatusFlagInDb=false;
-    private Observer<List<BdFinance>> bangladeshiAllFinanceNewsObserver;
-    private LiveData<List<BdFinance>> bdFinanceLiveData;
-    private MutableLiveData<List<BdFinance>> bdFinanceUnVisibleList;
-    private List<BdFinance> bdFinanceList=new ArrayList<>();
-    private List<BdFinance> bdFinanceUnVisibleTemporaryList=new ArrayList<>();
+    private Observer<List<BdTvChannel>> bangladeshiAllTvChannelNewsObserver;
+    private LiveData<List<BdTvChannel>> bdTvChannelLiveData;
+    private MutableLiveData<List<BdTvChannel>> bdTvChannelUnVisibleList;
+    private List<BdTvChannel> bdTvChannelList=new ArrayList<>();
+    private List<BdTvChannel> bdTvChannelUnVisibleTemporaryList=new ArrayList<>();
 
 
 
 
-    public FinanceFragmentViewModel(NewsDatabase newsDatabase) {
+    public TvChannelNewsFragmentViewModel(NewsDatabase newsDatabase) {
         this.newsDatabase=newsDatabase;
         if (myResponse == null) {
             myResponse = new MyResponse();
@@ -74,38 +74,30 @@ public class FinanceFragmentViewModel extends ViewModel {
 
                     @Override
                     public void onNext(@NonNull Document document) {
-                        if (document.baseUri().equalsIgnoreCase(MyUrl.kalerKhanto)){
-                            setKalerKanthoFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.samakalFinance)){
-                            setSamakalFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyJanakanthaFinance)){
-                            setDailyJanakanthaFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bdNews24Finance)){
-                            setBdNews24FinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.banglaTribuneFinance)){
-                            setBanglaTribuneFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bhorerKagojFinance)){
-                            setBhorerKagojFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyIttefaqFinance)){
-                            setDailyIttefaqFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.manobKanthaFinance)){
-                            setManobKanthaFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bdJournalFinance)){
-                            setBdJournalFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyVorerPataFinance)){
-                            setDailyVorerPataFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jaiJaiDinBdFinance)){
-                            setJaiJaiDinBdFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dainikAmaderShomoyFinance)){
-                            setDainikAmaderShomoyFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailySangramFinance)){
-                            setDailySangramFinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.amarDesh24Finance)){
-                            setAmarDesh24FinanceNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jugantorFinance)){
-                            setJugantorFinanceNews(document);
+                        if (document.baseUri().equalsIgnoreCase(MyUrl.ntvBd)){
+                            setNtvBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ekusheyTelevision)){
+                            setEkusheyTvBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.shomoyNews)){
+                            setShomoyBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.channelI)){
+                            setChannelIBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.banglaVision)){
+                            setBanglaVisionBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.rtvNews)){
+                            setRtvBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.boishakhiTv)){
+                            setBoishakhiBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.mohonaTv)){
+                            setMohonaTvBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.myTvBd)){
+                            setMyTvBdBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jamunaTv)){
+                            setJamunaTvBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.news24Bd)){
+                            setNews24BdBreakingNews(document);
                         }
-//                        Log.d(Constants.TAG,"sports:- "+document.baseUri());
+
                     }
 
                     @Override
@@ -123,21 +115,21 @@ public class FinanceFragmentViewModel extends ViewModel {
 //====================================Primary method staying in above========================================
 
 
-    public void shortingBdFinanceList(List<RecyclerItemModel> recyclerItemModelList) {
+    public void shortingBdTvChannelList(List<RecyclerItemModel> recyclerItemModelList) {
         if (shortedList==null) {
             shortedList=new MutableLiveData<>();
         }
         temporaryShortingList.clear();
         String title;
         RecyclerItemModel recyclerItemModel;
-        for (int i=0; i<bdFinanceList.size(); i++) {
-            title=bdFinanceList.get(i).getPaperName();
+        for (int i=0; i<bdTvChannelList.size(); i++) {
+            title=bdTvChannelList.get(i).getPaperName();
             for (int j=0; j<recyclerItemModelList.size(); j++) {
                 if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
                     recyclerItemModel=recyclerItemModelList.get(j);
-                    recyclerItemModel.setSerialNumber(bdFinanceList.get(i).getSerial());
-                    recyclerItemModel.setBackgroundColor(bdFinanceList.get(i).getBackgroundColor());
-                    recyclerItemModel.setTextColor(bdFinanceList.get(i).getTextColor());
+                    recyclerItemModel.setSerialNumber(bdTvChannelList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(bdTvChannelList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(bdTvChannelList.get(i).getTextColor());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -159,11 +151,11 @@ public class FinanceFragmentViewModel extends ViewModel {
         return itemList;
     }
 
-    public LiveData<List<BdFinance>> getBdFinanceUnVisibleList() {
-        if (bdFinanceUnVisibleList==null) {
-            bdFinanceUnVisibleList=new MutableLiveData<>();
+    public LiveData<List<BdTvChannel>> getBdTvChannelUnVisibleList() {
+        if (bdTvChannelUnVisibleList==null) {
+            bdTvChannelUnVisibleList=new MutableLiveData<>();
         }
-        return bdFinanceUnVisibleList;
+        return bdTvChannelUnVisibleList;
     }
 
     public LiveData<Integer> getItemMovedPosition() {
@@ -175,8 +167,8 @@ public class FinanceFragmentViewModel extends ViewModel {
 
     public void itemMoveToUp(int serialNumber) {
         if (serialNumber>0) {
-            BdFinance currentItem=bdFinanceList.get(serialNumber);
-            BdFinance upperItem=bdFinanceList.get(serialNumber-1);
+            BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
+            BdTvChannel upperItem=bdTvChannelList.get(serialNumber-1);
 
             currentItem.setSerial(serialNumber-1);
             upperItem.setSerial(serialNumber);
@@ -186,7 +178,7 @@ public class FinanceFragmentViewModel extends ViewModel {
 
 
             Completable.fromAction(()->{
-                newsDatabase.bdFinanceDao().updateNews(currentItem,upperItem);
+                newsDatabase.bdTvChannelDao().updateNews(currentItem,upperItem);
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -207,9 +199,9 @@ public class FinanceFragmentViewModel extends ViewModel {
     }
 
     public void itemMoveToDown(int serialNumber) {
-        if (serialNumber<(bdFinanceList.size()-1)) {
-            BdFinance currentItem=bdFinanceList.get(serialNumber);
-            BdFinance downItem=bdFinanceList.get(serialNumber+1);
+        if (serialNumber<(bdTvChannelList.size()-1)) {
+            BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
+            BdTvChannel downItem=bdTvChannelList.get(serialNumber+1);
 
             currentItem.setSerial(serialNumber+1);
             downItem.setSerial(serialNumber);
@@ -219,7 +211,7 @@ public class FinanceFragmentViewModel extends ViewModel {
 
 
             Completable.fromAction(()->{
-                newsDatabase.bdFinanceDao().updateNews(currentItem,downItem);
+                newsDatabase.bdTvChannelDao().updateNews(currentItem,downItem);
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -240,8 +232,8 @@ public class FinanceFragmentViewModel extends ViewModel {
     }
 
     public void hideItem(int serialNumber) {
-        if (serialNumber<=(bdFinanceList.size()-1) && serialNumber>=0) {
-            BdFinance currentItem=bdFinanceList.get(serialNumber);
+        if (serialNumber<=(bdTvChannelList.size()-1) && serialNumber>=0) {
+            BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
 
             currentItem.setVisibilityStatus("hidden");
             insertingDataFlag=false;
@@ -250,7 +242,7 @@ public class FinanceFragmentViewModel extends ViewModel {
 
 
             Completable.fromAction(()->{
-                newsDatabase.bdFinanceDao().updateNews(currentItem);
+                newsDatabase.bdTvChannelDao().updateNews(currentItem);
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -271,9 +263,9 @@ public class FinanceFragmentViewModel extends ViewModel {
     }
 
     public void visibleItem(String paperName) {
-        for (int i=0; i<bdFinanceUnVisibleTemporaryList.size(); i++) {
-            if (paperName.equalsIgnoreCase(bdFinanceUnVisibleTemporaryList.get(i).getPaperName())) {
-                BdFinance currentItem=bdFinanceUnVisibleTemporaryList.get(i);
+        for (int i=0; i<bdTvChannelUnVisibleTemporaryList.size(); i++) {
+            if (paperName.equalsIgnoreCase(bdTvChannelUnVisibleTemporaryList.get(i).getPaperName())) {
+                BdTvChannel currentItem=bdTvChannelUnVisibleTemporaryList.get(i);
 
                 currentItem.setVisibilityStatus("visible");
                 insertingDataFlag=false;
@@ -282,7 +274,7 @@ public class FinanceFragmentViewModel extends ViewModel {
 
 
                 Completable.fromAction(()->{
-                    newsDatabase.bdFinanceDao().updateNews(currentItem);
+                    newsDatabase.bdTvChannelDao().updateNews(currentItem);
                 }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -304,7 +296,7 @@ public class FinanceFragmentViewModel extends ViewModel {
     }
 
     public void changeItemBackgroundColor(int serialNumber,String colorName) {
-        BdFinance currentItem=bdFinanceList.get(serialNumber);
+        BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
 
         currentItem.setBackgroundColor(colorName);
         insertingDataFlag=false;
@@ -313,7 +305,7 @@ public class FinanceFragmentViewModel extends ViewModel {
 
 
         Completable.fromAction(()->{
-            newsDatabase.bdFinanceDao().updateNews(currentItem);
+            newsDatabase.bdTvChannelDao().updateNews(currentItem);
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -333,7 +325,7 @@ public class FinanceFragmentViewModel extends ViewModel {
     }
 
     public void changeItemTextColor(int serialNumber,String colorName) {
-        BdFinance currentItem=bdFinanceList.get(serialNumber);
+        BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
 
         currentItem.setTextColor(colorName);
         insertingDataFlag=false;
@@ -342,7 +334,7 @@ public class FinanceFragmentViewModel extends ViewModel {
 
 
         Completable.fromAction(()->{
-            newsDatabase.bdFinanceDao().updateNews(currentItem);
+            newsDatabase.bdTvChannelDao().updateNews(currentItem);
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -364,43 +356,46 @@ public class FinanceFragmentViewModel extends ViewModel {
 
 
 
-    public void checkBangladeshFinanceNewsDataInDb(List<String> nameList, List<String> urlList) {
-        if (bangladeshiAllFinanceNewsObserver==null) {
-            bangladeshiAllFinanceNewsObserver= bdFinances -> {
-                bdFinanceList.clear();
-                bdFinanceList.addAll(bdFinances);
-                bdFinanceUnVisibleTemporaryList.clear();
+    public void checkBangladeshTvChannelNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (bangladeshiAllTvChannelNewsObserver==null) {
+            bangladeshiAllTvChannelNewsObserver= bdTvChannels -> {
+                bdTvChannelList.clear();
+                bdTvChannelList.addAll(bdTvChannels);
+                bdTvChannelUnVisibleTemporaryList.clear();
                 if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
                     itemList.setValue(itemList.getValue());
                 }
-                if (bdFinances.size()>0 && !insertingDataFlag) {
+                Log.d(Constants.TAG,"bd sports data size is:- "+bdTvChannels.size());
+                if (bdTvChannels.size()>0 && !insertingDataFlag) {
                     temporaryList.clear();
                     itemList.setValue(temporaryList);
-                    for (int i=0; i<bdFinances.size(); i++) {
-                        if (bdFinances.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
-                            loadPageDocument(bdFinances.get(i).getPaperUrl());
+                    for (int i=0; i<bdTvChannels.size(); i++) {
+                        if (bdTvChannels.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(bdTvChannels.get(i).getPaperUrl());
+                            Log.d(Constants.TAG,"bd sports url call:- "+i);
                         } else {
-                            bdFinanceUnVisibleTemporaryList.add(bdFinances.get(i));
+                            bdTvChannelUnVisibleTemporaryList.add(bdTvChannels.get(i));
                         }
                     }
-                    if (bdFinanceUnVisibleList==null) {
-                        bdFinanceUnVisibleList=new MutableLiveData<>();
+                    if (bdTvChannelUnVisibleList==null) {
+                        bdTvChannelUnVisibleList=new MutableLiveData<>();
                     }
-                    bdFinanceUnVisibleList.setValue(bdFinanceUnVisibleTemporaryList);
+                    bdTvChannelUnVisibleList.setValue(bdTvChannelUnVisibleTemporaryList);
                     insertingDataFlag=true;
                 } else {
                     insertingDataFlag=true;
                     if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {
                         for (int i=0; i<urlList.size(); i++) {
-                            BdFinance bdFinance=new BdFinance();
-                            bdFinance.setSerial(i);
-                            bdFinance.setVisibilityStatus("visible");
-                            bdFinance.setPaperUrl(urlList.get(i));
-                            bdFinance.setPaperName(nameList.get(i));
-                            bdFinance.setBackgroundColor("SkyBlue");
-                            bdFinance.setTextColor("White");
+                            BdTvChannel bdTvChannel=new BdTvChannel();
+                            bdTvChannel.setSerial(i);
+                            bdTvChannel.setVisibilityStatus("visible");
+                            bdTvChannel.setPaperUrl(urlList.get(i));
+                            bdTvChannel.setPaperName(nameList.get(i));
+                            bdTvChannel.setBackgroundColor("SkyBlue");
+                            bdTvChannel.setTextColor("White");
+                            Log.d(Constants.TAG,"data insert:- "+i);
                             Completable.fromAction(()->{
-                                newsDatabase.bdFinanceDao().insertNews(bdFinance);
+                                newsDatabase.bdTvChannelDao().insertNews(bdTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                                 @Override
                                 public void onSubscribe(@NonNull Disposable d) {
@@ -424,143 +419,38 @@ public class FinanceFragmentViewModel extends ViewModel {
                 }
             };
         }
-        bdFinanceLiveData=newsDatabase.bdFinanceDao().getAllNews();
-        bdFinanceLiveData.observeForever(bangladeshiAllFinanceNewsObserver);
+        bdTvChannelLiveData=newsDatabase.bdTvChannelDao().getAllNews();
+        bdTvChannelLiveData.observeForever(bangladeshiAllTvChannelNewsObserver);
     }
 
 
 
-    private void setJugantorFinanceNews(Document document) {
+    private void setNews24BdBreakingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.leadmorehl2 h2 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.jugantorFinance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setAmarDesh24FinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("a.default[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.amarDesh24Finance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("আমার দেশ 24 (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setDailySangramFinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("li h2 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailySangramFinance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("দৈনিক সংগ্রাম (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setDainikAmaderShomoyFinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("div.w3-col.m4 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dainikAmaderShomoyFinance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("আমাদের সময় (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setJaiJaiDinBdFinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("div#newsHl2 a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.jaiJaiDinBdFinance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("যায়যায় দিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setDailyVorerPataFinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("div.title_inner a[href]");
+            Elements allList = document.select("h2.post-title.title-small a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
-                String link=MyUrl.theDailyVorerPata+temporaryLink;
+                String link=MyUrl.news24Bd+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyVorerPataFinance);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.news24Bd);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("ভোরের পাতা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
+        itemModel.setTitle("নিউস ২৪ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setBdJournalFinanceNews(Document document) {
+    private void setJamunaTvBreakingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("h4 a[href]");
+            Elements allList = document.select("h2.headline a.headline-link[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String link = allList.get(i).attr("href");
                 String news = allList.get(i).text();
@@ -568,20 +458,20 @@ public class FinanceFragmentViewModel extends ViewModel {
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bdJournalFinance);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.jamunaTv);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("বাংলাদেশ জার্নাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
+        itemModel.setTitle("যমুনা টিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setManobKanthaFinanceNews(Document document) {
+    private void setMyTvBdBreakingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.col-md-8.col-sm-8 a[href]");
+            Elements allList = document.select("div.td-block-row div.td-block-span6 div.item-details h3 a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String link = allList.get(i).attr("href");
                 String news = allList.get(i).text();
@@ -589,43 +479,20 @@ public class FinanceFragmentViewModel extends ViewModel {
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.manobKanthaFinance);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.myTvBd);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("মানবকণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
+        itemModel.setTitle("মাই টিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setDailyIttefaqFinanceNews(Document document) {
+    private void setMohonaTvBreekingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("a[href^=https://www.ittefaq.com.bd/economy/]");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
-                String news = allList.get(i).text();
-                if (news.length()>=15) {
-                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                    list.add(newsAndLinkModel);
-                }
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyIttefaqFinance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("দৈনিক ইত্তেফাক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setBhorerKagojFinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("div.cat-normal-content-other-item.col-sm-3.col-xs-6 a[href]");
+            Elements allList = document.select("ul.news.slides li a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String link = allList.get(i).attr("href");
                 String news = allList.get(i).text();
@@ -633,42 +500,147 @@ public class FinanceFragmentViewModel extends ViewModel {
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bhorerKagojFinance);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.mohonaTv);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("ভোরের কাগজ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
+        itemModel.setTitle("মোহনা টিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setBanglaTribuneFinanceNews(Document document) {
+    private void setBoishakhiBreekingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("h2.title_holder a[href]");
+            Elements allList = document.select("marquee a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.boishakhiTv);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("বৈশাখী টিভি (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setRtvBreekingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.editor_picks_list a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.rtvNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("আরটিভি নিউস (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setBanglaVisionBreekingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.breakingNews ul li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.banglaVision);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("বাংলা ভিশন (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setChannelIBreekingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h2.title a.post-url");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.channelI);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("চ্যানেল আই (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setShomoyBreekingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("a.spark");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.shomoyNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("সময় টিভি (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setNtvBreekingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.news-tracker-content.marquee.overflow-hidden ul li a");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
-                String link="https://www.banglatribune.com"+temporaryLink;
                 String news = allList.get(i).text();
+                String link=MyUrl.ntvBd+temporaryLink;
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.banglaTribuneFinance);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.ntvBd);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("বাংলা ট্রিবিউন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
+        itemModel.setTitle("এনটিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setBdNews24FinanceNews(Document document) {
+    private void setEkusheyTvBreekingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("h6.default a[href]");
+            Elements allList = document.select("div.DTopNews2 a");
             for (int i = 0; i < allList.size(); i++) {
                 String link = allList.get(i).attr("href");
                 String news = allList.get(i).text();
@@ -676,88 +648,22 @@ public class FinanceFragmentViewModel extends ViewModel {
                 list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bdNews24Finance);
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.ekusheyTelevision);
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("বিডি নিউস ২৪ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
+        itemModel.setTitle("একুশে টেলিভশন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-    private void setDailyJanakanthaFinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("div.list-article a[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
-                String link="https://www.dailyjanakantha.com"+temporaryLink;
-                String news = allList.get(i).select("h2").text();
-                if (news.length()>=15) {
-                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                    list.add(newsAndLinkModel);
-                }
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dailyJanakanthaFinance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("দৈনিক জনকন্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
 
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setSamakalFinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("div.news-content.xs-100.cpItemMarginB");
-            for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).select("a[href]").attr("href");
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.samakalFinance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("সমকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
-    private void setKalerKanthoFinanceNews(Document document) {
-        List<NewsAndLinkModel> list = new ArrayList<>();
-        try {
-            Elements allList = document.select("a.title.hidden-xs[href]");
-            for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
-                String link=MyUrl.kalerKhanto+temporaryLink;
-                String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
-            }
-        } catch (Exception e) {
-            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.kalerKanthoFinance);
-            list.add(newsAndLinkModel);
-        }
-        RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
-        itemModel.setNewsAndLinkModelList(list);
-
-        temporaryList.add(itemModel);
-        itemList.setValue(temporaryList);
-    }
 
 
     @Override
     protected void onCleared() {
-        bdFinanceLiveData.removeObserver(bangladeshiAllFinanceNewsObserver);
+        bdTvChannelLiveData.removeObserver(bangladeshiAllTvChannelNewsObserver);
         super.onCleared();
         compositeDisposable.dispose();
     }
