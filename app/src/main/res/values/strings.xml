@@ -217,10 +217,40 @@
 
     <string-array name="bd_international_url_list">
         <item>https://www.kalerkantho.com/online/world/</item>
+        <item>https://samakal.com/international</item>
+        <item>https://www.dailyjanakantha.com/online/international/</item>
+        <item>https://bangla.bdnews24.com/world/</item>
+        <item>https://www.banglatribune.com/foreign</item>
+        <item>https://www.bhorerkagoj.com/category/international/</item>
+        <item>https://www.dailyinqilab.com/newscategory/international/</item>
+        <item>https://www.dailynayadiganta.com/international/8</item>
+        <item>https://amar-desh24.com/bangla/index.php/international</item>
+        <item>https://www.ittefaq.com.bd/worldnews</item>
+        <item>https://www.mzamin.com/category.php?cid=8</item>
+        <item>https://www.sangbadpratidin.in/category/world/</item>
+        <item>https://www.manobkantha.com.bd/category/international/3</item>
+        <item>https://www.bd-journal.com/international</item>
+        <item>https://www.dailyvorerpata.com/cat.php?cd=116</item>
+        <item>http://www.dainikamadershomoy.com/international</item>
     </string-array>
 
     <string-array name="bd_international_news_list">
         <item>কালের কণ্ঠ (আন্তর্জাতিক খবর)</item>
+        <item>সমকাল (আন্তর্জাতিক খবর)</item>
+        <item>দৈনিক জনকন্ঠ (আন্তর্জাতিক খবর)</item>
+        <item>বিডি নিউস ২৪ (আন্তর্জাতিক খবর)</item>
+        <item>বাংলা ট্রিবিউন (আন্তর্জাতিক খবর)</item>
+        <item>ভোরের কাগজ (আন্তর্জাতিক খবর)</item>
+        <item>দৈনিক ইনকিলাব (আন্তর্জাতিক খবর)</item>
+        <item>নয়া দিগন্ত (আন্তর্জাতিক খবর)</item>
+        <item>আমার দেশ 24 (আন্তর্জাতিক খবর)</item>
+        <item>দৈনিক ইত্তেফাক (আন্তর্জাতিক খবর)</item>
+        <item>মানবজমিন (আন্তর্জাতিক খবর)</item>
+        <item>সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)</item>
+        <item>মানবকণ্ঠ (আন্তর্জাতিক খবর)</item>
+        <item>বাংলাদেশ জার্নাল (আন্তর্জাতিক খবর)</item>
+        <item>ভোরের পাতা (আন্তর্জাতিক খবর)</item>
+        <item>আমাদের সময় (আন্তর্জাতিক খবর)</item>
     </string-array>
 
 

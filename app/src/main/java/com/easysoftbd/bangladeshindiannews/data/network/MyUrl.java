@@ -96,6 +96,21 @@ public class MyUrl {
 
 
     public static final String kalerKanthoInternational="https://www.kalerkantho.com/online/world/";
+    public static final String samakalInternational="https://samakal.com/international";
+    public static final String dailyJanakanthaInternational="https://www.dailyjanakantha.com/online/international/";
+    public static final String bdNews24International="https://bangla.bdnews24.com/world/";
+    public static final String banglaTribuneInternational="https://www.banglatribune.com/foreign";
+    public static final String bhorerkagojInternational="https://www.bhorerkagoj.com/category/international/";
+    public static final String dailyInqilabInternational="https://www.dailyinqilab.com/newscategory/international/";
+    public static final String dailyNayadigantaInternational="https://www.dailynayadiganta.com/international/8";
+    public static final String amarDesh24International="https://amar-desh24.com/bangla/index.php/international";
+    public static final String dailyIttefaqInternational="https://www.ittefaq.com.bd/worldnews";
+    public static final String manobZaminInternational="https://www.mzamin.com/category.php?cid=8";
+    public static final String sangbadpratidinInternational="https://www.sangbadpratidin.in/category/world/";
+    public static final String manobKanthaInternational="https://www.manobkantha.com.bd/category/international/3";
+    public static final String bdJournalInternational="https://www.bd-journal.com/international";
+    public static final String dailyVorerPataInternational="https://www.dailyvorerpata.com/cat.php?cd=116";
+    public static final String dainikAmaderShomoyInternational="http://www.dainikamadershomoy.com/international";
     // international news link are staying above.
 
 
