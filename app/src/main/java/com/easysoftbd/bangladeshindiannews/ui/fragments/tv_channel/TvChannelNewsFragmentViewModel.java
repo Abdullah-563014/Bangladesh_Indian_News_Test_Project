@@ -365,14 +365,12 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                 if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
                     itemList.setValue(itemList.getValue());
                 }
-                Log.d(Constants.TAG,"bd sports data size is:- "+bdTvChannels.size());
                 if (bdTvChannels.size()>0 && !insertingDataFlag) {
                     temporaryList.clear();
                     itemList.setValue(temporaryList);
                     for (int i=0; i<bdTvChannels.size(); i++) {
                         if (bdTvChannels.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
                             loadPageDocument(bdTvChannels.get(i).getPaperUrl());
-                            Log.d(Constants.TAG,"bd sports url call:- "+i);
                         } else {
                             bdTvChannelUnVisibleTemporaryList.add(bdTvChannels.get(i));
                         }
@@ -393,7 +391,6 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             bdTvChannel.setPaperName(nameList.get(i));
                             bdTvChannel.setBackgroundColor("SkyBlue");
                             bdTvChannel.setTextColor("White");
-                            Log.d(Constants.TAG,"data insert:- "+i);
                             Completable.fromAction(()->{
                                 newsDatabase.bdTvChannelDao().insertNews(bdTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

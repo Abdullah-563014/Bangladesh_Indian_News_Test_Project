@@ -94,4 +94,9 @@ public class MyUrl {
     // Finance link are staying above.
 
 
+
+    public static final String kalerKanthoInternational="https://www.kalerkantho.com/online/world/";
+    // international news link are staying above.
+
+
 }

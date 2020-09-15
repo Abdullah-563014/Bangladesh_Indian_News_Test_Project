@@ -1,13 +1,8 @@
-package com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel;
+package com.easysoftbd.bangladeshindiannews.ui.fragments.international;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -16,16 +11,24 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdInternational;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
+import com.easysoftbd.bangladeshindiannews.databinding.FragmentInternationalBinding;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentTvChannelNewsBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
-import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceFragmentViewModel;
-import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceNewsAdapter;
-import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceNewsViewModelFactory;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel.TvChannelNewsAdapter;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel.TvChannelNewsFragmentViewModel;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel.TvChannelNewsViewModelFactory;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import java.util.ArrayList;
@@ -33,27 +36,30 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class TvChannelNewsFragment extends Fragment {
+public class InternationalFragment extends Fragment {
+
 
     private AlertDialog alertDialog;
     private Intent intent;
-    private TvChannelNewsFragmentViewModel viewModel;
-    private FragmentTvChannelNewsBinding binding;
-    private TvChannelNewsAdapter adapter;
+    private InternationalFragmentViewModel viewModel;
+    private FragmentInternationalBinding binding;
+    private InternationalFragmentAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
-    private List<BdTvChannel> bdTvChannelUnVisibleList=new ArrayList<>();
+    private List<BdInternational> bdInternationalUnVisibleList=new ArrayList<>();
 
-    public TvChannelNewsFragment() {
+
+    public InternationalFragment() {
         // Required empty public constructor
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        TvChannelNewsViewModelFactory factory=new TvChannelNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
-        viewModel = new ViewModelProvider(this,factory).get(TvChannelNewsFragmentViewModel.class);
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tv_channel_news, container, false);
+        InternationalFragmentViewModelFactory factory=new InternationalFragmentViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
+        viewModel = new ViewModelProvider(this,factory).get(InternationalFragmentViewModel.class);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_international, container, false);
         binding.setLifecycleOwner(this);
         return binding.getRoot();
     }
@@ -76,18 +82,22 @@ public class TvChannelNewsFragment extends Fragment {
     }
 
     private void loadAllUrl() {
-        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_tv_channel_url_list)));
-        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_tv_channel_news_list)));
-        viewModel.checkBangladeshTvChannelNewsDataInDb(nameList,urlList);
+        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_international_url_list)));
+        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_international_news_list)));
+        viewModel.checkBangladeshInternationalNewsDataInDb(nameList,urlList);
     }
 
     private void initRecyclerView() {
-        adapter=new TvChannelNewsAdapter(getContext(),list);
+        adapter=new InternationalFragmentAdapter(getContext(),list);
         linearLayoutManager=new LinearLayoutManager(getContext());
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingBdTvChannelList(recyclerItemModels);
+            viewModel.shortingBdInternationalList(recyclerItemModels);
+            for (int i=0; i<recyclerItemModels.size();i++) {
+                Log.d(Constants.TAG,"Bd Sport Item serial:- "+recyclerItemModels.get(i).getSerialNumber());
+                Log.d(Constants.TAG,"Bd Sport Item data size:- "+recyclerItemModels.size());
+            }
         });
 
         viewModel.getShortedList().observe(this, recyclerItemModelList -> {
@@ -181,9 +191,9 @@ public class TvChannelNewsFragment extends Fragment {
     }
 
     private void initAll() {
-        viewModel.getBdTvChannelUnVisibleList().observe(this, tvChannel -> {
-            bdTvChannelUnVisibleList.clear();
-            bdTvChannelUnVisibleList.addAll(tvChannel);
+        viewModel.getBdInternationalUnVisibleList().observe(this, internationalNews -> {
+            bdInternationalUnVisibleList.clear();
+            bdInternationalUnVisibleList.addAll(internationalNews);
         });
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -191,9 +201,9 @@ public class TvChannelNewsFragment extends Fragment {
     }
 
     private void showUnVisibleList() {
-        String[] list=new String[bdTvChannelUnVisibleList.size()];
-        for (int i=0; i<bdTvChannelUnVisibleList.size(); i++) {
-            list[i]=bdTvChannelUnVisibleList.get(i).getPaperName();
+        String[] list=new String[bdInternationalUnVisibleList.size()];
+        for (int i=0; i<bdInternationalUnVisibleList.size(); i++) {
+            list[i]=bdInternationalUnVisibleList.get(i).getPaperName();
         }
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
                 .setCancelable(true)

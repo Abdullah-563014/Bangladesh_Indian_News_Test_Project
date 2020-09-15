@@ -8,6 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNewsFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceFragment;
+import com.easysoftbd.bangladeshindiannews.ui.fragments.international.InternationalFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.sports.SportsNewsFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel.TvChannelNewsFragment;
 
@@ -44,6 +45,7 @@ public class HomeActivityFragmentStateAdapter extends FragmentStateAdapter {
         fragmentList.add(new EntertainmentFragment());
         fragmentList.add(new FinanceFragment());
         fragmentList.add(new TvChannelNewsFragment());
+        fragmentList.add(new InternationalFragment());
     }
 
     private void addAllTitleForTabLayout() {
@@ -53,6 +55,7 @@ public class HomeActivityFragmentStateAdapter extends FragmentStateAdapter {
         titleList.add("Entertainment News");
         titleList.add("Finance News");
         titleList.add("TvChannel News");
+        titleList.add("International News");
     }
 
     public String getTitle(int position) {
