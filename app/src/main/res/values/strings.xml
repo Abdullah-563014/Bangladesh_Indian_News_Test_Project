@@ -254,6 +254,44 @@
     </string-array>
 
 
+
+    <string-array name="indian_bangla_breaking_news_list">
+        <item>আনন্দবাজার পত্রিকা (ব্রেকিং নিউজ)</item>
+        <item>সংবাদ প্রতিদিন (ব্রেকিং নিউজ)</item>
+        <item>বর্তমান (সর্বশেষ খবর)</item>
+        <item>গণশক্তি (আজকের খবর)</item>
+        <item>উত্তরবঙ্গ সংবাদ (উত্তরবঙ্গ)</item>
+        <item>এবেলা (সর্বশেষ খবর)</item>
+        <item>অসমীয়া প্রতিদিন (ব্রেকিং নিউজ)</item>
+        <item>আজকাল (আকর্ষনীয় খবর)</item>
+        <item>খবর অনলাইন (নজরে)</item>
+        <item>যুগশঙ্ক (ব্রেকিং নিউজ)</item>
+        <item>জাগরণত্রিপুরা (ব্রেকিং নিউজ)</item>
+        <item>গণদাবী (ব্রেকিং নিউজ)</item>
+        <item>ওয়ান ইন্ডিয়া (সাধারণ খবর)</item>
+        <item>কলকাতা ২৪*৭ (ব্রেকিং নিউজ)</item>
+        <item>খবর ২৪ ঘন্টা (ব্রেকিং নিউজ)</item>
+    </string-array>
+
+    <string-array name="indian_bangla_breaking_url_list">
+        <item>https://www.anandabazar.com/</item>
+        <item>https://www.sangbadpratidin.in/</item>
+        <item>https://bartamanpatrika.com/</item>
+        <item>http://www.ganashakti.com/bengali/</item>
+        <item>https://www.uttarbangasambad.com/</item>
+        <item>https://ebela.in/</item>
+        <item>https://www.asomiyapratidin.in/</item>
+        <item>https://aajkaal.in/attractivenews</item>
+        <item>https://www.khaboronline.com/</item>
+        <item>https://jugasankha.in/topics/breaking-news/</item>
+        <item>http://jagarantripura.com/</item>
+        <item>http://ganadabi.com/</item>
+        <item>https://bengali.oneindia.com/</item>
+        <item>https://www.kolkata24x7.com/</item>
+        <item>https://khabor24.in/</item>
+    </string-array>
+
+
     <string name="read_write_permission_details">
         To download content using this app, You need to provide Write_External_Storage permission to save the
         downloaded file on your phone storage.
