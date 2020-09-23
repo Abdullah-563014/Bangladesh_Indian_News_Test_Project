@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface BdFinanceDao {
 
-    @Query("SELECT * FROM bd_finance")
+    @Query("SELECT * FROM bd_finance ORDER BY serial ASC")
     LiveData<List<BdFinance>> getAllNews();
 
     @Query("SELECT * FROM bd_finance WHERE serial=:serial")

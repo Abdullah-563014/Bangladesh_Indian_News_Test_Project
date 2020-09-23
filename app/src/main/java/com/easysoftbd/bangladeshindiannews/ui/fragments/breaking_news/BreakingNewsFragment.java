@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaBreaking;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentBreakingNewsBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
+import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import java.util.ArrayList;
@@ -39,7 +41,10 @@ public class BreakingNewsFragment extends Fragment {
     private BreakingNewsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
+    private String countryName,languageName;
+
     private List<BdBreaking> bdBreakingUnVisibleList=new ArrayList<>();
+    private List<IndianBanglaBreaking> indianBanglaBreakingUnVisibleList=new ArrayList<>();
 
 
     public BreakingNewsFragment() {
@@ -49,7 +54,9 @@ public class BreakingNewsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        BreakingNewsViewModelFactory factory=new BreakingNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
+        countryName=CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedCountryTag,"Bangladesh");
+        languageName=CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedLanguageTag,"Bangla");
+        BreakingNewsViewModelFactory factory=new BreakingNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase(),countryName,languageName);
         viewModel = new ViewModelProvider(this,factory).get(BreakingNewsFragmentViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_breaking_news, container, false);
         binding.setLifecycleOwner(this);
@@ -74,9 +81,15 @@ public class BreakingNewsFragment extends Fragment {
     }
 
     private void loadAllUrl() {
-        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_url_list)));
-        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_news_list)));
-        viewModel.checkBangladeshBreakingNewsDataInDb(nameList,urlList);
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_news_list)));
+            viewModel.checkBangladeshBreakingNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_breaking_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_breaking_news_list)));
+            viewModel.checkIndianBanglaBreakingNewsDataInDb(nameList,urlList);
+        }
     }
 
     private void initRecyclerView() {
@@ -85,7 +98,11 @@ public class BreakingNewsFragment extends Fragment {
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingBdBreakingList(recyclerItemModels);
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                viewModel.shortingBdBreakingList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                viewModel.shortingIndianBanglaBreakingList(recyclerItemModels);
+            }
         });
 
         viewModel.getShortedList().observe(this, recyclerItemModelList -> {
@@ -179,28 +196,46 @@ public class BreakingNewsFragment extends Fragment {
     }
 
     private void initAll() {
-        viewModel.getBdBreakingUnVisibleList().observe(this, bdBreakings -> {
-            bdBreakingUnVisibleList.clear();
-            bdBreakingUnVisibleList.addAll(bdBreakings);
-        });
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            viewModel.getBdBreakingUnVisibleList().observe(this, bdBreakings -> {
+                bdBreakingUnVisibleList.clear();
+                bdBreakingUnVisibleList.addAll(bdBreakings);
+            });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            viewModel.getIndianBanglaBreakingUnVisibleList().observe(this, indianBanglaBreakings -> {
+                indianBanglaBreakingUnVisibleList.clear();
+                indianBanglaBreakingUnVisibleList.addAll(indianBanglaBreakings);
+            });
+        }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
         });
     }
 
     private void showUnVisibleList() {
-        String[] list=new String[bdBreakingUnVisibleList.size()];
-        for (int i=0; i<bdBreakingUnVisibleList.size(); i++) {
-            list[i]=bdBreakingUnVisibleList.get(i).getPaperName();
+        String[] list=null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            list=new String[bdBreakingUnVisibleList.size()];
+            for (int i=0; i<bdBreakingUnVisibleList.size(); i++) {
+                list[i]=bdBreakingUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            list=new String[indianBanglaBreakingUnVisibleList.size()];
+            for (int i=0; i<indianBanglaBreakingUnVisibleList.size(); i++) {
+                list[i]=indianBanglaBreakingUnVisibleList.get(i).getPaperName();
+            }
         }
+
+
+        String[] finalList=list;
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
                 .setCancelable(true)
                 .setTitle("Please choose an item")
-                .setItems(list, new DialogInterface.OnClickListener() {
+                .setItems(finalList, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        viewModel.visibleItem(list[i]);
+                        viewModel.visibleItem(finalList[i]);
                     }
                 });
         AlertDialog alertDialog=builder.create();

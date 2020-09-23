@@ -9,4 +9,11 @@ public class Constants {
     public static final String sharedPreferenceName="MySharedPreference";
     public static final String selectedCountryTag="SelectedCountryTag";
     public static final String selectedLanguageTag="SelectedLanguageTag";
+
+    public static final String bangladesh="Bangladesh";
+    public static final String india="India";
+    public static final String bangla="Bangla";
+    public static final String hindi="Hindi";
+    public static final String english="English";
+
 }

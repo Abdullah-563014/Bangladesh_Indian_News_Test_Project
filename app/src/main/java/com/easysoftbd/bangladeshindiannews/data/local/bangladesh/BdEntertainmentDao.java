@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.core.Observable;
 @Dao
 public interface BdEntertainmentDao {
 
-    @Query("SELECT * FROM bd_entertainment")
+    @Query("SELECT * FROM bd_entertainment ORDER BY serial ASC")
     LiveData<List<BdEntertainment>> getAllNews();
 
     @Query("SELECT * FROM bd_entertainment WHERE serial=:serial")

@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface IndianBanglaBreakingDao {
 
-    @Query("SELECT * FROM indian_bangla_breaking")
+    @Query("SELECT * FROM indian_bangla_breaking ORDER BY serial ASC")
     LiveData<List<IndianBanglaBreaking>> getAllNews();
 
     @Query("SELECT * FROM indian_bangla_breaking WHERE serial=:serial")

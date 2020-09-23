@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface BdInternationalDao {
 
-    @Query("SELECT * FROM bd_international")
+    @Query("SELECT * FROM bd_international ORDER BY serial ASC")
     LiveData<List<BdInternational>> getAllNews();
 
     @Query("SELECT * FROM bd_international WHERE serial=:serial")
