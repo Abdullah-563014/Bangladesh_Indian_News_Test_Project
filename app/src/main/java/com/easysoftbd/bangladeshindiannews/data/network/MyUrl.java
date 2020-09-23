@@ -133,4 +133,27 @@ public class MyUrl {
     public static final String khabor24BreakingNews="https://khabor24.in/";
 // indian bangla breaking news link are staying above.
 
+
+
+
+    public static final String anandaBazarSportsNews="https://www.anandabazar.com/sport?ref=home-navbar";
+    public static final String sangbadPratidinSportsNews="https://www.sangbadpratidin.in/category/sports/";
+    public static final String bartamanPatrikaSportsNews="https://bartamanpatrika.com/section.php?cID=18";
+    public static final String ganashaktiSportsNews="http://www.ganashakti.com/bengali/sports";
+    public static final String uttarBangaSambadSportsNews="https://www.uttarbangasambad.com/category/sports";
+    public static final String ebelaSportsNews="https://ebela.in/sports?ref=hm-TopNav";
+    public static final String asomiyaPratidinSportsNews="https://www.asomiyapratidin.in/category/sports/";
+    public static final String aajKaalSportsNews="https://aajkaal.in/sports";
+    public static final String khaborOnlineSportsNews="https://www.khaboronline.com/category/sports/";
+    public static final String jugasankhaSportsNews="https://jugasankha.in/topics/sports/";
+    public static final String jagaranTripuraSportsNews="http://jagarantripura.com/category/sport/";
+    public static final String oneIndiaSportsNews="https://bengali.oneindia.com/news/sports";
+    public static final String kolkata247SportsNews="https://www.kolkata24x7.com/category/sports/";
+    public static final String khabor24SportsNews="http://khabor24.in/category/sports/";
+// indian bangla sports news link are staying above.
+
+
+
+
+
 }

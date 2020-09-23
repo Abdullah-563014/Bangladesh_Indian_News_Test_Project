@@ -291,6 +291,40 @@
         <item>https://khabor24.in/</item>
     </string-array>
 
+    <string-array name="indian_bangla_sports_news_list">
+        <item>আনন্দবাজার পত্রিকা (খেলার খবর)</item>
+        <item>সংবাদ প্রতিদিন (খেলার খবর)</item>
+        <item>বর্তমান (খেলার খবর)</item>
+        <item>গণশক্তি (খেলার খবর)</item>
+        <item>উত্তরবঙ্গ সংবাদ (খেলার খবর)</item>
+        <item>এবেলা (খেলার খবর)</item>
+        <item>অসমীয়া প্রতিদিন (খেলার খবর)</item>
+        <item>আজকাল (খেলার খবর)</item>
+        <item>খবর অনলাইন (খেলার খবর)</item>
+        <item>যুগশঙ্ক (খেলার খবর)</item>
+        <item>জাগরণত্রিপুরা (খেলার খবর)</item>
+        <item>ওয়ান ইন্ডিয়া (খেলার খবর)</item>
+        <item>কলকাতা ২৪*৭ (খেলার খবর)</item>
+        <item>খবর ২৪ ঘন্টা (খেলার খবর)</item>
+    </string-array>
+
+    <string-array name="indian_bangla_sports_url_list">
+        <item>https://www.anandabazar.com/sport?ref=home-navbar</item>
+        <item>https://www.sangbadpratidin.in/category/sports/</item>
+        <item>https://bartamanpatrika.com/section.php?cID=18</item>
+        <item>http://www.ganashakti.com/bengali/sports</item>
+        <item>https://www.uttarbangasambad.com/category/sports</item>
+        <item>https://ebela.in/sports?ref=hm-TopNav</item>
+        <item>https://www.asomiyapratidin.in/category/sports/</item>
+        <item>https://aajkaal.in/sports</item>
+        <item>https://www.khaboronline.com/category/sports/</item>
+        <item>https://jugasankha.in/topics/sports/</item>
+        <item>http://jagarantripura.com/category/sport/</item>
+        <item>https://bengali.oneindia.com/news/sports</item>
+        <item>https://www.kolkata24x7.com/category/sports/</item>
+        <item>http://khabor24.in/category/sports/</item>
+    </string-array>
+
 
     <string name="read_write_permission_details">
         To download content using this app, You need to provide Write_External_Storage permission to save the
