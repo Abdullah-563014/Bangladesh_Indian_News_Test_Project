@@ -54,8 +54,8 @@ public class BreakingNewsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        countryName=CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedCountryTag,"Bangladesh");
-        languageName=CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedLanguageTag,"Bangla");
+        countryName=CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedCountryTag,Constants.bangladesh);
+        languageName=CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedLanguageTag,Constants.bangla);
         BreakingNewsViewModelFactory factory=new BreakingNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase(),countryName,languageName);
         viewModel = new ViewModelProvider(this,factory).get(BreakingNewsFragmentViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_breaking_news, container, false);

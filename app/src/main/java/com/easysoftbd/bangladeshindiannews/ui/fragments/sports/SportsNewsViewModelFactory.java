@@ -9,14 +9,17 @@ import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 public class SportsNewsViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private NewsDatabase newsDatabase;
+    private String countryName,languageName;
 
-    public SportsNewsViewModelFactory(NewsDatabase newsDatabase) {
+    public SportsNewsViewModelFactory(NewsDatabase newsDatabase, String countryName, String languageName) {
         this.newsDatabase = newsDatabase;
+        this.countryName = countryName;
+        this.languageName = languageName;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new SportNewsFragmentViewModel(newsDatabase);
+        return (T) new SportNewsFragmentViewModel(newsDatabase,countryName,languageName);
     }
 }

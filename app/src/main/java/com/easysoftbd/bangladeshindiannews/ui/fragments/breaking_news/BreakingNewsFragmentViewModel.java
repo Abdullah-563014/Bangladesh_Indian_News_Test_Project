@@ -230,14 +230,15 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
     }
     public void itemMoveToDown(int serialNumber) {
-        if (serialNumber < (bdBreakingList.size() - 1)) {
             BdBreaking bdBreakingCurrentItem = null, bdBreakingDownItem = null;
             if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
-                bdBreakingCurrentItem = bdBreakingList.get(serialNumber);
-                bdBreakingDownItem = bdBreakingList.get(serialNumber + 1);
+                if (serialNumber < (bdBreakingList.size() - 1)) {
+                    bdBreakingCurrentItem = bdBreakingList.get(serialNumber);
+                    bdBreakingDownItem = bdBreakingList.get(serialNumber + 1);
 
-                bdBreakingCurrentItem.setSerial(serialNumber + 1);
-                bdBreakingDownItem.setSerial(serialNumber);
+                    bdBreakingCurrentItem.setSerial(serialNumber + 1);
+                    bdBreakingDownItem.setSerial(serialNumber);
+                }
             }
             BdBreaking finalBdBreakingCurrentItem = bdBreakingCurrentItem;
             BdBreaking finalBdBreakingDownItem = bdBreakingDownItem;
@@ -245,11 +246,13 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 
             IndianBanglaBreaking indianBanglaBreakingCurrentItem = null, indianBanglaBreakingDownItem = null;
             if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
-                indianBanglaBreakingCurrentItem = indianBanglaBreakingList.get(serialNumber);
-                indianBanglaBreakingDownItem = indianBanglaBreakingList.get(serialNumber + 1);
+                if (serialNumber < (indianBanglaBreakingList.size() - 1)) {
+                    indianBanglaBreakingCurrentItem = indianBanglaBreakingList.get(serialNumber);
+                    indianBanglaBreakingDownItem = indianBanglaBreakingList.get(serialNumber + 1);
 
-                indianBanglaBreakingCurrentItem.setSerial(serialNumber + 1);
-                indianBanglaBreakingDownItem.setSerial(serialNumber);
+                    indianBanglaBreakingCurrentItem.setSerial(serialNumber + 1);
+                    indianBanglaBreakingDownItem.setSerial(serialNumber);
+                }
             }
             IndianBanglaBreaking finalIndianBanglaBreakingCurrentItem = indianBanglaBreakingCurrentItem;
             IndianBanglaBreaking finalIndianBanglaBreakingDownItem = indianBanglaBreakingDownItem;
@@ -280,7 +283,6 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 
                 }
             });
-        }
     }
     public void hideItem(int serialNumber) {
         BdBreaking bdBreakingCurrentItem = null;
