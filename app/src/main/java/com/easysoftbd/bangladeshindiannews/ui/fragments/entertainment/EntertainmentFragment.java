@@ -88,7 +88,7 @@ public class EntertainmentFragment extends Fragment {
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_entertainment_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_entertainment_news_list)));
-            viewModel.checkBangladeshEntertainmentNewsDataInDb(nameList,urlList);
+            viewModel.checkIndianBanglaEntertainmentNewsDataInDb(nameList,urlList);
         }
     }
 

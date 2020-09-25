@@ -110,6 +110,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             setDailyManobJominEntertainmentNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.sangbadpratidinEntertainment)){
                             setSangbadPratidinEntertainmentNews(document);
+                            setSangbadPratidinIndianEntertainmentNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.manobkanthaEntertainment)){
                             setManobKanthaEntertainmentNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.bdJournalEntertainment)){
@@ -146,7 +147,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.bengal2DayEntertainmentNews)){
                             setBengal2DayEntertainmentNews(document);
                         }
-//                        Log.d(Constants.TAG,"sports:- "+document.baseUri());
+                        Log.d(Constants.TAG,"entertainment:- "+document.baseUri());
                     }
 
                     @Override
