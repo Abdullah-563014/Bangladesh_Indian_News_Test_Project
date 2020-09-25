@@ -94,8 +94,8 @@ public class SportsNewsFragment extends Fragment {
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_sports_news_list)));
             viewModel.checkBangladeshSportsNewsDataInDb(nameList,urlList);
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
-            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_breaking_url_list)));
-            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_breaking_news_list)));
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_sports_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_sports_news_list)));
             viewModel.checkIndianBanglaSportsNewsDataInDb(nameList,urlList);
         }
     }

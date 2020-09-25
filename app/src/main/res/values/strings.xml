@@ -306,6 +306,7 @@
         <item>ওয়ান ইন্ডিয়া (খেলার খবর)</item>
         <item>কলকাতা ২৪*৭ (খেলার খবর)</item>
         <item>খবর ২৪ ঘন্টা (খেলার খবর)</item>
+        <item>বাংলা টু ডে (খেলার খবর)</item>
     </string-array>
 
     <string-array name="indian_bangla_sports_url_list">
@@ -323,6 +324,7 @@
         <item>https://bengali.oneindia.com/news/sports</item>
         <item>https://www.kolkata24x7.com/category/sports/</item>
         <item>http://khabor24.in/category/sports/</item>
+        <item>https://bengal2day.com/%e0%a6%96%e0%a7%87%e0%a6%b2%e0%a6%be/</item>
     </string-array>
 
 

@@ -113,6 +113,37 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             setBdJournalSportNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailySangramSports)) {
                             setDailySangramSportNews(document);
+                        }// bangladesh sport news papers list are staying above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.anandaBazarSportsNews)) {
+                            setAnandaBazarSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.sangbadPratidinSportsNews)) {
+                            setSangbadPratidinIndianSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bartamanPatrikaSportsNews)) {
+                            setBartamanPatrikaSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ganashaktiSportsNews)) {
+                            setGanaShaktiSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.uttarBangaSambadSportsNews)) {
+                            setUttarBangaSambadSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ebelaSportsNews)) {
+                            setEbelaSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.asomiyaPratidinSportsNews)) {
+                            setAsomiyaPratidinSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.aajKaalSportsNews)) {
+                            setAajKaalSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.khaborOnlineSportsNews)) {
+                            setKhaborOnlineSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jugasankhaSportsNews)) {
+                            setJugaSankhaSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jagaranTripuraSportsNews)) {
+                            setJagaranTripuraSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.oneIndiaSportsNews)) {
+                            setOneIndiaSportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.kolkata247SportsNews)) {
+                            setKolkata247SportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.khabor24SportsNews)) {
+                            setKhabor24SportNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bengal2DaySportsNews)) {
+                            setBengal2DaySportNews(document);
                         }
 //                        Log.d(Constants.TAG,"sports:- "+document.baseUri());
                     }
@@ -1028,7 +1059,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
             Elements allList = document.select("div.col-md-8 a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String link = allList.get(i).attr("href");
-                String news = allList.get(i).select("h5").text();
+                String news = allList.get(i).select("h3").text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
@@ -1250,6 +1281,27 @@ public class SportNewsFragmentViewModel extends ViewModel {
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("খবর ২৪ ঘন্টা (খেলার খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setBengal2DaySportNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("article h2.entry-title a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bengal2DaySportsNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("বাংলা টু ডে (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);

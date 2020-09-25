@@ -150,6 +150,7 @@ public class MyUrl {
     public static final String oneIndiaSportsNews="https://bengali.oneindia.com/news/sports";
     public static final String kolkata247SportsNews="https://www.kolkata24x7.com/category/sports/";
     public static final String khabor24SportsNews="http://khabor24.in/category/sports/";
+    public static final String bengal2DaySportsNews="https://bengal2day.com/%e0%a6%96%e0%a7%87%e0%a6%b2%e0%a6%be/";
 // indian bangla sports news link are staying above.
 
 
