@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModel;
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdSports;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaEntertainment;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaSport;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
@@ -43,17 +45,27 @@ public class EntertainmentFragmentViewModel extends ViewModel {
     private List<RecyclerItemModel> temporaryShortingList=new ArrayList<>();
     private boolean insertingDataFlag=false;
     private boolean dataStatusFlagInDb=false;
+    private String countryName, languageName;
+
     private Observer<List<BdEntertainment>> bangladeshiAllEntertainmentNewsObserver;
     private LiveData<List<BdEntertainment>> bdEntertainmentLiveData;
     private MutableLiveData<List<BdEntertainment>> bdEntertainmentUnVisibleList;
     private List<BdEntertainment> bdEntertainmentList=new ArrayList<>();
     private List<BdEntertainment> bdEntertainmentUnVisibleTemporaryList=new ArrayList<>();
 
+    private Observer<List<IndianBanglaEntertainment>> indianBanglaAllEntertainmentNewsObserver;
+    private LiveData<List<IndianBanglaEntertainment>> indianBanglaEntertainmentLiveData;
+    private MutableLiveData<List<IndianBanglaEntertainment>> indianBanglaEntertainmentUnVisibleList;
+    private List<IndianBanglaEntertainment> indianBanglaEntertainmentList=new ArrayList<>();
+    private List<IndianBanglaEntertainment> indianBanglaEntertainmentUnVisibleTemporaryList=new ArrayList<>();
 
 
 
-    public EntertainmentFragmentViewModel(NewsDatabase newsDatabase) {
+
+    public EntertainmentFragmentViewModel(NewsDatabase newsDatabase, String countryName, String languageName) {
         this.newsDatabase=newsDatabase;
+        this.countryName=countryName;
+        this.languageName=languageName;
         if (myResponse == null) {
             myResponse = new MyResponse();
         }
@@ -123,70 +135,60 @@ public class EntertainmentFragmentViewModel extends ViewModel {
 //====================================Primary method staying in above========================================
 
 
-    public void shortingBdEntertainmentList(List<RecyclerItemModel> recyclerItemModelList) {
-        if (shortedList==null) {
-            shortedList=new MutableLiveData<>();
-        }
-        temporaryShortingList.clear();
-        String title;
-        RecyclerItemModel recyclerItemModel;
-        for (int i=0; i<bdEntertainmentList.size(); i++) {
-            title=bdEntertainmentList.get(i).getPaperName();
-            for (int j=0; j<recyclerItemModelList.size(); j++) {
-                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
-                    recyclerItemModel=recyclerItemModelList.get(j);
-                    recyclerItemModel.setSerialNumber(bdEntertainmentList.get(i).getSerial());
-                    recyclerItemModel.setBackgroundColor(bdEntertainmentList.get(i).getBackgroundColor());
-                    recyclerItemModel.setTextColor(bdEntertainmentList.get(i).getTextColor());
-                    temporaryShortingList.add(recyclerItemModel);
-                }
-            }
-        }
-        shortedList.setValue(temporaryShortingList);
-    }
-
     public LiveData<List<RecyclerItemModel>> getShortedList() {
         if (shortedList==null) {
             shortedList=new MutableLiveData<>();
         }
         return shortedList;
     }
-
     public LiveData<List<RecyclerItemModel>> getItemList() {
         if (itemList==null) {
             itemList=new MutableLiveData<>();
         }
         return itemList;
     }
-
-    public LiveData<List<BdEntertainment>> getBdEntertainmentUnVisibleList() {
-        if (bdEntertainmentUnVisibleList==null) {
-            bdEntertainmentUnVisibleList=new MutableLiveData<>();
-        }
-        return bdEntertainmentUnVisibleList;
-    }
-
     public LiveData<Integer> getItemMovedPosition() {
         if (itemMovePosition==null) {
             itemMovePosition=new MutableLiveData<>();
         }
         return itemMovePosition;
     }
-
     public void itemMoveToUp(int serialNumber) {
         if (serialNumber>0) {
-            BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
-            BdEntertainment upperItem=bdEntertainmentList.get(serialNumber-1);
+            BdEntertainment bdEntertainmentCurrentItem = null, bdEntertainmentUpperItem = null;
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                bdEntertainmentCurrentItem = bdEntertainmentList.get(serialNumber);
+                bdEntertainmentUpperItem = bdEntertainmentList.get(serialNumber - 1);
 
-            currentItem.setSerial(serialNumber-1);
-            upperItem.setSerial(serialNumber);
+                bdEntertainmentCurrentItem.setSerial(serialNumber - 1);
+                bdEntertainmentUpperItem.setSerial(serialNumber);
+            }
+            BdEntertainment finalBdEntertainmentCurrentItem = bdEntertainmentCurrentItem;
+            BdEntertainment finalBdEntertainmentUpperItem = bdEntertainmentUpperItem;
+
+
+            IndianBanglaEntertainment indianBanglaEntertainmentCurrentItem = null, indianBanglaEntertainmentUpperItem = null;
+            if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                indianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentList.get(serialNumber);
+                indianBanglaEntertainmentUpperItem = indianBanglaEntertainmentList.get(serialNumber - 1);
+
+                indianBanglaEntertainmentCurrentItem.setSerial(serialNumber - 1);
+                indianBanglaEntertainmentUpperItem.setSerial(serialNumber);
+            }
+            IndianBanglaEntertainment finalIndianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentCurrentItem;
+            IndianBanglaEntertainment finalIndianBanglaEntertainmentUpperItem = indianBanglaEntertainmentUpperItem;
+
+
+
             insertingDataFlag=true;
             dataStatusFlagInDb=true;
 
-
-
             Completable.fromAction(()->{
-                newsDatabase.bdEntertainmentDao().updateNews(currentItem,upperItem);
+                if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                    newsDatabase.bdEntertainmentDao().updateNews(finalBdEntertainmentCurrentItem,finalBdEntertainmentUpperItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                    newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem, finalIndianBanglaEntertainmentUpperItem);
+                }
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -205,21 +207,45 @@ public class EntertainmentFragmentViewModel extends ViewModel {
             });
         }
     }
-
     public void itemMoveToDown(int serialNumber) {
-        if (serialNumber<(bdEntertainmentList.size()-1)) {
-            BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
-            BdEntertainment downItem=bdEntertainmentList.get(serialNumber+1);
 
-            currentItem.setSerial(serialNumber+1);
-            downItem.setSerial(serialNumber);
+        BdEntertainment bdEntertainmentCurrentItem = null, bdEntertainmentDownItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber < (bdEntertainmentList.size() - 1)) {
+                bdEntertainmentCurrentItem = bdEntertainmentList.get(serialNumber);
+                bdEntertainmentDownItem = bdEntertainmentList.get(serialNumber + 1);
+
+                bdEntertainmentCurrentItem.setSerial(serialNumber + 1);
+                bdEntertainmentDownItem.setSerial(serialNumber);
+            }
+        }
+        BdEntertainment finalBdEntertainmentCurrentItem = bdEntertainmentCurrentItem;
+        BdEntertainment finalBdEntertainmentDownItem = bdEntertainmentDownItem;
+
+
+        IndianBanglaEntertainment indianBanglaEntertainmentCurrentItem = null, indianBanglaEntertainmentEntertainmentDownItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber < (indianBanglaEntertainmentList.size() - 1)) {
+                indianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentList.get(serialNumber);
+                indianBanglaEntertainmentEntertainmentDownItem = indianBanglaEntertainmentList.get(serialNumber + 1);
+
+                indianBanglaEntertainmentCurrentItem.setSerial(serialNumber + 1);
+                indianBanglaEntertainmentEntertainmentDownItem.setSerial(serialNumber);
+            }
+        }
+        IndianBanglaEntertainment finalIndianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentCurrentItem;
+        IndianBanglaEntertainment finalIndianBanglaEntertainmentDownItem = indianBanglaEntertainmentEntertainmentDownItem;
+
+
             insertingDataFlag=true;
             dataStatusFlagInDb=true;
 
-
-
             Completable.fromAction(()->{
-                newsDatabase.bdEntertainmentDao().updateNews(currentItem,downItem);
+                if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                    newsDatabase.bdEntertainmentDao().updateNews(finalBdEntertainmentCurrentItem, finalBdEntertainmentDownItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                    newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem, finalIndianBanglaEntertainmentDownItem);
+                }
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
                 public void onSubscribe(@NonNull Disposable d) {
@@ -236,7 +262,6 @@ public class EntertainmentFragmentViewModel extends ViewModel {
 
                 }
             });
-        }
     }
 
     public void hideItem(int serialNumber) {
@@ -363,6 +388,35 @@ public class EntertainmentFragmentViewModel extends ViewModel {
 
 
 
+
+    public void shortingBdEntertainmentList(List<RecyclerItemModel> recyclerItemModelList) {
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
+        }
+        temporaryShortingList.clear();
+        String title;
+        RecyclerItemModel recyclerItemModel;
+        for (int i=0; i<bdEntertainmentList.size(); i++) {
+            title=bdEntertainmentList.get(i).getPaperName();
+            for (int j=0; j<recyclerItemModelList.size(); j++) {
+                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    recyclerItemModel=recyclerItemModelList.get(j);
+                    recyclerItemModel.setSerialNumber(bdEntertainmentList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(bdEntertainmentList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(bdEntertainmentList.get(i).getTextColor());
+                    temporaryShortingList.add(recyclerItemModel);
+                }
+            }
+        }
+        shortedList.setValue(temporaryShortingList);
+    }
+
+    public LiveData<List<BdEntertainment>> getBdEntertainmentUnVisibleList() {
+        if (bdEntertainmentUnVisibleList==null) {
+            bdEntertainmentUnVisibleList=new MutableLiveData<>();
+        }
+        return bdEntertainmentUnVisibleList;
+    }
 
     public void checkBangladeshEntertainmentNewsDataInDb(List<String> nameList, List<String> urlList) {
         if (bangladeshiAllEntertainmentNewsObserver==null) {
@@ -762,7 +816,11 @@ public class EntertainmentFragmentViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        bdEntertainmentLiveData.removeObserver(bangladeshiAllEntertainmentNewsObserver);
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            bdEntertainmentLiveData.removeObserver(bangladeshiAllEntertainmentNewsObserver);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            indianBanglaEntertainmentLiveData.removeObserver(indianBanglaAllEntertainmentNewsObserver);
+        }
         super.onCleared();
         compositeDisposable.dispose();
     }
