@@ -253,18 +253,18 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         BdEntertainment finalBdEntertainmentDownItem = bdEntertainmentDownItem;
 
 
-        IndianBanglaEntertainment indianBanglaEntertainmentCurrentItem = null, indianBanglaEntertainmentEntertainmentDownItem = null;
+        IndianBanglaEntertainment indianBanglaEntertainmentCurrentItem = null, indianBanglaEntertainmentDownItem = null;
         if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
             if (serialNumber < (indianBanglaEntertainmentList.size() - 1)) {
                 indianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentList.get(serialNumber);
-                indianBanglaEntertainmentEntertainmentDownItem = indianBanglaEntertainmentList.get(serialNumber + 1);
+                indianBanglaEntertainmentDownItem = indianBanglaEntertainmentList.get(serialNumber + 1);
 
                 indianBanglaEntertainmentCurrentItem.setSerial(serialNumber + 1);
-                indianBanglaEntertainmentEntertainmentDownItem.setSerial(serialNumber);
+                indianBanglaEntertainmentDownItem.setSerial(serialNumber);
             }
         }
         IndianBanglaEntertainment finalIndianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentCurrentItem;
-        IndianBanglaEntertainment finalIndianBanglaEntertainmentDownItem = indianBanglaEntertainmentEntertainmentDownItem;
+        IndianBanglaEntertainment finalIndianBanglaEntertainmentDownItem = indianBanglaEntertainmentDownItem;
 
 
             insertingDataFlag=true;

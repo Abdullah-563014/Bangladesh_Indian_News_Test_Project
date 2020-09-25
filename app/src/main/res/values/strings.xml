@@ -361,6 +361,17 @@
         <item>https://bengal2day.com/entertainment/</item>
     </string-array>
 
+    <string-array name="indian_bangla_finance_news_list">
+
+    </string-array>
+
+    <string-array name="indian_bangla_finance_url_list">
+
+    </string-array>
+
+
+
+
 
     <string name="read_write_permission_details">
         To download content using this app, You need to provide Write_External_Storage permission to save the
