@@ -156,5 +156,24 @@ public class MyUrl {
 
 
 
+    public static final String anandaBazarEntertainmentNews="https://www.anandabazar.com/entertainment?ref=home-navbar";
+    public static final String sangbadPratidinEntertainmentNews="https://www.sangbadpratidin.in/category/entertainment/";
+    public static final String bartamanPatrikaEntertainmentNews="https://bartamanpatrika.com/section.php?cID=45";
+    public static final String uttarBangaSambadEntertainmentNews="https://www.uttarbangasambad.com/category/film-entertainment";
+    public static final String ebelaEntertainmentNews="https://ebela.in/entertainment?ref=hm-TopNav";
+    public static final String asomiyaPratidinEntertainmentNews="https://www.asomiyapratidin.in/category/entertainment/";
+    public static final String aajKaalEntertainmentNews="https://aajkaal.in/entertainment";
+    public static final String khaborOnlineEntertainmentNews="https://www.khaboronline.com/category/entertainment/";
+    public static final String jugaSankhaEntertainmentNews="https://jugasankha.in/topics/entertainment/";
+    public static final String jagaranTripuraEntertainmentNews="http://jagarantripura.com/category/entertainment/";
+    public static final String oneIndiaEntertainmentNews="https://bengali.oneindia.com/movies/";
+    public static final String kolkata247EntertainmentNews="https://www.kolkata24x7.com/category/entertainment-news/";
+    public static final String khabor24EntertainmentNews="http://khabor24.in/category/entertainment/";
+    public static final String bengal2DayEntertainmentNews="https://bengal2day.com/entertainment/";
+// indian bangla entertainment news link are staying above.
+
+
+
+
 
 }

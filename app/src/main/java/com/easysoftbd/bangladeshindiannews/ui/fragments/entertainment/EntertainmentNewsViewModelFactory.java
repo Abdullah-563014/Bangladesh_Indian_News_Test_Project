@@ -10,14 +10,17 @@ import com.easysoftbd.bangladeshindiannews.ui.fragments.sports.SportNewsFragment
 public class EntertainmentNewsViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private NewsDatabase newsDatabase;
+    private String countryName, languageName;
 
-    public EntertainmentNewsViewModelFactory(NewsDatabase newsDatabase) {
+    public EntertainmentNewsViewModelFactory(NewsDatabase newsDatabase, String countryName, String languageName) {
         this.newsDatabase = newsDatabase;
+        this.countryName = countryName;
+        this.languageName = languageName;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new EntertainmentFragmentViewModel(newsDatabase);
+        return (T) new EntertainmentFragmentViewModel(newsDatabase,countryName,languageName);
     }
 }

@@ -327,6 +327,40 @@
         <item>https://bengal2day.com/%e0%a6%96%e0%a7%87%e0%a6%b2%e0%a6%be/</item>
     </string-array>
 
+    <string-array name="indian_bangla_entertainment_news_list">
+        <item>আনন্দবাজার পত্রিকা (বিনোদনের শেষ খবর)</item>
+        <item>সংবাদ প্রতিদিন (বিনোদনের শেষ খবর)</item>
+        <item>বর্তমান (বিনোদনের শেষ খবর)</item>
+        <item>উত্তরবঙ্গ সংবাদ (বিনোদনের শেষ খবর)</item>
+        <item>এবেলা (বিনোদনের শেষ খবর)</item>
+        <item>অসমীয়া প্রতিদিন (বিনোদনের শেষ খবর)</item>
+        <item>আজকাল (বিনোদনের শেষ খবর)</item>
+        <item>খবর অনলাইন (বিনোদনের শেষ খবর)</item>
+        <item>যুগশঙ্ক (বিনোদনের শেষ খবর)</item>
+        <item>জাগরণত্রিপুরা (বিনোদনের শেষ খবর)</item>
+        <item>ওয়ান ইন্ডিয়া (বিনোদনের শেষ খবর)</item>
+        <item>কলকাতা ২৪*৭ (বিনোদনের শেষ খবর)</item>
+        <item>খবর ২৪ ঘন্টা (বিনোদনের শেষ খবর)</item>
+        <item>বাংলা টু ডে (বিনোদনের শেষ খবর)</item>
+    </string-array>
+
+    <string-array name="indian_bangla_entertainment_url_list">
+        <item>https://www.anandabazar.com/entertainment?ref=home-navbar</item>
+        <item>https://www.sangbadpratidin.in/category/entertainment/</item>
+        <item>https://bartamanpatrika.com/section.php?cID=45</item>
+        <item>https://www.uttarbangasambad.com/category/film-entertainment</item>
+        <item>https://ebela.in/entertainment?ref=hm-TopNav</item>
+        <item>https://www.asomiyapratidin.in/category/entertainment/</item>
+        <item>https://aajkaal.in/entertainment</item>
+        <item>https://www.khaboronline.com/category/entertainment/</item>
+        <item>https://jugasankha.in/topics/entertainment/</item>
+        <item>http://jagarantripura.com/category/entertainment/</item>
+        <item>https://bengali.oneindia.com/movies/</item>
+        <item>https://www.kolkata24x7.com/category/entertainment-news/</item>
+        <item>http://khabor24.in/category/entertainment/</item>
+        <item>https://bengal2day.com/entertainment/</item>
+    </string-array>
+
 
     <string name="read_write_permission_details">
         To download content using this app, You need to provide Write_External_Storage permission to save the

@@ -116,6 +116,35 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             setBdJournalEntertainmentNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dainikAmaderShomoyEntertainment)){
                             setDailyAmaderShomoyEntertainmentNews(document);
+                        }// Bangladeshi entertainment news papers link are staying above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.anandaBazarEntertainmentNews)){
+                            setAnandaBazarEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.sangbadPratidinEntertainmentNews)){
+                            setSangbadPratidinIndianEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bartamanPatrikaEntertainmentNews)){
+                            setBartamanPatrikaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.uttarBangaSambadEntertainmentNews)){
+                            setUttarBangaSambadEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ebelaEntertainmentNews)){
+                            setEbelaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.asomiyaPratidinEntertainmentNews)){
+                            setAsomiyaPratidinEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.aajKaalEntertainmentNews)){
+                            setAajKaalEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.khaborOnlineEntertainmentNews)){
+                            setKhaborOnlineEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jugaSankhaEntertainmentNews)){
+                            setJugaSankhaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jagaranTripuraEntertainmentNews)){
+                            setJagaranTripuraEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.oneIndiaEntertainmentNews)){
+                            setOneIndiaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.kolkata247EntertainmentNews)){
+                            setKolkata247EntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.khabor24EntertainmentNews)){
+                            setKhabor24EntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bengal2DayEntertainmentNews)){
+                            setBengal2DayEntertainmentNews(document);
                         }
 //                        Log.d(Constants.TAG,"sports:- "+document.baseUri());
                     }
@@ -263,82 +292,36 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                 }
             });
     }
-
     public void hideItem(int serialNumber) {
-        if (serialNumber<=(bdEntertainmentList.size()-1) && serialNumber>=0) {
-            BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
-
-            currentItem.setVisibilityStatus("hidden");
-            insertingDataFlag=false;
-            dataStatusFlagInDb=true;
-
-
-
-            Completable.fromAction(()->{
-                newsDatabase.bdEntertainmentDao().updateNews(currentItem);
-            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
-                    compositeDisposable.add(d);
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-
-                }
-            });
-        }
-    }
-
-    public void visibleItem(String paperName) {
-        for (int i=0; i<bdEntertainmentUnVisibleTemporaryList.size(); i++) {
-            if (paperName.equalsIgnoreCase(bdEntertainmentUnVisibleTemporaryList.get(i).getPaperName())) {
-                BdEntertainment currentItem=bdEntertainmentUnVisibleTemporaryList.get(i);
-
-                currentItem.setVisibilityStatus("visible");
-                insertingDataFlag=false;
-                dataStatusFlagInDb=true;
-
-
-
-                Completable.fromAction(()->{
-                    newsDatabase.bdEntertainmentDao().updateNews(currentItem);
-                }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
+        BdEntertainment bdEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber <= (bdEntertainmentList.size() - 1) && serialNumber >= 0) {
+                bdEntertainmentCurrentItem = bdEntertainmentList.get(serialNumber);
+                bdEntertainmentCurrentItem.setVisibilityStatus("hidden");
             }
         }
-    }
-
-    public void changeItemBackgroundColor(int serialNumber,String colorName) {
-        BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
-
-        currentItem.setBackgroundColor(colorName);
-        insertingDataFlag=false;
-        dataStatusFlagInDb=true;
+        BdEntertainment finalBdEntertainmentCurrentItem = bdEntertainmentCurrentItem;
 
 
+        IndianBanglaEntertainment indianBanglaEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber <= (indianBanglaEntertainmentList.size() - 1) && serialNumber >= 0) {
+                indianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentList.get(serialNumber);
+                indianBanglaEntertainmentCurrentItem.setVisibilityStatus("hidden");
+            }
+        }
+        IndianBanglaEntertainment finalIndianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentCurrentItem;
+
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
 
         Completable.fromAction(()->{
-            newsDatabase.bdEntertainmentDao().updateNews(currentItem);
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdEntertainmentDao().updateNews(finalBdEntertainmentCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem);
+            }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -356,18 +339,129 @@ public class EntertainmentFragmentViewModel extends ViewModel {
             }
         });
     }
+    public void visibleItem(String paperName) {
+        BdEntertainment bdEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            for (int i = 0; i < bdEntertainmentUnVisibleTemporaryList.size(); i++) {
+                if (paperName.equalsIgnoreCase(bdEntertainmentUnVisibleTemporaryList.get(i).getPaperName())) {
+                    bdEntertainmentCurrentItem = bdEntertainmentUnVisibleTemporaryList.get(i);
+                    bdEntertainmentCurrentItem.setVisibilityStatus("visible");
+                }
+            }
+        }
+        BdEntertainment finalBdEntertainmentCurrentItem = bdEntertainmentCurrentItem;
 
+
+        IndianBanglaEntertainment indianBanglaEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            for (int i = 0; i < indianBanglaEntertainmentUnVisibleTemporaryList.size(); i++) {
+                if (paperName.equalsIgnoreCase(indianBanglaEntertainmentUnVisibleTemporaryList.get(i).getPaperName())) {
+                    indianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentUnVisibleTemporaryList.get(i);
+                    indianBanglaEntertainmentCurrentItem.setVisibilityStatus("visible");
+                }
+            }
+        }
+        IndianBanglaEntertainment finalIndianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentCurrentItem;
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdEntertainmentDao().updateNews(finalBdEntertainmentCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+    public void changeItemBackgroundColor(int serialNumber,String colorName) {
+        BdEntertainment bdEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            bdEntertainmentCurrentItem = bdEntertainmentList.get(serialNumber);
+            bdEntertainmentCurrentItem.setBackgroundColor(colorName);
+        }
+        BdEntertainment finalBdEntertainmentCurrentItem = bdEntertainmentCurrentItem;
+
+
+        IndianBanglaEntertainment indianBanglaEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            indianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentList.get(serialNumber);
+            indianBanglaEntertainmentCurrentItem.setBackgroundColor(colorName);
+        }
+        IndianBanglaEntertainment finalIndianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentCurrentItem;
+
+
+
+        insertingDataFlag=false;
+        dataStatusFlagInDb=true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdEntertainmentDao().updateNews(finalBdEntertainmentCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
     public void changeItemTextColor(int serialNumber,String colorName) {
-        BdEntertainment currentItem=bdEntertainmentList.get(serialNumber);
+        BdEntertainment bdEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            bdEntertainmentCurrentItem = bdEntertainmentList.get(serialNumber);
+            bdEntertainmentCurrentItem.setTextColor(colorName);
+        }
+        BdEntertainment finalBdEntertainmentCurrentItem = bdEntertainmentCurrentItem;
 
-        currentItem.setTextColor(colorName);
+
+        IndianBanglaEntertainment indianBanglaEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            indianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentList.get(serialNumber);
+            indianBanglaEntertainmentCurrentItem.setTextColor(colorName);
+        }
+        IndianBanglaEntertainment finalIndianBanglaEntertainmentCurrentItem = indianBanglaEntertainmentCurrentItem;
+
+
+
         insertingDataFlag=false;
         dataStatusFlagInDb=true;
 
 
 
         Completable.fromAction(()->{
-            newsDatabase.bdEntertainmentDao().updateNews(currentItem);
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdEntertainmentDao().updateNews(finalBdEntertainmentCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem);
+            }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -410,14 +504,12 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         }
         shortedList.setValue(temporaryShortingList);
     }
-
     public LiveData<List<BdEntertainment>> getBdEntertainmentUnVisibleList() {
         if (bdEntertainmentUnVisibleList==null) {
             bdEntertainmentUnVisibleList=new MutableLiveData<>();
         }
         return bdEntertainmentUnVisibleList;
     }
-
     public void checkBangladeshEntertainmentNewsDataInDb(List<String> nameList, List<String> urlList) {
         if (bangladeshiAllEntertainmentNewsObserver==null) {
             bangladeshiAllEntertainmentNewsObserver= bdEntertainments -> {
@@ -480,6 +572,98 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         }
         bdEntertainmentLiveData=newsDatabase.bdEntertainmentDao().getAllNews();
         bdEntertainmentLiveData.observeForever(bangladeshiAllEntertainmentNewsObserver);
+    }
+
+
+    public void shortingIndianBanglaEntertainmentList(List<RecyclerItemModel> recyclerItemModelList) {
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
+        }
+        temporaryShortingList.clear();
+        String title;
+        RecyclerItemModel recyclerItemModel;
+        for (int i=0; i<indianBanglaEntertainmentList.size(); i++) {
+            title=indianBanglaEntertainmentList.get(i).getPaperName();
+            for (int j=0; j<recyclerItemModelList.size(); j++) {
+                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    recyclerItemModel=recyclerItemModelList.get(j);
+                    recyclerItemModel.setSerialNumber(indianBanglaEntertainmentList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(indianBanglaEntertainmentList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(indianBanglaEntertainmentList.get(i).getTextColor());
+                    temporaryShortingList.add(recyclerItemModel);
+                }
+            }
+        }
+        shortedList.setValue(temporaryShortingList);
+    }
+    public LiveData<List<IndianBanglaEntertainment>> getIndianBanglaEntertainmentUnVisibleList() {
+        if (indianBanglaEntertainmentUnVisibleList==null) {
+            indianBanglaEntertainmentUnVisibleList=new MutableLiveData<>();
+        }
+        return indianBanglaEntertainmentUnVisibleList;
+    }
+    public void checkIndianBanglaEntertainmentNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (indianBanglaAllEntertainmentNewsObserver==null) {
+            indianBanglaAllEntertainmentNewsObserver= indianBanglaEntertainments -> {
+                indianBanglaEntertainmentList.clear();
+                indianBanglaEntertainmentList.addAll(indianBanglaEntertainments);
+                indianBanglaEntertainmentUnVisibleTemporaryList.clear();
+                if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
+                    itemList.setValue(itemList.getValue());
+                }
+                if (indianBanglaEntertainments.size()>0 && !insertingDataFlag) {
+                    temporaryList.clear();
+                    itemList.setValue(temporaryList);
+                    for (int i=0; i<indianBanglaEntertainments.size(); i++) {
+                        if (indianBanglaEntertainments.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(indianBanglaEntertainments.get(i).getPaperUrl());
+                        } else {
+                            indianBanglaEntertainmentUnVisibleTemporaryList.add(indianBanglaEntertainments.get(i));
+                        }
+                    }
+                    if (indianBanglaEntertainmentUnVisibleList==null) {
+                        indianBanglaEntertainmentUnVisibleList=new MutableLiveData<>();
+                    }
+                    indianBanglaEntertainmentUnVisibleList.setValue(indianBanglaEntertainmentUnVisibleTemporaryList);
+                    insertingDataFlag=true;
+                } else {
+                    insertingDataFlag=true;
+                    if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {
+                        for (int i=0; i<urlList.size(); i++) {
+                            IndianBanglaEntertainment indianBanglaEntertainment=new IndianBanglaEntertainment();
+                            indianBanglaEntertainment.setSerial(i);
+                            indianBanglaEntertainment.setVisibilityStatus("visible");
+                            indianBanglaEntertainment.setPaperUrl(urlList.get(i));
+                            indianBanglaEntertainment.setPaperName(nameList.get(i));
+                            indianBanglaEntertainment.setBackgroundColor("SkyBlue");
+                            indianBanglaEntertainment.setTextColor("White");
+                            Completable.fromAction(()->{
+                                newsDatabase.indianBanglaEntertainmentDao().insertNews(indianBanglaEntertainment);
+                            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+                                    compositeDisposable.add(d);
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+
+                                }
+                            });
+                        }
+                        dataStatusFlagInDb=true;
+                    }
+                    insertingDataFlag=false;
+                }
+            };
+        }
+        indianBanglaEntertainmentLiveData=newsDatabase.indianBanglaEntertainmentDao().getAllNews();
+        indianBanglaEntertainmentLiveData.observeForever(indianBanglaAllEntertainmentNewsObserver);
     }
 
 
@@ -806,6 +990,308 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কালের কণ্ঠ (সর্বশেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+
+
+
+
+    private void setAnandaBazarEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.sectionstoryheading.toppadding10 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.anandaBazarBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.anandaBazarEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("আনন্দবাজার পত্রিকা (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setSangbadPratidinIndianEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("p.news_title a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.sangbadPratidinEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("সংবাদ প্রতিদিন (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setBartamanPatrikaEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h5 center a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.bartamanPatrikaBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bartamanPatrikaEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("বর্তমান (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setUttarBangaSambadEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h3.entry-title.td-module-title a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.uttarBangaSambadEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("উত্তরবঙ্গ সংবাদ (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setEbelaEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.black_conetent_text_large a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.ebelaBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.ebelaEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("এবেলা (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setAsomiyaPratidinEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h2.title a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.asomiyaPratidinEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("অসমীয়া প্রতিদিন (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setAajKaalEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.col-md-12.col-sm-12.col-xs-12 h6 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.aajKaalEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("আজকাল (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setKhaborOnlineEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("ul.mvp-blog-story-list.left.relative.infinite-content li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).select("h2").text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.khaborOnlineEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("খবর অনলাইন (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setJugaSankhaEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("ul#posts-container li h3.post-title a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.jugaSankhaEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("যুগশঙ্ক (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setJagaranTripuraEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h2.entry-title a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.jagaranTripuraEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("জাগরণত্রিপুরা (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setOneIndiaEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h2.collection-heading a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.oneIndiaBanglaBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.oneIndiaEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("ওয়ান ইন্ডিয়া (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setKolkata247EntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.td-ss-main-content h3.entry-title.td-module-title a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.kolkata247EntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("কলকাতা ২৪*৭ (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setKhabor24EntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("article h4 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.khabor24EntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("খবর ২৪ ঘন্টা (বিনোদনের শেষ খবর)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setBengal2DayEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("article h2 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bengal2DayEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("বাংলা টু ডে (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);

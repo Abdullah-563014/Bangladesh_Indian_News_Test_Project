@@ -394,7 +394,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 
 
         IndianBanglaBreaking indianBanglaBreakingCurrentItem = null;
-        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
             indianBanglaBreakingCurrentItem = indianBanglaBreakingList.get(serialNumber);
             indianBanglaBreakingCurrentItem.setBackgroundColor(colorName);
         }
@@ -439,7 +439,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
 
 
         IndianBanglaBreaking indianBanglaBreakingCurrentItem = null;
-        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
             indianBanglaBreakingCurrentItem = indianBanglaBreakingList.get(serialNumber);
             indianBanglaBreakingCurrentItem.setTextColor(colorName);
         }

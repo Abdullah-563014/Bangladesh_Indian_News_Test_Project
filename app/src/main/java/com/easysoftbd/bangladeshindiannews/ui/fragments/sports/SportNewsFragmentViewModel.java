@@ -397,7 +397,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
         IndianBanglaSport indianBanglaSportCurrentItem = null;
-        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
             indianBanglaSportCurrentItem = indianBanglaSportsList.get(serialNumber);
             indianBanglaSportCurrentItem.setBackgroundColor(colorName);
         }
@@ -441,7 +441,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
 
 
         IndianBanglaSport indianBanglaSportCurrentItem = null;
-        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
             indianBanglaSportCurrentItem = indianBanglaSportsList.get(serialNumber);
             indianBanglaSportCurrentItem.setTextColor(colorName);
         }
