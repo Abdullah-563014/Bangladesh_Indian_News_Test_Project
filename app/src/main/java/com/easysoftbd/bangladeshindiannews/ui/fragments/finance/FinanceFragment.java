@@ -21,6 +21,7 @@ import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaFinance;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentEntertainmentBinding;
@@ -29,6 +30,7 @@ import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActiv
 import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentFragmentViewModel;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentNewsAdapter;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.entertainment.EntertainmentNewsViewModelFactory;
+import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import java.util.ArrayList;
@@ -45,7 +47,10 @@ public class FinanceFragment extends Fragment {
     private FinanceNewsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
+    private String countryName,languageName;
+
     private List<BdFinance> bdFinanceUnVisibleList=new ArrayList<>();
+    private List<IndianBanglaFinance> indianBanglaFinanceUnVisibleList=new ArrayList<>();
 
 
     public FinanceFragment() {
@@ -56,7 +61,9 @@ public class FinanceFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FinanceNewsViewModelFactory factory=new FinanceNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
+        countryName= CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedCountryTag,Constants.bangladesh);
+        languageName=CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedLanguageTag,Constants.bangla);
+        FinanceNewsViewModelFactory factory=new FinanceNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase(),countryName,languageName);
         viewModel = new ViewModelProvider(this,factory).get(FinanceFragmentViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_finance, container, false);
         binding.setLifecycleOwner(this);
@@ -81,9 +88,15 @@ public class FinanceFragment extends Fragment {
     }
 
     private void loadAllUrl() {
-        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_finance_url_list)));
-        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_finance_news_list)));
-        viewModel.checkBangladeshFinanceNewsDataInDb(nameList,urlList);
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_finance_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_finance_news_list)));
+            viewModel.checkBangladeshFinanceNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_finance_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_finance_news_list)));
+            viewModel.checkIndianBanglaFinanceNewsDataInDb(nameList,urlList);
+        }
     }
 
     private void initRecyclerView() {
@@ -92,7 +105,11 @@ public class FinanceFragment extends Fragment {
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingBdFinanceList(recyclerItemModels);
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                viewModel.shortingBdFinanceList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                viewModel.shortingIndianBanglaFinanceList(recyclerItemModels);
+            }
         });
 
         viewModel.getShortedList().observe(this, recyclerItemModelList -> {
@@ -186,28 +203,46 @@ public class FinanceFragment extends Fragment {
     }
 
     private void initAll() {
-        viewModel.getBdFinanceUnVisibleList().observe(this, bdFinance -> {
-            bdFinanceUnVisibleList.clear();
-            bdFinanceUnVisibleList.addAll(bdFinance);
-        });
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            viewModel.getBdFinanceUnVisibleList().observe(this, bdFinance -> {
+                bdFinanceUnVisibleList.clear();
+                bdFinanceUnVisibleList.addAll(bdFinance);
+            });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            viewModel.getIndianBanglaFinanceUnVisibleList().observe(this, indianBanglaFinance -> {
+                indianBanglaFinanceUnVisibleList.clear();
+                indianBanglaFinanceUnVisibleList.addAll(indianBanglaFinance);
+            });
+        }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
         });
     }
 
     private void showUnVisibleList() {
-        String[] list=new String[bdFinanceUnVisibleList.size()];
-        for (int i=0; i<bdFinanceUnVisibleList.size(); i++) {
-            list[i]=bdFinanceUnVisibleList.get(i).getPaperName();
+
+        String[] list=null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            list=new String[bdFinanceUnVisibleList.size()];
+            for (int i=0; i<bdFinanceUnVisibleList.size(); i++) {
+                list[i]=bdFinanceUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            list=new String[indianBanglaFinanceUnVisibleList.size()];
+            for (int i=0; i<indianBanglaFinanceUnVisibleList.size(); i++) {
+                list[i]=indianBanglaFinanceUnVisibleList.get(i).getPaperName();
+            }
         }
+
+        String[] finalList=list;
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
                 .setCancelable(true)
                 .setTitle("Please choose an item")
-                .setItems(list, new DialogInterface.OnClickListener() {
+                .setItems(finalList, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        viewModel.visibleItem(list[i]);
+                        viewModel.visibleItem(finalList[i]);
                     }
                 });
         AlertDialog alertDialog=builder.create();

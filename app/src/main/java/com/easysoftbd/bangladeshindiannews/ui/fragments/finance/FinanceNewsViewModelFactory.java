@@ -9,15 +9,18 @@ import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 public class FinanceNewsViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private NewsDatabase newsDatabase;
+    private String countryName,languageName;
 
-    public FinanceNewsViewModelFactory(NewsDatabase newsDatabase) {
+    public FinanceNewsViewModelFactory(NewsDatabase newsDatabase, String countryName, String languageName) {
         this.newsDatabase = newsDatabase;
+        this.countryName = countryName;
+        this.languageName = languageName;
     }
 
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new FinanceFragmentViewModel(newsDatabase);
+        return (T) new FinanceFragmentViewModel(newsDatabase,countryName,languageName);
     }
 }
