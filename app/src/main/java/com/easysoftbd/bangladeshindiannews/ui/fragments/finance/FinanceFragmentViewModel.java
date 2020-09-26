@@ -116,6 +116,29 @@ public class FinanceFragmentViewModel extends ViewModel {
                             setAmarDesh24FinanceNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.jugantorFinance)){
                             setJugantorFinanceNews(document);
+                        }// bangladeshi finance news link are staying above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.anandaBazarFinanceNews)){
+                            setAnandaBazarFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bartamanPatrikaFinanceNews)){
+                            setBartamanPatrikaFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ganashaktiFinanceNews)){
+                            setGanashaktiFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.uttarBangaSambadFinanceNews)){
+                            setUttarBangaSambadFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ebelaFinanceNews)){
+                            setEbelaFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.asomiyaPratidinFinanceNews)){
+                            setAsomiyaPratidinFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.aajKaalFinanceNews)){
+                            setAajKaalFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.khaborOnlineFinanceNews)){
+                            setKhaborOnlineFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jugasankhaFinanceNews)){
+                            setJugasankhaFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jagaranTripuraFinanceNews)){
+                            setJagaranTripuraFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.kolkata247FinanceNews)){
+                            setKolkata247FinanceNews(document);
                         }
 //                        Log.d(Constants.TAG,"sports:- "+document.baseUri());
                     }
@@ -960,8 +983,6 @@ public class FinanceFragmentViewModel extends ViewModel {
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
-
-
 
 
     private void setAnandaBazarFinanceNews(Document document) {
