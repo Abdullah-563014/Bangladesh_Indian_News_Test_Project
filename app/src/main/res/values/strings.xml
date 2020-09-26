@@ -362,11 +362,31 @@
     </string-array>
 
     <string-array name="indian_bangla_finance_news_list">
-
+        <item>আনন্দবাজার পত্রিকা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>বর্তমান (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>গণশক্তি (শিল্প কারখানার খবর)</item>
+        <item>উত্তরবঙ্গ সংবাদ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>এবেলা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>অসমীয়া প্রতিদিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>আজকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>খবর অনলাইন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>যুগশঙ্ক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>জাগরণত্রিপুরা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
+        <item>কলকাতা ২৪*৭ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)</item>
     </string-array>
 
     <string-array name="indian_bangla_finance_url_list">
-
+        <item>https://www.anandabazar.com/business?ref=home-navbar</item>
+        <item>https://bartamanpatrika.com/section.php?cID=19</item>
+        <item>http://www.ganashakti.com/bengali/-industrial-factory</item>
+        <item>https://www.uttarbangasambad.com/category/economy</item>
+        <item>https://ebela.in/business?ref=hm-TopNav</item>
+        <item>https://www.asomiyapratidin.in/category/business/</item>
+        <item>https://aajkaal.in/business</item>
+        <item>https://www.khaboronline.com/category/news/business/</item>
+        <item>https://jugasankha.in/topics/business/</item>
+        <item>http://jagarantripura.com/category/business/</item>
+        <item>https://www.kolkata24x7.com/category/business-and-economy/</item>
     </string-array>
 
 

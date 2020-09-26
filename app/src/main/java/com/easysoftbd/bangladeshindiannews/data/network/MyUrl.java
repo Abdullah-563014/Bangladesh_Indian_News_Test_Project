@@ -174,6 +174,21 @@ public class MyUrl {
 
 
 
+    public static final String anandaBazarFinanceNews="https://www.anandabazar.com/business?ref=home-navbar";
+    public static final String bartamanPatrikaFinanceNews="https://bartamanpatrika.com/section.php?cID=19";
+    public static final String ganashaktiFinanceNews="http://www.ganashakti.com/bengali/-industrial-factory";
+    public static final String uttarBangaSambadFinanceNews="https://www.uttarbangasambad.com/category/economy";
+    public static final String ebelaFinanceNews="https://ebela.in/business?ref=hm-TopNav";
+    public static final String asomiyaPratidinFinanceNews="https://www.asomiyapratidin.in/category/business/";
+    public static final String aajKaalFinanceNews="https://aajkaal.in/business";
+    public static final String khaborOnlineFinanceNews="https://www.khaboronline.com/category/news/business/";
+    public static final String jugasankhaFinanceNews="https://jugasankha.in/topics/business/";
+    public static final String jagaranTripuraFinanceNews="http://jagarantripura.com/category/business/";
+    public static final String kolkata247FinanceNews="https://www.kolkata24x7.com/category/business-and-economy/";
+// indian bangla finance news link are staying above.
+
+
+
 
 
 }
