@@ -23,10 +23,12 @@ import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaE
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaEntertainmentDao;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaFinance;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaFinanceDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaInternational;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaInternationalDao;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaSport;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaSportDao;
 
-@Database(entities = {BdBreaking.class, BdSports.class, BdFinance.class, BdInternational.class, BdTvChannel.class, BdEntertainment.class, IndianBanglaBreaking.class, IndianBanglaSport.class, IndianBanglaEntertainment.class, IndianBanglaFinance.class, FavouriteList.class}, version = 1, exportSchema = false)
+@Database(entities = {BdBreaking.class, BdSports.class, BdFinance.class, BdInternational.class, BdTvChannel.class, BdEntertainment.class, IndianBanglaBreaking.class, IndianBanglaSport.class, IndianBanglaEntertainment.class, IndianBanglaFinance.class, IndianBanglaInternational.class, FavouriteList.class}, version = 1, exportSchema = false)
 public abstract class NewsDatabase extends RoomDatabase {
     public abstract BdBreakingDao bdBreakingDao();
     public abstract BdSportsDao bdSportsDao();
@@ -38,6 +40,7 @@ public abstract class NewsDatabase extends RoomDatabase {
     public abstract IndianBanglaSportDao indianBanglaSportDao();
     public abstract IndianBanglaEntertainmentDao indianBanglaEntertainmentDao();
     public abstract IndianBanglaFinanceDao indianBanglaFinanceDao();
+    public abstract IndianBanglaInternationalDao indianBanglaInternationalDao();
 
 
     public abstract FavouriteListDao favouriteListDao();
