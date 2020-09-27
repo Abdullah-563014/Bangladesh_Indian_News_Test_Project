@@ -189,6 +189,23 @@ public class MyUrl {
 
 
 
+    public static final String anandaBazarInternationalNews="https://www.anandabazar.com/international?ref=home-navbar";
+    public static final String sangbadPratidinInternationalNews="https://www.sangbadpratidin.in/category/world/";
+    public static final String bartamanPatrikaInternationalNews="https://bartamanpatrika.com/section.php?cID=15";
+    public static final String ganaShaktiInternationalNews="http://www.ganashakti.com/bengali/international";
+    public static final String uttarBangaSambadInternationalNews="https://www.uttarbangasambad.com/category/international";
+    public static final String ebelaInternationalNews="https://ebela.in/international?ref=hm-TopNav";
+    public static final String aajKaalInternationalNews="https://aajkaal.in/international";
+    public static final String khaborOnlineInternationalNews="https://www.khaboronline.com/category/news/international/";
+    public static final String jugaSankhaInternationalNews="https://jugasankha.in/topics/international/";
+    public static final String jagaranTripuraInternationalNews="http://jagarantripura.com/category/world/";
+    public static final String oneIndiaInternationalNews="https://bengali.oneindia.com/news/international/";
+    public static final String kolkata247InternationalNews="https://www.kolkata24x7.com/category/international-news/";
+    public static final String bengal2DayInternationalNews="https://bengal2day.com/international/";
+// indian bangla international news link are staying above.
+
+
+
 
 
 }

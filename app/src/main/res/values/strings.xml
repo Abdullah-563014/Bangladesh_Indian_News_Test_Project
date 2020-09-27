@@ -390,11 +390,35 @@
     </string-array>
 
     <string-array name="indian_bangla_international_news_list">
-
+        <item>আনন্দবাজার পত্রিকা (আন্তর্জাতিক খবর)</item>
+        <item>সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)</item>
+        <item>বর্তমান (আন্তর্জাতিক খবর)</item>
+        <item>গণশক্তি (আন্তর্জাতিক খবর)</item>
+        <item>উত্তরবঙ্গ সংবাদ (আন্তর্জাতিক খবর)</item>
+        <item>এবেলা (আন্তর্জাতিক খবর)</item>
+        <item>আজকাল (আন্তর্জাতিক খবর)</item>
+        <item>খবর অনলাইন (আন্তর্জাতিক খবর)</item>
+        <item>যুগশঙ্ক (আন্তর্জাতিক খবর)</item>
+        <item>জাগরণত্রিপুরা (আন্তর্জাতিক খবর)</item>
+        <item>ওয়ান ইন্ডিয়া (আন্তর্জাতিক খবর)</item>
+        <item>কলকাতা ২৪*৭ (আন্তর্জাতিক খবর)</item>
+        <item>বাংলা টু ডে (আন্তর্জাতিক খবর)</item>
     </string-array>
 
     <string-array name="indian_bangla_international_url_list">
-
+        <item>https://www.anandabazar.com/international?ref=home-navbar</item>
+        <item>https://www.sangbadpratidin.in/category/world/</item>
+        <item>https://bartamanpatrika.com/section.php?cID=15</item>
+        <item>http://www.ganashakti.com/bengali/international</item>
+        <item>https://www.uttarbangasambad.com/category/international</item>
+        <item>https://ebela.in/international?ref=hm-TopNav</item>
+        <item>https://aajkaal.in/international</item>
+        <item>https://www.khaboronline.com/category/news/international/</item>
+        <item>https://jugasankha.in/topics/international/</item>
+        <item>http://jagarantripura.com/category/world/</item>
+        <item>https://bengali.oneindia.com/news/international/</item>
+        <item>https://www.kolkata24x7.com/category/international-news/</item>
+        <item>https://bengal2day.com/international/</item>
     </string-array>
 
 
