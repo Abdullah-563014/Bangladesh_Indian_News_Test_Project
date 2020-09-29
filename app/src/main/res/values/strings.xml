@@ -429,6 +429,14 @@
 
     </string-array>
 
+    <string-array name="indian_hindi_breaking_news_list">
+
+    </string-array>
+
+    <string-array name="indian_hindi_breaking_url_list">
+
+    </string-array>
+
 
 
     <string name="read_write_permission_details">

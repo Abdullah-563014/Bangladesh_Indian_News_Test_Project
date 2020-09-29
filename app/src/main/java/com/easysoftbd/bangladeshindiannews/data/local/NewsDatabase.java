@@ -29,8 +29,20 @@ import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaS
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaSportDao;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannelDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiBreaking;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiBreakingDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiEntertainment;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiEntertainmentDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiFinanceDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiInternational;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiInternationalDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiSports;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiSportsDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiTvChannelDao;
 
-@Database(entities = {BdBreaking.class, BdSports.class, BdFinance.class, BdInternational.class, BdTvChannel.class, BdEntertainment.class, IndianBanglaBreaking.class, IndianBanglaSport.class, IndianBanglaEntertainment.class, IndianBanglaFinance.class, IndianBanglaInternational.class, IndianBanglaTvChannel.class, FavouriteList.class}, version = 1, exportSchema = false)
+@Database(entities = {BdBreaking.class, BdSports.class, BdFinance.class, BdInternational.class, BdTvChannel.class, BdEntertainment.class, IndianBanglaBreaking.class, IndianBanglaSport.class, IndianBanglaEntertainment.class, IndianBanglaFinance.class, IndianBanglaInternational.class, IndianBanglaTvChannel.class, IndianHindiBreaking.class, IndianHindiSports.class, IndianHindiFinance.class, IndianHindiEntertainment.class, IndianHindiInternational.class, IndianHindiTvChannel.class, FavouriteList.class}, version = 1, exportSchema = false)
 public abstract class NewsDatabase extends RoomDatabase {
     public abstract BdBreakingDao bdBreakingDao();
     public abstract BdSportsDao bdSportsDao();
@@ -44,6 +56,12 @@ public abstract class NewsDatabase extends RoomDatabase {
     public abstract IndianBanglaFinanceDao indianBanglaFinanceDao();
     public abstract IndianBanglaInternationalDao indianBanglaInternationalDao();
     public abstract IndianBanglaTvChannelDao indianBanglaTvChannelDao();
+    public abstract IndianHindiBreakingDao indianHindiBreakingDao();
+    public abstract IndianHindiSportsDao indianHindiSportsDao();
+    public abstract IndianHindiEntertainmentDao indianHindiEntertainmentDao();
+    public abstract IndianHindiFinanceDao indianHindiFinanceDao();
+    public abstract IndianHindiInternationalDao indianHindiInternationalDao();
+    public abstract IndianHindiTvChannelDao indianHindiTvChannelDao();
 
 
     public abstract FavouriteListDao favouriteListDao();
