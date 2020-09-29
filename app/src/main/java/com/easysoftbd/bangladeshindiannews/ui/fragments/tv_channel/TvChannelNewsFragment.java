@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentTvChannelNewsBinding;
@@ -26,6 +27,7 @@ import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActiv
 import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceFragmentViewModel;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceNewsAdapter;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceNewsViewModelFactory;
+import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import java.util.ArrayList;
@@ -42,7 +44,10 @@ public class TvChannelNewsFragment extends Fragment {
     private TvChannelNewsAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
     private List<RecyclerItemModel> list=new ArrayList<>();
+    private String countryName,languageName;
+
     private List<BdTvChannel> bdTvChannelUnVisibleList=new ArrayList<>();
+    private List<IndianBanglaTvChannel> indianBanglaTvChannelUnVisibleList=new ArrayList<>();
 
     public TvChannelNewsFragment() {
         // Required empty public constructor
@@ -51,7 +56,9 @@ public class TvChannelNewsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        TvChannelNewsViewModelFactory factory=new TvChannelNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase());
+        countryName= CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedCountryTag,Constants.bangladesh);
+        languageName=CommonMethods.getStringFromSharedPreference(getContext(),Constants.selectedLanguageTag,Constants.bangla);
+        TvChannelNewsViewModelFactory factory=new TvChannelNewsViewModelFactory(DatabaseClient.getInstance(getContext().getApplicationContext()).getAppDatabase(),countryName,languageName);
         viewModel = new ViewModelProvider(this,factory).get(TvChannelNewsFragmentViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_tv_channel_news, container, false);
         binding.setLifecycleOwner(this);
@@ -76,9 +83,15 @@ public class TvChannelNewsFragment extends Fragment {
     }
 
     private void loadAllUrl() {
-        List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_tv_channel_url_list)));
-        List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_tv_channel_news_list)));
-        viewModel.checkBangladeshTvChannelNewsDataInDb(nameList,urlList);
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_tv_channel_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_tv_channel_news_list)));
+            viewModel.checkBangladeshTvChannelNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_tv_channel_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_tv_channel_news_list)));
+            viewModel.checkIndianBanglaTvChannelNewsDataInDb(nameList,urlList);
+        }
     }
 
     private void initRecyclerView() {
@@ -87,7 +100,11 @@ public class TvChannelNewsFragment extends Fragment {
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(adapter);
         viewModel.getItemList().observe(this, recyclerItemModels -> {
-            viewModel.shortingBdTvChannelList(recyclerItemModels);
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                viewModel.shortingBdTvChannelList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                viewModel.shortingIndianBanglaTvChannelList(recyclerItemModels);
+            }
         });
 
         viewModel.getShortedList().observe(this, recyclerItemModelList -> {
@@ -181,28 +198,45 @@ public class TvChannelNewsFragment extends Fragment {
     }
 
     private void initAll() {
-        viewModel.getBdTvChannelUnVisibleList().observe(this, tvChannel -> {
-            bdTvChannelUnVisibleList.clear();
-            bdTvChannelUnVisibleList.addAll(tvChannel);
-        });
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            viewModel.getBdTvChannelUnVisibleList().observe(this, tvChannel -> {
+                bdTvChannelUnVisibleList.clear();
+                bdTvChannelUnVisibleList.addAll(tvChannel);
+            });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            viewModel.getIndianBanglaTvChannelUnVisibleList().observe(this, indianBanglaTvChannels -> {
+                indianBanglaTvChannelUnVisibleList.clear();
+                indianBanglaTvChannelUnVisibleList.addAll(indianBanglaTvChannels);
+            });
+        }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
         });
     }
 
     private void showUnVisibleList() {
-        String[] list=new String[bdTvChannelUnVisibleList.size()];
-        for (int i=0; i<bdTvChannelUnVisibleList.size(); i++) {
-            list[i]=bdTvChannelUnVisibleList.get(i).getPaperName();
+        String[] list=null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            list=new String[bdTvChannelUnVisibleList.size()];
+            for (int i=0; i<bdTvChannelUnVisibleList.size(); i++) {
+                list[i]=bdTvChannelUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            list=new String[indianBanglaTvChannelUnVisibleList.size()];
+            for (int i=0; i<indianBanglaTvChannelUnVisibleList.size(); i++) {
+                list[i]=indianBanglaTvChannelUnVisibleList.get(i).getPaperName();
+            }
         }
+
+        String[] finalList=list;
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
                 .setCancelable(true)
                 .setTitle("Please choose an item")
-                .setItems(list, new DialogInterface.OnClickListener() {
+                .setItems(finalList, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        viewModel.visibleItem(list[i]);
+                        viewModel.visibleItem(finalList[i]);
                     }
                 });
         AlertDialog alertDialog=builder.create();

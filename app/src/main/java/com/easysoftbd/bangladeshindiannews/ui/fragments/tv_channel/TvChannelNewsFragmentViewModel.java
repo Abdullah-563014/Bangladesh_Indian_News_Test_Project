@@ -9,7 +9,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdInternational;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaInternational;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
@@ -43,17 +46,28 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
     private List<RecyclerItemModel> temporaryShortingList=new ArrayList<>();
     private boolean insertingDataFlag=false;
     private boolean dataStatusFlagInDb=false;
+    private String countryName, languageName;
+
     private Observer<List<BdTvChannel>> bangladeshiAllTvChannelNewsObserver;
     private LiveData<List<BdTvChannel>> bdTvChannelLiveData;
     private MutableLiveData<List<BdTvChannel>> bdTvChannelUnVisibleList;
     private List<BdTvChannel> bdTvChannelList=new ArrayList<>();
     private List<BdTvChannel> bdTvChannelUnVisibleTemporaryList=new ArrayList<>();
 
+    private Observer<List<IndianBanglaTvChannel>> indianBanglaAllTvChannelNewsObserver;
+    private LiveData<List<IndianBanglaTvChannel>> indianBanglaTvChannelLiveData;
+    private MutableLiveData<List<IndianBanglaTvChannel>> indianBanglaTvChannelUnVisibleList;
+    private List<IndianBanglaTvChannel> indianBanglaTvChannelList=new ArrayList<>();
+    private List<IndianBanglaTvChannel> indianBanglaTvChannelUnVisibleTemporaryList=new ArrayList<>();
 
 
 
-    public TvChannelNewsFragmentViewModel(NewsDatabase newsDatabase) {
+
+    public TvChannelNewsFragmentViewModel(NewsDatabase newsDatabase, String countryName, String languageName) {
         this.newsDatabase=newsDatabase;
+        this.countryName=countryName;
+        this.languageName=languageName;
+
         if (myResponse == null) {
             myResponse = new MyResponse();
         }
@@ -115,6 +129,323 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
 //====================================Primary method staying in above========================================
 
 
+
+
+    public LiveData<List<RecyclerItemModel>> getShortedList() {
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
+        }
+        return shortedList;
+    }
+    public LiveData<List<RecyclerItemModel>> getItemList() {
+        if (itemList==null) {
+            itemList=new MutableLiveData<>();
+        }
+        return itemList;
+    }
+    public LiveData<Integer> getItemMovedPosition() {
+        if (itemMovePosition==null) {
+            itemMovePosition=new MutableLiveData<>();
+        }
+        return itemMovePosition;
+    }
+    public void itemMoveToUp(int serialNumber) {
+        if (serialNumber>0) {
+            BdTvChannel bdTvChannelCurrentItem = null, bdTvChannelUpperItem = null;
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                bdTvChannelCurrentItem = bdTvChannelList.get(serialNumber);
+                bdTvChannelUpperItem = bdTvChannelList.get(serialNumber - 1);
+
+                bdTvChannelCurrentItem.setSerial(serialNumber - 1);
+                bdTvChannelUpperItem.setSerial(serialNumber);
+            }
+            BdTvChannel finalBdTvChannelCurrentItem = bdTvChannelCurrentItem;
+            BdTvChannel finalBdTvChannelUpperItem = bdTvChannelUpperItem;
+
+
+            IndianBanglaTvChannel indianBanglaTvChannelCurrentItem = null, indianBanglaTvChannelUpperItem = null;
+            if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                indianBanglaTvChannelCurrentItem = indianBanglaTvChannelList.get(serialNumber);
+                indianBanglaTvChannelUpperItem = indianBanglaTvChannelList.get(serialNumber - 1);
+
+                indianBanglaTvChannelCurrentItem.setSerial(serialNumber - 1);
+                indianBanglaTvChannelUpperItem.setSerial(serialNumber);
+            }
+            IndianBanglaTvChannel finalIndianBanglaTvChannelCurrentItem = indianBanglaTvChannelCurrentItem;
+            IndianBanglaTvChannel finalIndianBanglaTvChannelUpperItem = indianBanglaTvChannelUpperItem;
+
+
+
+            insertingDataFlag=true;
+            dataStatusFlagInDb=true;
+
+            Completable.fromAction(()->{
+                if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                    newsDatabase.bdTvChannelDao().updateNews(finalBdTvChannelCurrentItem,finalBdTvChannelUpperItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                    newsDatabase.indianBanglaTvChannelDao().updateNews(finalIndianBanglaTvChannelCurrentItem, finalIndianBanglaTvChannelUpperItem);
+                }
+            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                @Override
+                public void onSubscribe(@NonNull Disposable d) {
+                    compositeDisposable.add(d);
+                }
+
+                @Override
+                public void onComplete() {
+                    itemMovePosition.setValue(serialNumber);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+
+                }
+            });
+        }
+    }
+    public void itemMoveToDown(int serialNumber) {
+        BdTvChannel bdTvChannelCurrentItem = null, bdTvChannelDownItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber < (bdTvChannelList.size() - 1)) {
+                bdTvChannelCurrentItem = bdTvChannelList.get(serialNumber);
+                bdTvChannelDownItem = bdTvChannelList.get(serialNumber + 1);
+
+                bdTvChannelCurrentItem.setSerial(serialNumber + 1);
+                bdTvChannelDownItem.setSerial(serialNumber);
+            }
+        }
+        BdTvChannel finalBdTvChannelCurrentItem = bdTvChannelCurrentItem;
+        BdTvChannel finalBdTvChannelDownItem = bdTvChannelDownItem;
+
+
+        IndianBanglaTvChannel indianBanglaTvChannelCurrentItem = null, indianBanglaTvChannelDownItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber < (indianBanglaTvChannelList.size() - 1)) {
+                indianBanglaTvChannelCurrentItem = indianBanglaTvChannelList.get(serialNumber);
+                indianBanglaTvChannelDownItem = indianBanglaTvChannelList.get(serialNumber + 1);
+
+                indianBanglaTvChannelCurrentItem.setSerial(serialNumber + 1);
+                indianBanglaTvChannelDownItem.setSerial(serialNumber);
+            }
+        }
+        IndianBanglaTvChannel finalIndianBanglaTvChannelCurrentItem = indianBanglaTvChannelCurrentItem;
+        IndianBanglaTvChannel finalIndianBanglaTvChannelDownItem = indianBanglaTvChannelDownItem;
+
+
+        insertingDataFlag=true;
+        dataStatusFlagInDb=true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdTvChannelDao().updateNews(finalBdTvChannelCurrentItem, finalBdTvChannelDownItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaTvChannelDao().updateNews(finalIndianBanglaTvChannelCurrentItem, finalIndianBanglaTvChannelDownItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+                itemMovePosition.setValue(serialNumber+2);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+    public void hideItem(int serialNumber) {
+        BdTvChannel bdTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber <= (bdTvChannelList.size() - 1) && serialNumber >= 0) {
+                bdTvChannelCurrentItem = bdTvChannelList.get(serialNumber);
+                bdTvChannelCurrentItem.setVisibilityStatus("hidden");
+            }
+        }
+        BdTvChannel finalBdTvChannelCurrentItem = bdTvChannelCurrentItem;
+
+
+        IndianBanglaTvChannel indianBanglaTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber <= (indianBanglaTvChannelList.size() - 1) && serialNumber >= 0) {
+                indianBanglaTvChannelCurrentItem = indianBanglaTvChannelList.get(serialNumber);
+                indianBanglaTvChannelCurrentItem.setVisibilityStatus("hidden");
+            }
+        }
+        IndianBanglaTvChannel finalIndianBanglaTvChannelCurrentItem = indianBanglaTvChannelCurrentItem;
+
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdTvChannelDao().updateNews(finalBdTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaTvChannelDao().updateNews(finalIndianBanglaTvChannelCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+    public void visibleItem(String paperName) {
+        BdTvChannel bdTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            for (int i = 0; i < bdTvChannelUnVisibleTemporaryList.size(); i++) {
+                if (paperName.equalsIgnoreCase(bdTvChannelUnVisibleTemporaryList.get(i).getPaperName())) {
+                    bdTvChannelCurrentItem = bdTvChannelUnVisibleTemporaryList.get(i);
+                    bdTvChannelCurrentItem.setVisibilityStatus("visible");
+                }
+            }
+        }
+        BdTvChannel finalBdTvChannelCurrentItem = bdTvChannelCurrentItem;
+
+
+        IndianBanglaTvChannel indianBanglaTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            for (int i = 0; i < indianBanglaTvChannelUnVisibleTemporaryList.size(); i++) {
+                if (paperName.equalsIgnoreCase(indianBanglaTvChannelUnVisibleTemporaryList.get(i).getPaperName())) {
+                    indianBanglaTvChannelCurrentItem = indianBanglaTvChannelUnVisibleTemporaryList.get(i);
+                    indianBanglaTvChannelCurrentItem.setVisibilityStatus("visible");
+                }
+            }
+        }
+        IndianBanglaTvChannel finalIndianBanglaTvChannelCurrentItem = indianBanglaTvChannelCurrentItem;
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdTvChannelDao().updateNews(finalBdTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaTvChannelDao().updateNews(finalIndianBanglaTvChannelCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+    public void changeItemBackgroundColor(int serialNumber,String colorName) {
+        BdTvChannel bdTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            bdTvChannelCurrentItem = bdTvChannelList.get(serialNumber);
+            bdTvChannelCurrentItem.setBackgroundColor(colorName);
+        }
+        BdTvChannel finalBdTvChannelCurrentItem = bdTvChannelCurrentItem;
+
+
+        IndianBanglaTvChannel indianBanglaTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            indianBanglaTvChannelCurrentItem = indianBanglaTvChannelList.get(serialNumber);
+            indianBanglaTvChannelCurrentItem.setBackgroundColor(colorName);
+        }
+        IndianBanglaTvChannel finalIndianBanglaTvChannelCurrentItem = indianBanglaTvChannelCurrentItem;
+
+
+
+        insertingDataFlag=false;
+        dataStatusFlagInDb=true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdTvChannelDao().updateNews(finalBdTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaTvChannelDao().updateNews(finalIndianBanglaTvChannelCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+    public void changeItemTextColor(int serialNumber,String colorName) {
+        BdTvChannel bdTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            bdTvChannelCurrentItem = bdTvChannelList.get(serialNumber);
+            bdTvChannelCurrentItem.setTextColor(colorName);
+        }
+        BdTvChannel finalBdTvChannelCurrentItem = bdTvChannelCurrentItem;
+
+
+        IndianBanglaTvChannel indianBanglaTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            indianBanglaTvChannelCurrentItem = indianBanglaTvChannelList.get(serialNumber);
+            indianBanglaTvChannelCurrentItem.setTextColor(colorName);
+        }
+        IndianBanglaTvChannel finalIndianBanglaTvChannelCurrentItem = indianBanglaTvChannelCurrentItem;
+
+
+
+        insertingDataFlag=false;
+        dataStatusFlagInDb=true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdTvChannelDao().updateNews(finalBdTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaTvChannelDao().updateNews(finalIndianBanglaTvChannelCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+
+
+
     public void shortingBdTvChannelList(List<RecyclerItemModel> recyclerItemModelList) {
         if (shortedList==null) {
             shortedList=new MutableLiveData<>();
@@ -136,226 +467,12 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
         }
         shortedList.setValue(temporaryShortingList);
     }
-
-    public LiveData<List<RecyclerItemModel>> getShortedList() {
-        if (shortedList==null) {
-            shortedList=new MutableLiveData<>();
-        }
-        return shortedList;
-    }
-
-    public LiveData<List<RecyclerItemModel>> getItemList() {
-        if (itemList==null) {
-            itemList=new MutableLiveData<>();
-        }
-        return itemList;
-    }
-
     public LiveData<List<BdTvChannel>> getBdTvChannelUnVisibleList() {
         if (bdTvChannelUnVisibleList==null) {
             bdTvChannelUnVisibleList=new MutableLiveData<>();
         }
         return bdTvChannelUnVisibleList;
     }
-
-    public LiveData<Integer> getItemMovedPosition() {
-        if (itemMovePosition==null) {
-            itemMovePosition=new MutableLiveData<>();
-        }
-        return itemMovePosition;
-    }
-
-    public void itemMoveToUp(int serialNumber) {
-        if (serialNumber>0) {
-            BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
-            BdTvChannel upperItem=bdTvChannelList.get(serialNumber-1);
-
-            currentItem.setSerial(serialNumber-1);
-            upperItem.setSerial(serialNumber);
-            insertingDataFlag=true;
-            dataStatusFlagInDb=true;
-
-
-
-            Completable.fromAction(()->{
-                newsDatabase.bdTvChannelDao().updateNews(currentItem,upperItem);
-            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
-                    compositeDisposable.add(d);
-                }
-
-                @Override
-                public void onComplete() {
-                    itemMovePosition.setValue(serialNumber);
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-
-                }
-            });
-        }
-    }
-
-    public void itemMoveToDown(int serialNumber) {
-        if (serialNumber<(bdTvChannelList.size()-1)) {
-            BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
-            BdTvChannel downItem=bdTvChannelList.get(serialNumber+1);
-
-            currentItem.setSerial(serialNumber+1);
-            downItem.setSerial(serialNumber);
-            insertingDataFlag=true;
-            dataStatusFlagInDb=true;
-
-
-
-            Completable.fromAction(()->{
-                newsDatabase.bdTvChannelDao().updateNews(currentItem,downItem);
-            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
-                    compositeDisposable.add(d);
-                }
-
-                @Override
-                public void onComplete() {
-                    itemMovePosition.setValue(serialNumber+2);
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-
-                }
-            });
-        }
-    }
-
-    public void hideItem(int serialNumber) {
-        if (serialNumber<=(bdTvChannelList.size()-1) && serialNumber>=0) {
-            BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
-
-            currentItem.setVisibilityStatus("hidden");
-            insertingDataFlag=false;
-            dataStatusFlagInDb=true;
-
-
-
-            Completable.fromAction(()->{
-                newsDatabase.bdTvChannelDao().updateNews(currentItem);
-            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-                @Override
-                public void onSubscribe(@NonNull Disposable d) {
-                    compositeDisposable.add(d);
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-
-                }
-            });
-        }
-    }
-
-    public void visibleItem(String paperName) {
-        for (int i=0; i<bdTvChannelUnVisibleTemporaryList.size(); i++) {
-            if (paperName.equalsIgnoreCase(bdTvChannelUnVisibleTemporaryList.get(i).getPaperName())) {
-                BdTvChannel currentItem=bdTvChannelUnVisibleTemporaryList.get(i);
-
-                currentItem.setVisibilityStatus("visible");
-                insertingDataFlag=false;
-                dataStatusFlagInDb=true;
-
-
-
-                Completable.fromAction(()->{
-                    newsDatabase.bdTvChannelDao().updateNews(currentItem);
-                }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-                });
-            }
-        }
-    }
-
-    public void changeItemBackgroundColor(int serialNumber,String colorName) {
-        BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
-
-        currentItem.setBackgroundColor(colorName);
-        insertingDataFlag=false;
-        dataStatusFlagInDb=true;
-
-
-
-        Completable.fromAction(()->{
-            newsDatabase.bdTvChannelDao().updateNews(currentItem);
-        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                compositeDisposable.add(d);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-
-            }
-        });
-    }
-
-    public void changeItemTextColor(int serialNumber,String colorName) {
-        BdTvChannel currentItem=bdTvChannelList.get(serialNumber);
-
-        currentItem.setTextColor(colorName);
-        insertingDataFlag=false;
-        dataStatusFlagInDb=true;
-
-
-
-        Completable.fromAction(()->{
-            newsDatabase.bdTvChannelDao().updateNews(currentItem);
-        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                compositeDisposable.add(d);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-
-            }
-        });
-    }
-
-
-
-
     public void checkBangladeshTvChannelNewsDataInDb(List<String> nameList, List<String> urlList) {
         if (bangladeshiAllTvChannelNewsObserver==null) {
             bangladeshiAllTvChannelNewsObserver= bdTvChannels -> {
@@ -418,6 +535,98 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
         }
         bdTvChannelLiveData=newsDatabase.bdTvChannelDao().getAllNews();
         bdTvChannelLiveData.observeForever(bangladeshiAllTvChannelNewsObserver);
+    }
+
+
+    public void shortingIndianBanglaTvChannelList(List<RecyclerItemModel> recyclerItemModelList) {
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
+        }
+        temporaryShortingList.clear();
+        String title;
+        RecyclerItemModel recyclerItemModel;
+        for (int i=0; i<indianBanglaTvChannelList.size(); i++) {
+            title=indianBanglaTvChannelList.get(i).getPaperName();
+            for (int j=0; j<recyclerItemModelList.size(); j++) {
+                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    recyclerItemModel=recyclerItemModelList.get(j);
+                    recyclerItemModel.setSerialNumber(indianBanglaTvChannelList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(indianBanglaTvChannelList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(indianBanglaTvChannelList.get(i).getTextColor());
+                    temporaryShortingList.add(recyclerItemModel);
+                }
+            }
+        }
+        shortedList.setValue(temporaryShortingList);
+    }
+    public LiveData<List<IndianBanglaTvChannel>> getIndianBanglaTvChannelUnVisibleList() {
+        if (indianBanglaTvChannelUnVisibleList==null) {
+            indianBanglaTvChannelUnVisibleList=new MutableLiveData<>();
+        }
+        return indianBanglaTvChannelUnVisibleList;
+    }
+    public void checkIndianBanglaTvChannelNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (indianBanglaAllTvChannelNewsObserver==null) {
+            indianBanglaAllTvChannelNewsObserver= indianBanglaTvChannels -> {
+                indianBanglaTvChannelList.clear();
+                indianBanglaTvChannelList.addAll(indianBanglaTvChannels);
+                indianBanglaTvChannelUnVisibleTemporaryList.clear();
+                if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
+                    itemList.setValue(itemList.getValue());
+                }
+                if (indianBanglaTvChannels.size()>0 && !insertingDataFlag) {
+                    temporaryList.clear();
+                    itemList.setValue(temporaryList);
+                    for (int i=0; i<indianBanglaTvChannels.size(); i++) {
+                        if (indianBanglaTvChannels.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(indianBanglaTvChannels.get(i).getPaperUrl());
+                        } else {
+                            indianBanglaTvChannelUnVisibleTemporaryList.add(indianBanglaTvChannels.get(i));
+                        }
+                    }
+                    if (indianBanglaTvChannelUnVisibleList==null) {
+                        indianBanglaTvChannelUnVisibleList=new MutableLiveData<>();
+                    }
+                    indianBanglaTvChannelUnVisibleList.setValue(indianBanglaTvChannelUnVisibleTemporaryList);
+                    insertingDataFlag=true;
+                } else {
+                    insertingDataFlag=true;
+                    if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {
+                        for (int i=0; i<urlList.size(); i++) {
+                            IndianBanglaTvChannel indianBanglaTvChannel=new IndianBanglaTvChannel();
+                            indianBanglaTvChannel.setSerial(i);
+                            indianBanglaTvChannel.setVisibilityStatus("visible");
+                            indianBanglaTvChannel.setPaperUrl(urlList.get(i));
+                            indianBanglaTvChannel.setPaperName(nameList.get(i));
+                            indianBanglaTvChannel.setBackgroundColor("SkyBlue");
+                            indianBanglaTvChannel.setTextColor("White");
+                            Completable.fromAction(()->{
+                                newsDatabase.indianBanglaTvChannelDao().insertNews(indianBanglaTvChannel);
+                            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+                                    compositeDisposable.add(d);
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+
+                                }
+                            });
+                        }
+                        dataStatusFlagInDb=true;
+                    }
+                    insertingDataFlag=false;
+                }
+            };
+        }
+        indianBanglaTvChannelLiveData=newsDatabase.indianBanglaTvChannelDao().getAllNews();
+        indianBanglaTvChannelLiveData.observeForever(indianBanglaAllTvChannelNewsObserver);
     }
 
 
@@ -660,7 +869,11 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        bdTvChannelLiveData.removeObserver(bangladeshiAllTvChannelNewsObserver);
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            bdTvChannelLiveData.removeObserver(bangladeshiAllTvChannelNewsObserver);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            indianBanglaTvChannelLiveData.removeObserver(indianBanglaAllTvChannelNewsObserver);
+        }
         super.onCleared();
         compositeDisposable.dispose();
     }

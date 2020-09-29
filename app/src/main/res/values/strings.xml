@@ -421,7 +421,13 @@
         <item>https://bengal2day.com/international/</item>
     </string-array>
 
+    <string-array name="indian_bangla_tv_channel_news_list">
 
+    </string-array>
+
+    <string-array name="indian_bangla_tv_channel_url_list">
+
+    </string-array>
 
 
 
