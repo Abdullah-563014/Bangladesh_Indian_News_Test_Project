@@ -20,6 +20,7 @@ import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaEntertainment;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentEntertainmentBinding;
@@ -46,6 +47,7 @@ public class EntertainmentFragment extends Fragment {
 
     private List<BdEntertainment> bdEntertainmentUnVisibleList=new ArrayList<>();
     private List<IndianBanglaEntertainment> indianBanglaEntertainmentUnVisibleList=new ArrayList<>();
+    private List<IndianHindiEntertainment> indianHindiEntertainmentUnVisibleList=new ArrayList<>();
 
 
     public EntertainmentFragment() {
@@ -89,6 +91,10 @@ public class EntertainmentFragment extends Fragment {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_entertainment_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_entertainment_news_list)));
             viewModel.checkIndianBanglaEntertainmentNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_entertainment_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_entertainment_news_list)));
+            viewModel.checkIndianHindiEntertainmentNewsDataInDb(nameList,urlList);
         }
     }
 
@@ -102,6 +108,8 @@ public class EntertainmentFragment extends Fragment {
                 viewModel.shortingBdEntertainmentList(recyclerItemModels);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 viewModel.shortingIndianBanglaEntertainmentList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                viewModel.shortingIndianHindiEntertainmentList(recyclerItemModels);
             }
         });
 
@@ -206,6 +214,11 @@ public class EntertainmentFragment extends Fragment {
                 indianBanglaEntertainmentUnVisibleList.clear();
                 indianBanglaEntertainmentUnVisibleList.addAll(indianBanglaEntertainments);
             });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            viewModel.getIndianHindiEntertainmentUnVisibleList().observe(this, indianHindiEntertainments -> {
+                indianHindiEntertainmentUnVisibleList.clear();
+                indianHindiEntertainmentUnVisibleList.addAll(indianHindiEntertainments);
+            });
         }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -223,6 +236,11 @@ public class EntertainmentFragment extends Fragment {
             list=new String[indianBanglaEntertainmentUnVisibleList.size()];
             for (int i=0; i<indianBanglaEntertainmentUnVisibleList.size(); i++) {
                 list[i]=indianBanglaEntertainmentUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            list=new String[indianHindiEntertainmentUnVisibleList.size()];
+            for (int i=0; i<indianHindiEntertainmentUnVisibleList.size(); i++) {
+                list[i]=indianHindiEntertainmentUnVisibleList.get(i).getPaperName();
             }
         }
 

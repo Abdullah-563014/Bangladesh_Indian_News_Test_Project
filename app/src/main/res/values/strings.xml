@@ -437,6 +437,14 @@
 
     </string-array>
 
+    <string-array name="indian_hindi_entertainment_news_list">
+
+    </string-array>
+
+    <string-array name="indian_hindi_entertainment_url_list">
+
+    </string-array>
+
 
 
     <string name="read_write_permission_details">
