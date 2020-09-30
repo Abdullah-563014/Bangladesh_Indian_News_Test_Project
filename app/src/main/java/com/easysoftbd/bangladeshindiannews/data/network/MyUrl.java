@@ -206,6 +206,18 @@ public class MyUrl {
 
 
 
+    public static final String zeeNews24HoursTvChannelNews="https://zeenews.india.com/bengali/";
+    public static final String abpLiveTvChannelNews="https://bengali.abplive.com/";
+    public static final String news18BengaliTvChannelNews="https://bengali.news18.com/";
+    public static final String newsTimeBanglaTvChannelNews="https://newstimebangla.com/";
+    public static final String calcuttaNewsTvChannelNews="https://calcuttanews.tv/";
+    public static final String kolkataTvTvChannelNews="https://www.kolkatatv.org/";
+    public static final String rPlusTvChannelNews="https://rplus.in/";
+    public static final String indianExpressTvChannelNews="https://bengali.indianexpress.com/";
+// indian bangla international news link are staying above.
+
+
+
 
 
 }

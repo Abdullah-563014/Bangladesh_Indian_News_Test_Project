@@ -422,11 +422,25 @@
     </string-array>
 
     <string-array name="indian_bangla_tv_channel_news_list">
-
+        <item>জি ২৪ ঘণ্টা (সর্বশেষ খবর)</item>
+        <item>আনন্দ (সর্বশেষ খবর)</item>
+        <item>নিউস ১৮ বাংলা (শীর্ষ খবর)</item>
+        <item>নিউস টাইম বাংলা (সর্বশেষ খবর)</item>
+        <item>কলকাতা নিউস (ব্রেকিং নিউস)</item>
+        <item>কলকাতা টিভি (ব্রেকিং নিউস)</item>
+        <item>আর প্লাস নিউস (এক নজরে)</item>
+        <item>ইন্ডিয়ান এক্সপ্রেস বাংলা (ট্রেডিং নিউস)</item>
     </string-array>
 
     <string-array name="indian_bangla_tv_channel_url_list">
-
+        <item>https://zeenews.india.com/bengali/</item>
+        <item>https://bengali.abplive.com/</item>
+        <item>https://bengali.news18.com/</item>
+        <item>https://newstimebangla.com/</item>
+        <item>https://calcuttanews.tv/</item>
+        <item>https://www.kolkatatv.org/</item>
+        <item>https://rplus.in/</item>
+        <item>https://bengali.indianexpress.com/</item>
     </string-array>
 
     <string-array name="indian_hindi_breaking_news_list">
