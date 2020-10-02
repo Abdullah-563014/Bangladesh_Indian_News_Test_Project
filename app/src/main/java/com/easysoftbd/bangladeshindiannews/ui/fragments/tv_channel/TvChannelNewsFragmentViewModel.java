@@ -110,6 +110,23 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             setJamunaTvBreakingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.news24Bd)){
                             setNews24BdBreakingNews(document);
+                        }// bangladeshi tv chanel news link are staying above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.zeeNews24HoursTvChannelNews)){
+                            setZee24HoursTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.abpLiveTvChannelNews)){
+                            setAbpLiveTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.news18BengaliTvChannelNews)){
+                            setNews18BengaliTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.newsTimeBanglaTvChannelNews)){
+                            setNewsTimeBanglaTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.calcuttaNewsTvChannelNews)){
+                            setCalcuttaNewsTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.kolkataTvTvChannelNews)){
+                            setKolkataTvTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.rPlusTvChannelNews)){
+                            setRPlusNewsTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.indianExpressTvChannelNews)){
+                            setIndianExpressBanglaTvChannelNews(document);
                         }
 
                     }

@@ -454,6 +454,10 @@
         <item>हरिभूमि (वायरल समाचार)</item>
         <item>दिव्य हिमाचल (सामान्य समाचार)</item>
         <item>प्रभा साक्षी (ताज़ा खबर)</item>
+        <item>देशदूत (स्थानीय समाचार)</item>
+        <item>दैनिक ट्रिब्यून (ताज़ा खबर)</item>
+        <item>SamacharJagat (ताज़ा खबर)</item>
+        <item>अच्छी खबर (मुख्य समाचार)</item>
     </string-array>
 
     <string-array name="indian_hindi_breaking_url_list">
@@ -467,6 +471,10 @@
         <item>https://www.haribhoomi.com/</item>
         <item>https://www.divyahimachal.com/</item>
         <item>https://www.prabhasakshi.com/</item>
+        <item>https://www.deshdoot.com/</item>
+        <item>https://www.dainiktribuneonline.com/</item>
+        <item>https://www.samacharjagat.com/</item>
+        <item>https://www.khaskhabar.com/</item>
     </string-array>
 
     <string-array name="indian_hindi_entertainment_news_list">

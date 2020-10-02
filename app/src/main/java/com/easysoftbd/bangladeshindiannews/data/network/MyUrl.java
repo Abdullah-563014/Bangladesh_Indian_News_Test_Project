@@ -227,6 +227,10 @@ public class MyUrl {
     public static final String hariBhoomiBreakingNews="https://www.haribhoomi.com/";
     public static final String divyaHimachalBreakingNews="https://www.divyahimachal.com/";
     public static final String prabhaSakshiBreakingNews="https://www.prabhasakshi.com/";
+    public static final String deshDootBreakingNews="https://www.deshdoot.com/";
+    public static final String dainikTribuneOnlineBreakingNews="https://www.dainiktribuneonline.com/";
+    public static final String samacharJagatBreakingNews="https://www.samacharjagat.com/";
+    public static final String khasKhabarBreakingNews="https://www.khaskhabar.com/";
 // indian hindi breaking news link are staying above.
 
 
