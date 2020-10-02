@@ -214,7 +214,20 @@ public class MyUrl {
     public static final String kolkataTvTvChannelNews="https://www.kolkatatv.org/";
     public static final String rPlusTvChannelNews="https://rplus.in/";
     public static final String indianExpressTvChannelNews="https://bengali.indianexpress.com/";
-// indian bangla international news link are staying above.
+// indian bangla tv channel news link are staying above.
+
+
+    public static final String jagranBreakingNews="https://www.jagran.com/";
+    public static final String bhaskarBreakingNews="https://www.bhaskar.com/";
+    public static final String amarUjalaBreakingNews="https://www.amarujala.com/";
+    public static final String liveHindustanBreakingNews="https://www.livehindustan.com/";
+    public static final String navBharatTimesBreakingNews="https://navbharattimes.indiatimes.com/";
+    public static final String janSattaBreakingNews="https://www.jansatta.com/";
+    public static final String punjabKeSariBreakingNews="https://www.punjabkesari.in/";
+    public static final String hariBhoomiBreakingNews="https://www.haribhoomi.com/";
+    public static final String divyaHimachalBreakingNews="https://www.divyahimachal.com/";
+    public static final String prabhaSakshiBreakingNews="https://www.prabhasakshi.com/";
+// indian hindi breaking news link are staying above.
 
 
 

@@ -444,11 +444,29 @@
     </string-array>
 
     <string-array name="indian_hindi_breaking_news_list">
-
+        <item>जगाना (ट्रेंडिंग न्यूज़)</item>
+        <item>देनिक भास्कर (मुख्य समाचार)</item>
+        <item>अमर उजाला (शीर्ष ट्रेंडिंग)</item>
+        <item>लाइव हिन्दुस्तान (ताज़ा खबर)</item>
+        <item>नव भारत टाइम्स (सबसे ज़्यादा पढ़ा हुआ)</item>
+        <item>जनसत्ता (बड़ी खबर)</item>
+        <item>पंजाब केसरी (शीर्ष आलेख)</item>
+        <item>हरिभूमि (वायरल समाचार)</item>
+        <item>दिव्य हिमाचल (सामान्य समाचार)</item>
+        <item>प्रभा साक्षी (ताज़ा खबर)</item>
     </string-array>
 
     <string-array name="indian_hindi_breaking_url_list">
-
+        <item>https://www.jagran.com/</item>
+        <item>https://www.bhaskar.com/</item>
+        <item>https://www.amarujala.com/</item>
+        <item>https://www.livehindustan.com/</item>
+        <item>https://navbharattimes.indiatimes.com/</item>
+        <item>https://www.jansatta.com/</item>
+        <item>https://www.punjabkesari.in/</item>
+        <item>https://www.haribhoomi.com/</item>
+        <item>https://www.divyahimachal.com/</item>
+        <item>https://www.prabhasakshi.com/</item>
     </string-array>
 
     <string-array name="indian_hindi_entertainment_news_list">
