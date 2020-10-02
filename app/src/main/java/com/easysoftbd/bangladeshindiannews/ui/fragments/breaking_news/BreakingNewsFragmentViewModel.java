@@ -1628,7 +1628,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private void setHariBhoomiBreakingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div#home_top_right_level_1 ul li h4 a[href]");
+            Elements allList = document.select("div#home_top_right_level_1 ul.news-post.news-feature-mb li h4 a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
                 String link=MyUrl.hariBhoomiBreakingNews+temporaryLink;
