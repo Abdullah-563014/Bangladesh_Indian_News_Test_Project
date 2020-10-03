@@ -444,7 +444,7 @@
     </string-array>
 
     <string-array name="indian_hindi_breaking_news_list">
-        <item>जगाना (ट्रेंडिंग न्यूज़)</item>
+        <item>जागरण (ट्रेंडिंग न्यूज़)</item>
         <item>देनिक भास्कर (मुख्य समाचार)</item>
         <item>अमर उजाला (शीर्ष ट्रेंडिंग)</item>
         <item>लाइव हिन्दुस्तान (ताज़ा खबर)</item>
@@ -478,11 +478,29 @@
     </string-array>
 
     <string-array name="indian_hindi_entertainment_news_list">
-
+        <item>जागरण (मनोरंजन समाचार)</item>
+        <item>देनिक भास्कर (मनोरंजन समाचार)</item>
+        <item>अमर उजाला (मनोरंजन समाचार)</item>
+        <item>लाइव हिन्दुस्तान (मनोरंजन समाचार)</item>
+        <item>नव भारत टाइम्स (फिल्म और मनोरंजन समाचार)</item>
+        <item>जनसत्ता (मनोरंजन समाचार)</item>
+        <item>बॉलीवुड तड़का (बॉलीवुड नेवस)</item>
+        <item>हरिभूमि (मनोरंजन समाचार)</item>
+        <item>खास खबर (मनोरंजन समाचार)</item>
+        <item>दिव्य हिमाचल (मनोरंजन समाचार)</item>
     </string-array>
 
     <string-array name="indian_hindi_entertainment_url_list">
-
+        <item>https://www.jagran.com/</item>
+        <item>https://www.bhaskar.com/entertainment/</item>
+        <item>https://www.amarujala.com/entertainment?src=mainmenu</item>
+        <item>https://www.livehindustan.com/entertainment/</item>
+        <item>https://navbharattimes.indiatimes.com/movie-masti/articlelist/2279793.cms?utm_source=navigation</item>
+        <item>https://www.jansatta.com/entertainment/</item>
+        <item>https://www.bollywoodtadka.in/</item>
+        <item>https://www.haribhoomi.com/entertainment</item>
+        <item>https://www.khaskhabar.com/picture-news/</item>
+        <item>https://www.divyahimachal.com/category/life-style/</item>
     </string-array>
 
 

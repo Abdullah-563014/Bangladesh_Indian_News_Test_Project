@@ -1488,7 +1488,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel = new RecyclerItemModel();
-        itemModel.setTitle("जगाना (ट्रेंडिंग न्यूज़)");
+        itemModel.setTitle("जागरण (ट्रेंडिंग न्यूज़)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);

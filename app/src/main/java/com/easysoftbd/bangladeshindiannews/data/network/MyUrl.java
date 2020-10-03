@@ -234,6 +234,19 @@ public class MyUrl {
 // indian hindi breaking news link are staying above.
 
 
+    public static final String jagranEntertainmentNews="https://www.jagran.com/";
+    public static final String bhaskarEntertainmentNews="https://www.bhaskar.com/entertainment/";
+    public static final String amarUjalaEntertainmentNews="https://www.amarujala.com/entertainment?src=mainmenu";
+    public static final String liveHindustanEntertainmentNews="https://www.livehindustan.com/entertainment/";
+    public static final String navBharatTimesEntertainmentNews="https://navbharattimes.indiatimes.com/movie-masti/articlelist/2279793.cms?utm_source=navigation";
+    public static final String janSattaEntertainmentNews="https://www.jansatta.com/entertainment/";
+    public static final String bollywoodTadkaEntertainmentNews="https://www.bollywoodtadka.in/";
+    public static final String hariBhoomiEntertainmentNews="https://www.haribhoomi.com/entertainment";
+    public static final String khasKhabarEntertainmentNews="https://www.khaskhabar.com/picture-news/";
+    public static final String divyaHimachalEntertainmentNews="https://www.divyahimachal.com/category/life-style/";
+// indian hindi entertainment news link are staying above.
+
+
 
 
 
