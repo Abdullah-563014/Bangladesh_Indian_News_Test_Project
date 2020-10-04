@@ -512,11 +512,29 @@
     </string-array>
 
     <string-array name="indian_hindi_finance_news_list">
-
+        <item>जागरण (व्यापार समाचार)</item>
+        <item>देनिक भास्कर (व्यापार समाचार)</item>
+        <item>अमर उजाला (व्यापार समाचार)</item>
+        <item>लाइव हिन्दुस्तान (व्यापार समाचार)</item>
+        <item>नव भारत टाइम्स (व्यापार समाचार)</item>
+        <item>जनसत्ता (व्यापार समाचार)</item>
+        <item>पंजाब केसरी (व्यापार समाचार)</item>
+        <item>खास खबर (व्यापार समाचार)</item>
+        <item>दिव्य हिमाचल (व्यापार समाचार)</item>
+        <item>प्रभा साक्षी (व्यापार समाचार)</item>
     </string-array>
 
     <string-array name="indian_hindi_finance_url_list">
-
+        <item>https://www.jagran.com/business/biz-news-hindi.html</item>
+        <item>https://www.bhaskar.com/business/</item>
+        <item>https://www.amarujala.com/business?src=hbmenu</item>
+        <item>https://www.livehindustan.com/business/</item>
+        <item>https://navbharattimes.indiatimes.com/business/articlelist/2279786.cms?utm_source=navigation</item>
+        <item>https://www.jansatta.com/business/</item>
+        <item>https://www.punjabkesari.in/business</item>
+        <item>http://business.khaskhabar.com/</item>
+        <item>https://www.divyahimachal.com/category/himachal-market/</item>
+        <item>https://www.prabhasakshi.com/news/business/</item>
     </string-array>
 
 

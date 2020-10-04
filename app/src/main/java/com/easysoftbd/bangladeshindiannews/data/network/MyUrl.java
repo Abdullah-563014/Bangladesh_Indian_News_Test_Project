@@ -251,6 +251,19 @@ public class MyUrl {
 // indian hindi entertainment news link are staying above.
 
 
+    public static final String jagranFinanceNews="https://www.jagran.com/business/biz-news-hindi.html";
+    public static final String bhaskarFinanceNews="https://www.bhaskar.com/business/";
+    public static final String amarUjalaFinanceNews="https://www.amarujala.com/business?src=hbmenu";
+    public static final String liveHindustanFinanceNews="https://www.livehindustan.com/business/";
+    public static final String navBharatTimesFinanceNews="https://navbharattimes.indiatimes.com/business/articlelist/2279786.cms?utm_source=navigation";
+    public static final String janSattaFinanceNews="https://www.jansatta.com/business/";
+    public static final String punjabKesariFinanceNews="https://www.punjabkesari.in/business";
+    public static final String khasKhabarFinanceNews="http://business.khaskhabar.com/";
+    public static final String divyaHimachalFinanceNews="https://www.divyahimachal.com/category/himachal-market/";
+    public static final String prabhaSakshiFinanceNews="https://www.prabhasakshi.com/news/business/";
+// indian hindi finance news link are staying above.
+
+
 
 
 
