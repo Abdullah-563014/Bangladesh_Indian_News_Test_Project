@@ -146,8 +146,32 @@ public class FinanceFragmentViewModel extends ViewModel {
                             setJagaranTripuraFinanceNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.kolkata247FinanceNews)){
                             setKolkata247FinanceNews(document);
-                        }
-//                        Log.d(Constants.TAG,"sports:- "+document.baseUri());
+                        }// Indian bangla finance news link are staying above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.jagranFinanceNews)){
+                            setJagranFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bhaskarFinanceNews)){
+                            setBhaskarFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.amarUjalaFinanceNews)){
+                            setAmarUjalaFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.liveHindustanFinanceNews)){
+                            setLiveHindustanFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.navBharatTimesFinanceNews)){
+                            setNavBharatTimesFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.janSattaFinanceNews)){
+                            setJanSattaFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.punjabKesariFinanceNews)){
+                            setPunjabKesariFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.khasKhabarFinanceNews)){
+                            setKhasKhabarFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.divyaHimachalFinanceNews)){
+                            setDivyaHimachalFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.prabhaSakshiFinanceNews)){
+                            setPrabhaSakshiFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dainikTribuneOnlineFinanceNews)){
+                            setDainikTribuneOnlineFinanceNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.samacharJagatFinanceNews)){
+                            setSamacharJagatFinanceNews(document);
+                        }// Indian hindi finance news link are staying above.
                     }
 
                     @Override
