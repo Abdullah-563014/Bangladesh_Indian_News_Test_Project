@@ -522,6 +522,8 @@
         <item>खास खबर (व्यापार समाचार)</item>
         <item>दिव्य हिमाचल (व्यापार समाचार)</item>
         <item>प्रभा साक्षी (व्यापार समाचार)</item>
+        <item>दैनिक ट्रिब्यून (व्यापार समाचार)</item>
+        <item>Samachar Jagat (व्यापार समाचार)</item>
     </string-array>
 
     <string-array name="indian_hindi_finance_url_list">
@@ -535,6 +537,8 @@
         <item>http://business.khaskhabar.com/</item>
         <item>https://www.divyahimachal.com/category/himachal-market/</item>
         <item>https://www.prabhasakshi.com/news/business/</item>
+        <item>https://www.dainiktribuneonline.com/news/business</item>
+        <item>https://www.samacharjagat.com/category/business/</item>
     </string-array>
 
 

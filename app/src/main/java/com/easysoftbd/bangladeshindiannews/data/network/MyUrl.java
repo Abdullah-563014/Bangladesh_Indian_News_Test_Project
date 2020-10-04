@@ -261,6 +261,8 @@ public class MyUrl {
     public static final String khasKhabarFinanceNews="http://business.khaskhabar.com/";
     public static final String divyaHimachalFinanceNews="https://www.divyahimachal.com/category/himachal-market/";
     public static final String prabhaSakshiFinanceNews="https://www.prabhasakshi.com/news/business/";
+    public static final String dainikTribuneOnlineFinanceNews="https://www.dainiktribuneonline.com/news/business";
+    public static final String samacharJagatFinanceNews="https://www.samacharjagat.com/category/business/";
 // indian hindi finance news link are staying above.
 
 
