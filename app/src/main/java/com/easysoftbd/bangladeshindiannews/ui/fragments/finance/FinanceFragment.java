@@ -22,6 +22,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiFinance;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentEntertainmentBinding;
@@ -51,6 +52,7 @@ public class FinanceFragment extends Fragment {
 
     private List<BdFinance> bdFinanceUnVisibleList=new ArrayList<>();
     private List<IndianBanglaFinance> indianBanglaFinanceUnVisibleList=new ArrayList<>();
+    private List<IndianHindiFinance> indianHindiFinanceUnVisibleList=new ArrayList<>();
 
 
     public FinanceFragment() {
@@ -96,6 +98,10 @@ public class FinanceFragment extends Fragment {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_finance_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_finance_news_list)));
             viewModel.checkIndianBanglaFinanceNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_finance_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_finance_news_list)));
+            viewModel.checkIndianHindiFinanceNewsDataInDb(nameList,urlList);
         }
     }
 
@@ -109,6 +115,8 @@ public class FinanceFragment extends Fragment {
                 viewModel.shortingBdFinanceList(recyclerItemModels);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 viewModel.shortingIndianBanglaFinanceList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                viewModel.shortingIndianHindiFinanceList(recyclerItemModels);
             }
         });
 
@@ -213,6 +221,11 @@ public class FinanceFragment extends Fragment {
                 indianBanglaFinanceUnVisibleList.clear();
                 indianBanglaFinanceUnVisibleList.addAll(indianBanglaFinance);
             });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            viewModel.getIndianHindiFinanceUnVisibleList().observe(this, indianHindiFinances -> {
+                indianHindiFinanceUnVisibleList.clear();
+                indianHindiFinanceUnVisibleList.addAll(indianHindiFinances);
+            });
         }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -231,6 +244,11 @@ public class FinanceFragment extends Fragment {
             list=new String[indianBanglaFinanceUnVisibleList.size()];
             for (int i=0; i<indianBanglaFinanceUnVisibleList.size(); i++) {
                 list[i]=indianBanglaFinanceUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            list=new String[indianHindiFinanceUnVisibleList.size()];
+            for (int i=0; i<indianHindiFinanceUnVisibleList.size(); i++) {
+                list[i]=indianHindiFinanceUnVisibleList.get(i).getPaperName();
             }
         }
 

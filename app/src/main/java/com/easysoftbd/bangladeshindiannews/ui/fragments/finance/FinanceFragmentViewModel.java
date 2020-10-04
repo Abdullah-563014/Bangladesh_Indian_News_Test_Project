@@ -12,6 +12,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiFinance;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
@@ -58,6 +59,12 @@ public class FinanceFragmentViewModel extends ViewModel {
     private MutableLiveData<List<IndianBanglaFinance>> indianBanglaFinanceUnVisibleList;
     private List<IndianBanglaFinance> indianBanglaFinanceList=new ArrayList<>();
     private List<IndianBanglaFinance> indianBanglaFinanceUnVisibleTemporaryList=new ArrayList<>();
+
+    private Observer<List<IndianHindiFinance>> indianHindiAllFinanceNewsObserver;
+    private LiveData<List<IndianHindiFinance>> indianHindiFinanceLiveData;
+    private MutableLiveData<List<IndianHindiFinance>> indianHindiFinanceUnVisibleList;
+    private List<IndianHindiFinance> indianHindiFinanceList=new ArrayList<>();
+    private List<IndianHindiFinance> indianHindiFinanceUnVisibleTemporaryList=new ArrayList<>();
 
 
 
@@ -202,6 +209,18 @@ public class FinanceFragmentViewModel extends ViewModel {
             IndianBanglaFinance finalIndianBanglaFinanceUpperItem = indianBanglaFinanceUpperItem;
 
 
+            IndianHindiFinance indianHindiFinanceCurrentItem = null, indianHindiFinanceUpperItem = null;
+            if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                indianHindiFinanceCurrentItem = indianHindiFinanceList.get(serialNumber);
+                indianHindiFinanceUpperItem = indianHindiFinanceList.get(serialNumber - 1);
+
+                indianHindiFinanceCurrentItem.setSerial(serialNumber - 1);
+                indianHindiFinanceUpperItem.setSerial(serialNumber);
+            }
+            IndianHindiFinance finalIndianHindiFinanceCurrentItem = indianHindiFinanceCurrentItem;
+            IndianHindiFinance finalIndianHindiFinanceUpperItem = indianHindiFinanceUpperItem;
+
+
 
             insertingDataFlag=true;
             dataStatusFlagInDb=true;
@@ -211,6 +230,8 @@ public class FinanceFragmentViewModel extends ViewModel {
                     newsDatabase.bdFinanceDao().updateNews(finalBdFinanceCurrentItem,finalBdFinanceUpperItem);
                 } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                     newsDatabase.indianBanglaFinanceDao().updateNews(finalIndianBanglaFinanceCurrentItem, finalIndianBanglaFinanceUpperItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                    newsDatabase.indianHindiFinanceDao().updateNews(finalIndianHindiFinanceCurrentItem, finalIndianHindiFinanceUpperItem);
                 }
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
@@ -259,6 +280,20 @@ public class FinanceFragmentViewModel extends ViewModel {
         IndianBanglaFinance finalIndianBanglaFinanceDownItem = indianBanglaFinanceDownItem;
 
 
+        IndianHindiFinance indianHindiFinanceCurrentItem = null, indianHindiFinanceDownItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber < (indianHindiFinanceList.size() - 1)) {
+                indianHindiFinanceCurrentItem = indianHindiFinanceList.get(serialNumber);
+                indianHindiFinanceDownItem = indianHindiFinanceList.get(serialNumber + 1);
+
+                indianHindiFinanceCurrentItem.setSerial(serialNumber + 1);
+                indianHindiFinanceDownItem.setSerial(serialNumber);
+            }
+        }
+        IndianHindiFinance finalIndianHindiFinanceCurrentItem = indianHindiFinanceCurrentItem;
+        IndianHindiFinance finalIndianHindiFinanceDownItem = indianHindiFinanceDownItem;
+
+
         insertingDataFlag=true;
         dataStatusFlagInDb=true;
 
@@ -267,6 +302,8 @@ public class FinanceFragmentViewModel extends ViewModel {
                 newsDatabase.bdFinanceDao().updateNews(finalBdFinanceCurrentItem, finalBdFinanceDownItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaFinanceDao().updateNews(finalIndianBanglaFinanceCurrentItem, finalIndianBanglaFinanceDownItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiFinanceDao().updateNews(finalIndianHindiFinanceCurrentItem, finalIndianHindiFinanceDownItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -306,6 +343,16 @@ public class FinanceFragmentViewModel extends ViewModel {
         IndianBanglaFinance finalIndianBanglaFinanceCurrentItem = indianBanglaFinanceCurrentItem;
 
 
+        IndianHindiFinance indianHindiFinanceCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber <= (indianHindiFinanceList.size() - 1) && serialNumber >= 0) {
+                indianHindiFinanceCurrentItem = indianHindiFinanceList.get(serialNumber);
+                indianHindiFinanceCurrentItem.setVisibilityStatus("hidden");
+            }
+        }
+        IndianHindiFinance finalIndianHindiFinanceCurrentItem = indianHindiFinanceCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -314,6 +361,8 @@ public class FinanceFragmentViewModel extends ViewModel {
                 newsDatabase.bdFinanceDao().updateNews(finalBdFinanceCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaFinanceDao().updateNews(finalIndianBanglaFinanceCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiFinanceDao().updateNews(finalIndianHindiFinanceCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -356,6 +405,19 @@ public class FinanceFragmentViewModel extends ViewModel {
         }
         IndianBanglaFinance finalIndianBanglaFinanceCurrentItem = indianBanglaFinanceCurrentItem;
 
+
+        IndianHindiFinance indianHindiFinanceCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            for (int i = 0; i < indianHindiFinanceUnVisibleTemporaryList.size(); i++) {
+                if (paperName.equalsIgnoreCase(indianHindiFinanceUnVisibleTemporaryList.get(i).getPaperName())) {
+                    indianHindiFinanceCurrentItem = indianHindiFinanceUnVisibleTemporaryList.get(i);
+                    indianHindiFinanceCurrentItem.setVisibilityStatus("visible");
+                }
+            }
+        }
+        IndianHindiFinance finalIndianHindiFinanceCurrentItem = indianHindiFinanceCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -364,6 +426,8 @@ public class FinanceFragmentViewModel extends ViewModel {
                 newsDatabase.bdFinanceDao().updateNews(finalBdFinanceCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaFinanceDao().updateNews(finalIndianBanglaFinanceCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiFinanceDao().updateNews(finalIndianHindiFinanceCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -399,6 +463,14 @@ public class FinanceFragmentViewModel extends ViewModel {
         IndianBanglaFinance finalIndianBanglaFinanceCurrentItem = indianBanglaFinanceCurrentItem;
 
 
+        IndianHindiFinance indianHindiFinanceCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            indianHindiFinanceCurrentItem = indianHindiFinanceList.get(serialNumber);
+            indianHindiFinanceCurrentItem.setBackgroundColor(colorName);
+        }
+        IndianHindiFinance finalIndianHindiFinanceCurrentItem = indianHindiFinanceCurrentItem;
+
+
 
         insertingDataFlag=false;
         dataStatusFlagInDb=true;
@@ -410,6 +482,8 @@ public class FinanceFragmentViewModel extends ViewModel {
                 newsDatabase.bdFinanceDao().updateNews(finalBdFinanceCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaFinanceDao().updateNews(finalIndianBanglaFinanceCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiFinanceDao().updateNews(finalIndianHindiFinanceCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -445,6 +519,14 @@ public class FinanceFragmentViewModel extends ViewModel {
         IndianBanglaFinance finalIndianBanglaFinanceCurrentItem = indianBanglaFinanceCurrentItem;
 
 
+        IndianHindiFinance indianHindiFinanceCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            indianHindiFinanceCurrentItem = indianHindiFinanceList.get(serialNumber);
+            indianHindiFinanceCurrentItem.setTextColor(colorName);
+        }
+        IndianHindiFinance finalIndianHindiFinanceCurrentItem = indianHindiFinanceCurrentItem;
+
+
 
         insertingDataFlag=false;
         dataStatusFlagInDb=true;
@@ -454,6 +536,8 @@ public class FinanceFragmentViewModel extends ViewModel {
                 newsDatabase.bdFinanceDao().updateNews(finalBdFinanceCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaFinanceDao().updateNews(finalIndianBanglaFinanceCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiFinanceDao().updateNews(finalIndianHindiFinanceCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -656,6 +740,98 @@ public class FinanceFragmentViewModel extends ViewModel {
         }
         indianBanglaFinanceLiveData=newsDatabase.indianBanglaFinanceDao().getAllNews();
         indianBanglaFinanceLiveData.observeForever(indianBanglaAllFinanceNewsObserver);
+    }
+
+
+    public void shortingIndianHindiFinanceList(List<RecyclerItemModel> recyclerItemModelList) {
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
+        }
+        temporaryShortingList.clear();
+        String title;
+        RecyclerItemModel recyclerItemModel;
+        for (int i=0; i<indianHindiFinanceList.size(); i++) {
+            title=indianHindiFinanceList.get(i).getPaperName();
+            for (int j=0; j<recyclerItemModelList.size(); j++) {
+                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    recyclerItemModel=recyclerItemModelList.get(j);
+                    recyclerItemModel.setSerialNumber(indianHindiFinanceList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(indianHindiFinanceList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(indianHindiFinanceList.get(i).getTextColor());
+                    temporaryShortingList.add(recyclerItemModel);
+                }
+            }
+        }
+        shortedList.setValue(temporaryShortingList);
+    }
+    public LiveData<List<IndianHindiFinance>> getIndianHindiFinanceUnVisibleList() {
+        if (indianHindiFinanceUnVisibleList==null) {
+            indianHindiFinanceUnVisibleList=new MutableLiveData<>();
+        }
+        return indianHindiFinanceUnVisibleList;
+    }
+    public void checkIndianHindiFinanceNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (indianHindiAllFinanceNewsObserver==null) {
+            indianHindiAllFinanceNewsObserver= indianHindiFinances -> {
+                indianHindiFinanceList.clear();
+                indianHindiFinanceList.addAll(indianHindiFinances);
+                indianHindiFinanceUnVisibleTemporaryList.clear();
+                if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
+                    itemList.setValue(itemList.getValue());
+                }
+                if (indianHindiFinances.size()>0 && !insertingDataFlag) {
+                    temporaryList.clear();
+                    itemList.setValue(temporaryList);
+                    for (int i=0; i<indianHindiFinances.size(); i++) {
+                        if (indianHindiFinances.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(indianHindiFinances.get(i).getPaperUrl());
+                        } else {
+                            indianHindiFinanceUnVisibleTemporaryList.add(indianHindiFinances.get(i));
+                        }
+                    }
+                    if (indianHindiFinanceUnVisibleList==null) {
+                        indianHindiFinanceUnVisibleList=new MutableLiveData<>();
+                    }
+                    indianHindiFinanceUnVisibleList.setValue(indianHindiFinanceUnVisibleTemporaryList);
+                    insertingDataFlag=true;
+                } else {
+                    insertingDataFlag=true;
+                    if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {
+                        for (int i=0; i<urlList.size(); i++) {
+                            IndianHindiFinance indianHindiFinance=new IndianHindiFinance();
+                            indianHindiFinance.setSerial(i);
+                            indianHindiFinance.setVisibilityStatus("visible");
+                            indianHindiFinance.setPaperUrl(urlList.get(i));
+                            indianHindiFinance.setPaperName(nameList.get(i));
+                            indianHindiFinance.setBackgroundColor("SkyBlue");
+                            indianHindiFinance.setTextColor("White");
+                            Completable.fromAction(()->{
+                                newsDatabase.indianHindiFinanceDao().insertNews(indianHindiFinance);
+                            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+                                    compositeDisposable.add(d);
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+
+                                }
+                            });
+                        }
+                        dataStatusFlagInDb=true;
+                    }
+                    insertingDataFlag=false;
+                }
+            };
+        }
+        indianHindiFinanceLiveData=newsDatabase.indianHindiFinanceDao().getAllNews();
+        indianHindiFinanceLiveData.observeForever(indianHindiAllFinanceNewsObserver);
     }
 
 
@@ -1227,6 +1403,8 @@ public class FinanceFragmentViewModel extends ViewModel {
             bdFinanceLiveData.removeObserver(bangladeshiAllFinanceNewsObserver);
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
             indianBanglaFinanceLiveData.removeObserver(indianBanglaAllFinanceNewsObserver);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            indianHindiFinanceLiveData.removeObserver(indianHindiAllFinanceNewsObserver);
         }
         super.onCleared();
         compositeDisposable.dispose();
