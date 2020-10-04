@@ -153,8 +153,36 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             setKhabor24EntertainmentNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.bengal2DayEntertainmentNews)){
                             setBengal2DayEntertainmentNews(document);
-                        }
-                        Log.d(Constants.TAG,"entertainment:- "+document.baseUri());
+                        }// Indian Bangla entertainment news papers link are staying above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.jagranEntertainmentNews)){
+                            setJagranEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bhaskarEntertainmentNews)){
+                            setBhaskarEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.amarUjalaEntertainmentNews)){
+                            setAmarUjalaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.liveHindustanEntertainmentNews)){
+                            setLiveHindustanEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.navBharatTimesEntertainmentNews)){
+                            setNavBharatTimesEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.janSattaEntertainmentNews)){
+                            setJanSattaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bollywoodTadkaEntertainmentNews)){
+                            setBollywoodTadkaEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.hariBhoomiEntertainmentNews)){
+                            setHariBhoomiEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.khasKhabarEntertainmentNews)){
+                            setKhasKhabarEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.divyaHimachalEntertainmentNews)){
+                            setDivyaHimachalEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.prabhaSakshiEntertainmentNews)){
+                            setPrabhaSakshiEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dainikTribuneOnlineEntertainmentNews)){
+                            setDainikTribuneOnlineEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.samacharJagatEntertainmentNews)){
+                            setSamacharJagatEntertainmentNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.patrikaEntertainmentNews)){
+                            setPatrikaEntertainmentNews(document);
+                        }// Indian Hindi entertainment news papers link are staying above.
                     }
 
                     @Override
@@ -1687,6 +1715,94 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("दिव्य हिमाचल (मनोरंजन समाचार)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setPrabhaSakshiEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.prabhaSakshiBreakingNews+temporaryLink;
+                String news = allList.get(i).select("h3").text();
+                if (news.length()>=15) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.prabhaSakshiEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("प्रभा साक्षी (मनोरंजन समाचार)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setDainikTribuneOnlineEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div#dontmiss-slider ul li h4 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.dainikTribuneOnlineBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dainikTribuneOnlineEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("दैनिक ट्रिब्यून (मनोरंजन समाचार)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setSamacharJagatEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h2 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.samacharJagatEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("Samachar Jagat (मनोरंजन समाचार)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setPatrikaEntertainmentNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.cNews-text a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.patrikaEntertainmentNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("पत्रिका (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);

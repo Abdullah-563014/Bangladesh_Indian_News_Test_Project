@@ -244,6 +244,10 @@ public class MyUrl {
     public static final String hariBhoomiEntertainmentNews="https://www.haribhoomi.com/entertainment";
     public static final String khasKhabarEntertainmentNews="https://www.khaskhabar.com/picture-news/";
     public static final String divyaHimachalEntertainmentNews="https://www.divyahimachal.com/category/life-style/";
+    public static final String prabhaSakshiEntertainmentNews="https://www.prabhasakshi.com/news/entertainment";
+    public static final String dainikTribuneOnlineEntertainmentNews="https://www.dainiktribuneonline.com/";
+    public static final String samacharJagatEntertainmentNews="https://www.samacharjagat.com/category/entertainment/";
+    public static final String patrikaEntertainmentNews="https://www.patrika.com/entertainment-news/";
 // indian hindi entertainment news link are staying above.
 
 

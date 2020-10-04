@@ -488,6 +488,10 @@
         <item>हरिभूमि (मनोरंजन समाचार)</item>
         <item>खास खबर (मनोरंजन समाचार)</item>
         <item>दिव्य हिमाचल (मनोरंजन समाचार)</item>
+        <item>प्रभा साक्षी (मनोरंजन समाचार)</item>
+        <item>दैनिक ट्रिब्यून (मनोरंजन समाचार)</item>
+        <item>Samachar Jagat (मनोरंजन समाचार)</item>
+        <item>पत्रिका (मनोरंजन समाचार)</item>
     </string-array>
 
     <string-array name="indian_hindi_entertainment_url_list">
@@ -501,6 +505,10 @@
         <item>https://www.haribhoomi.com/entertainment</item>
         <item>https://www.khaskhabar.com/picture-news/</item>
         <item>https://www.divyahimachal.com/category/life-style/</item>
+        <item>https://www.prabhasakshi.com/news/entertainment</item>
+        <item>https://www.dainiktribuneonline.com/</item>
+        <item>https://www.samacharjagat.com/category/entertainment/</item>
+        <item>https://www.patrika.com/entertainment-news/</item>
     </string-array>
 
 
