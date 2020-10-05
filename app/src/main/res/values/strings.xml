@@ -542,11 +542,31 @@
     </string-array>
 
     <string-array name="indian_hindi_international_news_list">
-
+        <item>जागरण (अंतरराष्ट्रीय समाचार)</item>
+        <item>देनिक भास्कर (अंतरराष्ट्रीय समाचार)</item>
+        <item>अमर उजाला (अंतरराष्ट्रीय समाचार)</item>
+        <item>लाइव हिन्दुस्तान (अंतरराष्ट्रीय समाचार)</item>
+        <item>नव भारत टाइम्स (अंतरराष्ट्रीय समाचार)</item>
+        <item>जनसत्ता (अंतरराष्ट्रीय समाचार)</item>
+        <item>पंजाब केसरी (अंतरराष्ट्रीय समाचार)</item>
+        <item>खास खबर (अंतरराष्ट्रीय समाचार)</item>
+        <item>प्रभा साक्षी (अंतरराष्ट्रीय समाचार)</item>
+        <item>दैनिक ट्रिब्यून (अंतरराष्ट्रीय समाचार)</item>
+        <item>Samachar Jagat (अंतरराष्ट्रीय समाचार)</item>
     </string-array>
 
     <string-array name="indian_hindi_international_url_list">
-
+        <item>https://www.jagran.com/world-news-hindi.html</item>
+        <item>https://www.bhaskar.com/international/</item>
+        <item>https://www.amarujala.com/world?src=hbmenu</item>
+        <item>https://www.livehindustan.com/international/</item>
+        <item>https://navbharattimes.indiatimes.com/world/articlelist/2279801.cms?utm_source=navigation</item>
+        <item>https://www.jansatta.com/international/</item>
+        <item>https://www.punjabkesari.in/international</item>
+        <item>https://www.khaskhabar.com/news/world-news</item>
+        <item>https://www.prabhasakshi.com/news/international/</item>
+        <item>https://www.dainiktribuneonline.com/news/world</item>
+        <item>https://www.samacharjagat.com/category/international/</item>
     </string-array>
 
 

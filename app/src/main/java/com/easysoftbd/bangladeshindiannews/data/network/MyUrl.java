@@ -267,6 +267,21 @@ public class MyUrl {
 
 
 
+    public static final String jagranInternationalNews="https://www.jagran.com/world-news-hindi.html";
+    public static final String bhaskarInternationalNews="https://www.bhaskar.com/international/";
+    public static final String amarUjalaInternationalNews="https://www.amarujala.com/world?src=hbmenu";
+    public static final String liveHindustanInternationalNews="https://www.livehindustan.com/international/";
+    public static final String navBharatTimesInternationalNews="https://navbharattimes.indiatimes.com/world/articlelist/2279801.cms?utm_source=navigation";
+    public static final String janSattaInternationalNews="https://www.jansatta.com/international/";
+    public static final String punjabKesariInternationalNews="https://www.punjabkesari.in/international";
+    public static final String khasKhabarInternationalNews="https://www.khaskhabar.com/news/world-news";
+    public static final String prabhaSakshiInternationalNews="https://www.prabhasakshi.com/news/international/";
+    public static final String dainikTribuneOnlineInternationalNews="https://www.dainiktribuneonline.com/news/world";
+    public static final String samacharJagatInternationalNews="https://www.samacharjagat.com/category/international/";
+// indian hindi international news link are staying above.
+
+
+
 
 
 }
