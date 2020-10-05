@@ -1714,7 +1714,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private void setDainikTribuneOnlineBreakingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("marquee a[href]");
+            Elements allList = document.select("div.opinion-news-block h4 a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
                 String link=MyUrl.dainikTribuneOnlineBreakingNews+temporaryLink;
@@ -1727,7 +1727,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel = new RecyclerItemModel();
-        itemModel.setTitle("दैनिक ट्रिब्यून (ताज़ा खबर)");
+        itemModel.setTitle("दैनिक ट्रिब्यून (विचार खबर)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
