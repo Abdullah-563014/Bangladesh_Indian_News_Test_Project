@@ -541,6 +541,14 @@
         <item>https://www.samacharjagat.com/category/business/</item>
     </string-array>
 
+    <string-array name="indian_hindi_international_news_list">
+
+    </string-array>
+
+    <string-array name="indian_hindi_international_url_list">
+
+    </string-array>
+
 
 
     <string name="read_write_permission_details">

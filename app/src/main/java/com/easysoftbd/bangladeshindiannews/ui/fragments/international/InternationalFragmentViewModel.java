@@ -13,6 +13,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdInternational
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaFinance;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaInternational;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiInternational;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
@@ -58,6 +59,12 @@ public class InternationalFragmentViewModel extends ViewModel {
     private MutableLiveData<List<IndianBanglaInternational>> indianBanglaInternationalUnVisibleList;
     private List<IndianBanglaInternational> indianBanglaInternationalList=new ArrayList<>();
     private List<IndianBanglaInternational> indianBanglaInternationalUnVisibleTemporaryList=new ArrayList<>();
+
+    private Observer<List<IndianHindiInternational>> indianHindiAllInternationalNewsObserver;
+    private LiveData<List<IndianHindiInternational>> indianHindiInternationalLiveData;
+    private MutableLiveData<List<IndianHindiInternational>> indianHindiInternationalUnVisibleList;
+    private List<IndianHindiInternational> indianHindiInternationalList=new ArrayList<>();
+    private List<IndianHindiInternational> indianHindiInternationalUnVisibleTemporaryList=new ArrayList<>();
 
 
 
@@ -207,6 +214,18 @@ public class InternationalFragmentViewModel extends ViewModel {
             IndianBanglaInternational finalIndianBanglaInternationalUpperItem = indianBanglaInternationalUpperItem;
 
 
+            IndianHindiInternational indianHindiInternationalCurrentItem = null, indianHindiInternationalUpperItem = null;
+            if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                indianHindiInternationalCurrentItem = indianHindiInternationalList.get(serialNumber);
+                indianHindiInternationalUpperItem = indianHindiInternationalList.get(serialNumber - 1);
+
+                indianHindiInternationalCurrentItem.setSerial(serialNumber - 1);
+                indianHindiInternationalUpperItem.setSerial(serialNumber);
+            }
+            IndianHindiInternational finalIndianHindiInternationalCurrentItem = indianHindiInternationalCurrentItem;
+            IndianHindiInternational finalIndianHindiInternationalUpperItem = indianHindiInternationalUpperItem;
+
+
 
             insertingDataFlag=true;
             dataStatusFlagInDb=true;
@@ -216,6 +235,8 @@ public class InternationalFragmentViewModel extends ViewModel {
                     newsDatabase.bdInternationalDao().updateNews(finalBdInternationalCurrentItem,finalBdInternationalUpperItem);
                 } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                     newsDatabase.indianBanglaInternationalDao().updateNews(finalIndianBanglaInternationalCurrentItem, finalIndianBanglaInternationalUpperItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                    newsDatabase.indianHindiInternationalDao().updateNews(finalIndianHindiInternationalCurrentItem, finalIndianHindiInternationalUpperItem);
                 }
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
@@ -264,6 +285,20 @@ public class InternationalFragmentViewModel extends ViewModel {
         IndianBanglaInternational finalIndianBanglaInternationalDownItem = indianBanglaInternationalDownItem;
 
 
+        IndianHindiInternational indianHindiInternationalCurrentItem = null, indianHindiInternationalDownItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber < (indianHindiInternationalList.size() - 1)) {
+                indianHindiInternationalCurrentItem = indianHindiInternationalList.get(serialNumber);
+                indianHindiInternationalDownItem = indianHindiInternationalList.get(serialNumber + 1);
+
+                indianHindiInternationalCurrentItem.setSerial(serialNumber + 1);
+                indianHindiInternationalDownItem.setSerial(serialNumber);
+            }
+        }
+        IndianHindiInternational finalIndianHindiInternationalCurrentItem = indianHindiInternationalCurrentItem;
+        IndianHindiInternational finalIndianHindiInternationalDownItem = indianHindiInternationalDownItem;
+
+
         insertingDataFlag=true;
         dataStatusFlagInDb=true;
 
@@ -272,6 +307,8 @@ public class InternationalFragmentViewModel extends ViewModel {
                 newsDatabase.bdInternationalDao().updateNews(finalBdInternationalCurrentItem, finalBdInternationalDownItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaInternationalDao().updateNews(finalIndianBanglaInternationalCurrentItem, finalIndianBanglaInternationalDownItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiInternationalDao().updateNews(finalIndianHindiInternationalCurrentItem, finalIndianHindiInternationalDownItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -311,6 +348,16 @@ public class InternationalFragmentViewModel extends ViewModel {
         IndianBanglaInternational finalIndianBanglaInternationalCurrentItem = indianBanglaInternationalCurrentItem;
 
 
+        IndianHindiInternational indianHindiInternationalCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber <= (indianHindiInternationalList.size() - 1) && serialNumber >= 0) {
+                indianHindiInternationalCurrentItem = indianHindiInternationalList.get(serialNumber);
+                indianHindiInternationalCurrentItem.setVisibilityStatus("hidden");
+            }
+        }
+        IndianHindiInternational finalIndianHindiInternationalCurrentItem = indianHindiInternationalCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -319,6 +366,8 @@ public class InternationalFragmentViewModel extends ViewModel {
                 newsDatabase.bdInternationalDao().updateNews(finalBdInternationalCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaInternationalDao().updateNews(finalIndianBanglaInternationalCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiInternationalDao().updateNews(finalIndianHindiInternationalCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -361,6 +410,19 @@ public class InternationalFragmentViewModel extends ViewModel {
         }
         IndianBanglaInternational finalIndianBanglaInternationalCurrentItem = indianBanglaInternationalCurrentItem;
 
+
+        IndianHindiInternational indianHindiInternationalCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            for (int i = 0; i < indianHindiInternationalUnVisibleTemporaryList.size(); i++) {
+                if (paperName.equalsIgnoreCase(indianHindiInternationalUnVisibleTemporaryList.get(i).getPaperName())) {
+                    indianHindiInternationalCurrentItem = indianHindiInternationalUnVisibleTemporaryList.get(i);
+                    indianHindiInternationalCurrentItem.setVisibilityStatus("visible");
+                }
+            }
+        }
+        IndianHindiInternational finalIndianHindiInternationalCurrentItem = indianHindiInternationalCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -369,6 +431,8 @@ public class InternationalFragmentViewModel extends ViewModel {
                 newsDatabase.bdInternationalDao().updateNews(finalBdInternationalCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaInternationalDao().updateNews(finalIndianBanglaInternationalCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiInternationalDao().updateNews(finalIndianHindiInternationalCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -404,6 +468,14 @@ public class InternationalFragmentViewModel extends ViewModel {
         IndianBanglaInternational finalIndianBanglaInternationalCurrentItem = indianBanglaInternationalCurrentItem;
 
 
+        IndianHindiInternational indianHindiInternationalCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            indianHindiInternationalCurrentItem = indianHindiInternationalList.get(serialNumber);
+            indianHindiInternationalCurrentItem.setBackgroundColor(colorName);
+        }
+        IndianHindiInternational finalIndianHindiInternationalCurrentItem = indianHindiInternationalCurrentItem;
+
+
 
         insertingDataFlag=false;
         dataStatusFlagInDb=true;
@@ -413,6 +485,8 @@ public class InternationalFragmentViewModel extends ViewModel {
                 newsDatabase.bdInternationalDao().updateNews(finalBdInternationalCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaInternationalDao().updateNews(finalIndianBanglaInternationalCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiInternationalDao().updateNews(finalIndianHindiInternationalCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -448,6 +522,14 @@ public class InternationalFragmentViewModel extends ViewModel {
         IndianBanglaInternational finalIndianBanglaInternationalCurrentItem = indianBanglaInternationalCurrentItem;
 
 
+        IndianHindiInternational indianHindiInternationalCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            indianHindiInternationalCurrentItem = indianHindiInternationalList.get(serialNumber);
+            indianHindiInternationalCurrentItem.setTextColor(colorName);
+        }
+        IndianHindiInternational finalIndianHindiInternationalCurrentItem = indianHindiInternationalCurrentItem;
+
+
 
         insertingDataFlag=false;
         dataStatusFlagInDb=true;
@@ -457,6 +539,8 @@ public class InternationalFragmentViewModel extends ViewModel {
                 newsDatabase.bdInternationalDao().updateNews(finalBdInternationalCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 newsDatabase.indianBanglaInternationalDao().updateNews(finalIndianBanglaInternationalCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiInternationalDao().updateNews(finalIndianHindiInternationalCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -514,14 +598,12 @@ public class InternationalFragmentViewModel extends ViewModel {
                 if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
                     itemList.setValue(itemList.getValue());
                 }
-                Log.d(Constants.TAG,"bd international data size is:- "+bdInternationals.size());
                 if (bdInternationals.size()>0 && !insertingDataFlag) {
                     temporaryList.clear();
                     itemList.setValue(temporaryList);
                     for (int i=0; i<bdInternationals.size(); i++) {
                         if (bdInternationals.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
                             loadPageDocument(bdInternationals.get(i).getPaperUrl());
-                            Log.d(Constants.TAG,"bd sports url call:- "+i);
                         } else {
                             bdInternationalUnVisibleTemporaryList.add(bdInternationals.get(i));
                         }
@@ -542,7 +624,6 @@ public class InternationalFragmentViewModel extends ViewModel {
                             bdInternational.setPaperName(nameList.get(i));
                             bdInternational.setBackgroundColor("SkyBlue");
                             bdInternational.setTextColor("White");
-                            Log.d(Constants.TAG,"data insert:- "+i);
                             Completable.fromAction(()->{
                                 newsDatabase.bdInternationalDao().insertNews(bdInternational);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -615,7 +696,6 @@ public class InternationalFragmentViewModel extends ViewModel {
                     for (int i=0; i<indianBanglaInternationals.size(); i++) {
                         if (indianBanglaInternationals.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
                             loadPageDocument(indianBanglaInternationals.get(i).getPaperUrl());
-                            Log.d(Constants.TAG,"bd sports url call:- "+i);
                         } else {
                             indianBanglaInternationalUnVisibleTemporaryList.add(indianBanglaInternationals.get(i));
                         }
@@ -664,6 +744,99 @@ public class InternationalFragmentViewModel extends ViewModel {
         indianBanglaInternationalLiveData=newsDatabase.indianBanglaInternationalDao().getAllNews();
         indianBanglaInternationalLiveData.observeForever(indianBanglaAllInternationalNewsObserver);
     }
+
+
+    public void shortingIndianHindiInternationalList(List<RecyclerItemModel> recyclerItemModelList) {
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
+        }
+        temporaryShortingList.clear();
+        String title;
+        RecyclerItemModel recyclerItemModel;
+        for (int i=0; i<indianHindiInternationalList.size(); i++) {
+            title=indianHindiInternationalList.get(i).getPaperName();
+            for (int j=0; j<recyclerItemModelList.size(); j++) {
+                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    recyclerItemModel=recyclerItemModelList.get(j);
+                    recyclerItemModel.setSerialNumber(indianHindiInternationalList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(indianHindiInternationalList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(indianHindiInternationalList.get(i).getTextColor());
+                    temporaryShortingList.add(recyclerItemModel);
+                }
+            }
+        }
+        shortedList.setValue(temporaryShortingList);
+    }
+    public LiveData<List<IndianHindiInternational>> getIndianHindiInternationalUnVisibleList() {
+        if (indianHindiInternationalUnVisibleList==null) {
+            indianHindiInternationalUnVisibleList=new MutableLiveData<>();
+        }
+        return indianHindiInternationalUnVisibleList;
+    }
+    public void checkIndianHindiInternationalNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (indianHindiAllInternationalNewsObserver==null) {
+            indianHindiAllInternationalNewsObserver= indianBanglaInternationals -> {
+                indianHindiInternationalList.clear();
+                indianHindiInternationalList.addAll(indianBanglaInternationals);
+                indianHindiInternationalUnVisibleTemporaryList.clear();
+                if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
+                    itemList.setValue(itemList.getValue());
+                }
+                if (indianBanglaInternationals.size()>0 && !insertingDataFlag) {
+                    temporaryList.clear();
+                    itemList.setValue(temporaryList);
+                    for (int i=0; i<indianBanglaInternationals.size(); i++) {
+                        if (indianBanglaInternationals.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(indianBanglaInternationals.get(i).getPaperUrl());
+                        } else {
+                            indianHindiInternationalUnVisibleTemporaryList.add(indianBanglaInternationals.get(i));
+                        }
+                    }
+                    if (indianHindiInternationalUnVisibleList==null) {
+                        indianHindiInternationalUnVisibleList=new MutableLiveData<>();
+                    }
+                    indianHindiInternationalUnVisibleList.setValue(indianHindiInternationalUnVisibleTemporaryList);
+                    insertingDataFlag=true;
+                } else {
+                    insertingDataFlag=true;
+                    if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {
+                        for (int i=0; i<urlList.size(); i++) {
+                            IndianHindiInternational indianHindiInternational=new IndianHindiInternational();
+                            indianHindiInternational.setSerial(i);
+                            indianHindiInternational.setVisibilityStatus("visible");
+                            indianHindiInternational.setPaperUrl(urlList.get(i));
+                            indianHindiInternational.setPaperName(nameList.get(i));
+                            indianHindiInternational.setBackgroundColor("SkyBlue");
+                            indianHindiInternational.setTextColor("White");
+                            Completable.fromAction(()->{
+                                newsDatabase.indianHindiInternationalDao().insertNews(indianHindiInternational);
+                            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+                                    compositeDisposable.add(d);
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+
+                                }
+                            });
+                        }
+                        dataStatusFlagInDb=true;
+                    }
+                    insertingDataFlag=false;
+                }
+            };
+        }
+        indianHindiInternationalLiveData=newsDatabase.indianHindiInternationalDao().getAllNews();
+        indianHindiInternationalLiveData.observeForever(indianHindiAllInternationalNewsObserver);
+    }
+
 
 
 
@@ -1298,6 +1471,8 @@ public class InternationalFragmentViewModel extends ViewModel {
             bdInternationalLiveData.removeObserver(bangladeshiAllInternationalNewsObserver);
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
             indianBanglaInternationalLiveData.removeObserver(indianBanglaAllInternationalNewsObserver);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            indianHindiInternationalLiveData.removeObserver(indianHindiAllInternationalNewsObserver);
         }
         super.onCleared();
         compositeDisposable.dispose();
