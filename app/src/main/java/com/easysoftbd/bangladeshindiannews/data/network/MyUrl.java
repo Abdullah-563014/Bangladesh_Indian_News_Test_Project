@@ -282,6 +282,23 @@ public class MyUrl {
 
 
 
+    public static final String jagranSportsNews="https://www.jagran.com/cricket-hindi.html";
+    public static final String bhaskarSportsNews="https://www.bhaskar.com/sports/";
+    public static final String amarUjalaSportsNews="https://www.amarujala.com/sports?src=hbmenu";
+    public static final String liveHindustanSportsNews="https://www.livehindustan.com/sports/";
+    public static final String navBharatTimesSportsNews="https://navbharattimes.indiatimes.com/sports/articlelist/2279790.cms?utm_source=navigation";
+    public static final String janSattaSportsNews="https://www.jansatta.com/khel/";
+    public static final String punjabKesariSportsNews="https://sports.punjabkesari.in/";
+    public static final String hariBhoomiSportsNews="https://www.haribhoomi.com/sports";
+    public static final String khasKhabarSportsNews="https://www.khaskhabar.com/sports";
+    public static final String divyaHimachalSportsNews="https://www.divyahimachal.com/category/himachal-sports-news/";
+    public static final String prabhaSakshiSportsNews="https://www.prabhasakshi.com/news/sports/";
+    public static final String dainikTribuneOnlineSportsNews="https://www.dainiktribuneonline.com/news/sports";
+    public static final String samacharJagatSportsNews="https://www.samacharjagat.com/category/sports/";
+// indian hindi sports news link are staying above.
+
+
+
 
 
 }

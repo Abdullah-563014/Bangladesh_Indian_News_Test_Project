@@ -570,11 +570,35 @@
     </string-array>
 
     <string-array name="indian_hindi_sports_news_list">
-
+        <item>जागरण (खेल समाचार)</item>
+        <item>देनिक भास्कर (खेल समाचार)</item>
+        <item>अमर उजाला (खेल समाचार)</item>
+        <item>लाइव हिन्दुस्तान (खेल समाचार)</item>
+        <item>नव भारत टाइम्स (खेल समाचार)</item>
+        <item>जनसत्ता (खेल समाचार)</item>
+        <item>पंजाब केसरी (खेल समाचार)</item>
+        <item>हरिभूमि (खेल समाचार)</item>
+        <item>अच्छी खबर (खेल समाचार)</item>
+        <item>दिव्य हिमाचल (खेल समाचार)</item>
+        <item>प्रभा साक्षी (खेल समाचार)</item>
+        <item>दैनिक ट्रिब्यून (खेल समाचार)</item>
+        <item>SamacharJagat (खेल समाचार)</item>
     </string-array>
 
     <string-array name="indian_hindi_sports_url_list">
-
+        <item>https://www.jagran.com/cricket-hindi.html</item>
+        <item>https://www.bhaskar.com/sports/</item>
+        <item>https://www.amarujala.com/sports?src=hbmenu</item>
+        <item>https://www.livehindustan.com/sports/</item>
+        <item>https://navbharattimes.indiatimes.com/sports/articlelist/2279790.cms?utm_source=navigation</item>
+        <item>https://www.jansatta.com/khel/</item>
+        <item>https://sports.punjabkesari.in/</item>
+        <item>https://www.haribhoomi.com/sports</item>
+        <item>https://www.khaskhabar.com/sports</item>
+        <item>https://www.divyahimachal.com/category/himachal-sports-news/</item>
+        <item>https://www.prabhasakshi.com/news/sports/</item>
+        <item>https://www.dainiktribuneonline.com/news/sports</item>
+        <item>https://www.samacharjagat.com/category/sports/</item>
     </string-array>
 
     <string-array name="indian_hindi_tv_channel_news_list">
