@@ -569,6 +569,22 @@
         <item>https://www.samacharjagat.com/category/international/</item>
     </string-array>
 
+    <string-array name="indian_hindi_sports_news_list">
+
+    </string-array>
+
+    <string-array name="indian_hindi_sports_url_list">
+
+    </string-array>
+
+    <string-array name="indian_hindi_tv_channel_news_list">
+
+    </string-array>
+
+    <string-array name="indian_hindi_tv_channel_url_list">
+
+    </string-array>
+
 
 
     <string name="read_write_permission_details">

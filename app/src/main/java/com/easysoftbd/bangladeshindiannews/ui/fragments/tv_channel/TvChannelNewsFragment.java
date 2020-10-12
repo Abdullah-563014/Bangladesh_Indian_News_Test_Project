@@ -20,6 +20,7 @@ import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentTvChannelNewsBinding;
@@ -48,6 +49,7 @@ public class TvChannelNewsFragment extends Fragment {
 
     private List<BdTvChannel> bdTvChannelUnVisibleList=new ArrayList<>();
     private List<IndianBanglaTvChannel> indianBanglaTvChannelUnVisibleList=new ArrayList<>();
+    private List<IndianHindiTvChannel> indianHindiTvChannelUnVisibleList=new ArrayList<>();
 
     public TvChannelNewsFragment() {
         // Required empty public constructor
@@ -91,6 +93,10 @@ public class TvChannelNewsFragment extends Fragment {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_tv_channel_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_bangla_tv_channel_news_list)));
             viewModel.checkIndianBanglaTvChannelNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_tv_channel_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_tv_channel_news_list)));
+            viewModel.checkIndianHindiTvChannelNewsDataInDb(nameList,urlList);
         }
     }
 
@@ -104,6 +110,8 @@ public class TvChannelNewsFragment extends Fragment {
                 viewModel.shortingBdTvChannelList(recyclerItemModels);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
                 viewModel.shortingIndianBanglaTvChannelList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                viewModel.shortingIndianHindiTvChannelList(recyclerItemModels);
             }
         });
 
@@ -208,6 +216,11 @@ public class TvChannelNewsFragment extends Fragment {
                 indianBanglaTvChannelUnVisibleList.clear();
                 indianBanglaTvChannelUnVisibleList.addAll(indianBanglaTvChannels);
             });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            viewModel.getIndianHindiTvChannelUnVisibleList().observe(this, indianHindiTvChannels -> {
+                indianHindiTvChannelUnVisibleList.clear();
+                indianHindiTvChannelUnVisibleList.addAll(indianHindiTvChannels);
+            });
         }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -225,6 +238,11 @@ public class TvChannelNewsFragment extends Fragment {
             list=new String[indianBanglaTvChannelUnVisibleList.size()];
             for (int i=0; i<indianBanglaTvChannelUnVisibleList.size(); i++) {
                 list[i]=indianBanglaTvChannelUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            list=new String[indianHindiTvChannelUnVisibleList.size()];
+            for (int i=0; i<indianHindiTvChannelUnVisibleList.size(); i++) {
+                list[i]=indianHindiTvChannelUnVisibleList.get(i).getPaperName();
             }
         }
 
