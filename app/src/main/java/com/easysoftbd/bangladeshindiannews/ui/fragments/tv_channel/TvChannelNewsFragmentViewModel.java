@@ -70,6 +70,8 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
 
 
 
+
+
     public TvChannelNewsFragmentViewModel(NewsDatabase newsDatabase, String countryName, String languageName) {
         this.newsDatabase=newsDatabase;
         this.countryName=countryName;
@@ -134,8 +136,28 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             setRPlusNewsTvChannelNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.indianExpressTvChannelNews)){
                             setIndianExpressBanglaTvChannelNews(document);
-                        }
-
+                        }// indian bangla tv chanel news link are staying above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.abpLiveHindiTvChannelNews)){
+                            setAbpHindiTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.inkhabarTvChannelNews)){
+                            setInKhabarTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.indiaTvTvChannelNews)){
+                            setIndiaTvTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.khabarNdTvTvChannelNews)){
+                            setKhabarNdTvTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.hindiNews24OnlineTvChannelNews)){
+                            setHindiNews24OnlineTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.hindiMoneyControlTvChannelNews)){
+                            setHindiMoneyControlTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ibc24TvChannelNews)){
+                            setIbc24TvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.hindiNews18TvChannelNews)){
+                            setHindiNews18TvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ddiNewsTvChannelNews)){
+                            setDdiNewsTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.newsNationTvTvChannelNews)){
+                            setNewsNationTvTvChannelNews(document);
+                        }// indian hindi tv chanel news link are staying above.
                     }
 
                     @Override
@@ -1224,6 +1246,224 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ইন্ডিয়ান এক্সপ্রেস বাংলা (ট্রেডিং নিউস)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+
+
+
+    private void setAbpHindiTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.uk-grid-small.margThree.uk-grid div.uk-width-1-2.uk-first-column a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                if (news.length()>=11) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.abpLiveHindiTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("एबीपी लाइव (खबर अभी)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setInKhabarTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.col-md-4.colm-lp.home-top-news ul li h3 a");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.inkhabarTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("इनखबर (मुख्य समाचार)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setIndiaTvTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.row.latest_news ul li h2 a");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.indiaTvTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("इंडिया टीवी (ताज़ा खबर)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setKhabarNdTvTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.featured_cont ul li a.item-title[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.khabarNdTvTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("खबर इंडिया (अन्य बड़ी खबरें)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setHindiNews24OnlineTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.container div.row div.col-lg-2.col-md-2.col-sm-2.col-xs-6 h2 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.hindiNews24OnlineTvChannelNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.hindiNews24OnlineTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("समाचार 24 ऑनलाइन (ट्रेंडिंग न्यूज़)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setHindiMoneyControlTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.todaynews.FR div.todnews_in ul li p a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.hindiMoneyControlTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("धन नियंत्रण (समाचार सुर्खियों)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setIbc24TvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("owl-carousel-child ul.small-post.item li h3 a");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.ibc24TvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("IBC 24 (general news)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setHindiNews18TvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("ul.top-kharein li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.hindiNews18TvChannelNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.hindiNews18TvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("न्यूज 18 हिंदी (मुख्य समाचार)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setDdiNewsTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.panel-panel.panel-col-first div.view-content ul.slides li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.ddiNewsTvChannelNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.ddiNewsTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("DD न्यूज़ (ताज़ा खबर)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setNewsNationTvTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.row.tab-top-story ul+ul li h2 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.newsNationTvTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("समाचार राष्ट्र टीवी (सामान्य समाचार)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);

@@ -602,11 +602,29 @@
     </string-array>
 
     <string-array name="indian_hindi_tv_channel_news_list">
-
+        <item>एबीपी लाइव (खबर अभी)</item>
+        <item>इनखबर (मुख्य समाचार)</item>
+        <item>इंडिया टीवी (ताज़ा खबर)</item>
+        <item>खबर इंडिया (अन्य बड़ी खबरें)</item>
+        <item>समाचार 24 ऑनलाइन (ट्रेंडिंग न्यूज़)</item>
+        <item>धन नियंत्रण (समाचार सुर्खियों)</item>
+        <item>IBC 24 (general news)</item>
+        <item>न्यूज 18 हिंदी (मुख्य समाचार)</item>
+        <item>DD न्यूज़ (ताज़ा खबर)</item>
+        <item>समाचार राष्ट्र टीवी (सामान्य समाचार)</item>
     </string-array>
 
     <string-array name="indian_hindi_tv_channel_url_list">
-
+        <item>https://www.abplive.com/</item>
+        <item>https://www.inkhabar.com/</item>
+        <item>https://www.indiatv.in/</item>
+        <item>https://khabar.ndtv.com/</item>
+        <item>https://hindi.news24online.com/</item>
+        <item>https://hindi.moneycontrol.com/tv/</item>
+        <item>https://www.ibc24.in/</item>
+        <item>https://hindi.news18.com/?pg=home</item>
+        <item>http://www.ddinews.gov.in/hi/</item>
+        <item>https://www.newsnationtv.com/</item>
     </string-array>
 
 

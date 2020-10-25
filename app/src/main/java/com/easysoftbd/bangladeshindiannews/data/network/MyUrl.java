@@ -299,6 +299,20 @@ public class MyUrl {
 
 
 
+    public static final String abpLiveHindiTvChannelNews="https://www.abplive.com/";
+    public static final String inkhabarTvChannelNews="https://www.inkhabar.com/";
+    public static final String indiaTvTvChannelNews="https://www.indiatv.in/";
+    public static final String khabarNdTvTvChannelNews="https://khabar.ndtv.com/";
+    public static final String hindiNews24OnlineTvChannelNews="https://hindi.news24online.com/";
+    public static final String hindiMoneyControlTvChannelNews="https://hindi.moneycontrol.com/tv/";
+    public static final String ibc24TvChannelNews="https://www.ibc24.in/";
+    public static final String hindiNews18TvChannelNews="https://hindi.news18.com/?pg=home";
+    public static final String ddiNewsTvChannelNews="http://www.ddinews.gov.in/hi/";
+    public static final String newsNationTvTvChannelNews="https://www.newsnationtv.com/";
+// indian hindi tv channel news link are staying above.
+
+
+
 
 
 }
