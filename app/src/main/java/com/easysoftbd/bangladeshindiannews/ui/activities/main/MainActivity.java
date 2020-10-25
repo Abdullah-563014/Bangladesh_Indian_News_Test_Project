@@ -65,12 +65,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setSingleChoiceItems(countryList, 0, (dialog, which) -> {
                     dialog.dismiss();
                     selectedCountry=countryList[which];
-                    binding.selectedCountryTextView.setText("Country:- "+selectedCountry);
+                    CommonMethods.setStringToSharedPreference(getApplicationContext(),Constants.countryNameKey,selectedCountry);
                     if (selectedCountry.equalsIgnoreCase("India")) {
                         showLanguageAlertDialog();
                     } else {
-                        binding.selectedLanguageTextView.setText("Language:- Bangla");
+                        selectedLanguage=Constants.bangla;
+                        CommonMethods.setStringToSharedPreference(getApplicationContext(),Constants.languageNameKey,selectedLanguage);
                     }
+                    updateUiForCountryAndLanguage();
                 });
 
         alertDialog=builder.create();
@@ -86,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setSingleChoiceItems(languageList, 0, (dialog, which) -> {
                     dialog.dismiss();
                     selectedLanguage=languageList[which];
-                    binding.selectedLanguageTextView.setText("Language:- "+selectedLanguage);
+                    CommonMethods.setStringToSharedPreference(getApplicationContext(),Constants.languageNameKey,selectedLanguage);
+                    updateUiForCountryAndLanguage();
                 });
 
         alertDialog=builder.create();
@@ -108,6 +111,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isFinishing()) {
             alertDialog.show();
         }
+    }
+
+    private void updateUiForCountryAndLanguage() {
+        selectedCountry=CommonMethods.getStringFromSharedPreference(getApplicationContext(),Constants.countryNameKey,Constants.bangladesh);
+        selectedLanguage=CommonMethods.getStringFromSharedPreference(getApplicationContext(),Constants.languageNameKey,Constants.bangla);
+        binding.selectedCountryTextView.setText("Country:- "+selectedCountry);
+        binding.selectedLanguageTextView.setText("Language:- "+selectedLanguage);
     }
 
 
@@ -132,6 +142,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUiForCountryAndLanguage();
     }
 
     @Override

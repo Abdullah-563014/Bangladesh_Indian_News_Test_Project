@@ -10,6 +10,8 @@ public class Constants {
     public static final String selectedCountryTag="SelectedCountryTag";
     public static final String selectedLanguageTag="SelectedLanguageTag";
 
+    public static final String countryNameKey="CountryNameKey";
+    public static final String languageNameKey="LanguageNameKey";
     public static final String bangladesh="Bangladesh";
     public static final String india="India";
     public static final String bangla="Bangla";

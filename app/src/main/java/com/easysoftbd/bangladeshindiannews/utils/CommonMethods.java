@@ -52,4 +52,10 @@ public class CommonMethods {
     public static String getStringFromSharedPreference(Context context, String key, String defaultValue) {
         return getSharedInstance(context).getString(key,defaultValue);
     }
+
+
+
+
+
+
 }
