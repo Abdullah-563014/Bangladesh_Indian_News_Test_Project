@@ -22,6 +22,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdInternational;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaInternational;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishInternational;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiInternational;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -54,6 +55,7 @@ public class InternationalFragment extends Fragment {
     private List<BdInternational> bdInternationalUnVisibleList=new ArrayList<>();
     private List<IndianBanglaInternational> indianBanglaInternationalUnVisibleList=new ArrayList<>();
     private List<IndianHindiInternational> indianHindiInternationalUnVisibleList=new ArrayList<>();
+    private List<IndianEnglishInternational> indianEnglishInternationalUnVisibleList=new ArrayList<>();
 
 
     public InternationalFragment() {
@@ -103,6 +105,10 @@ public class InternationalFragment extends Fragment {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_international_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_international_news_list)));
             viewModel.checkIndianHindiInternationalNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_international_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_international_news_list)));
+            viewModel.checkIndianEnglishInternationalNewsDataInDb(nameList,urlList);
         }
     }
 
@@ -118,6 +124,8 @@ public class InternationalFragment extends Fragment {
                 viewModel.shortingIndianBanglaInternationalList(recyclerItemModels);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 viewModel.shortingIndianHindiInternationalList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                viewModel.shortingIndianEnglishInternationalList(recyclerItemModels);
             }
         });
 
@@ -227,6 +235,11 @@ public class InternationalFragment extends Fragment {
                 indianHindiInternationalUnVisibleList.clear();
                 indianHindiInternationalUnVisibleList.addAll(indianHindiInternationals);
             });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            viewModel.getIndianEnglishInternationalUnVisibleList().observe(this, indianEnglishInternationals -> {
+                indianEnglishInternationalUnVisibleList.clear();
+                indianEnglishInternationalUnVisibleList.addAll(indianEnglishInternationals);
+            });
         }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -250,6 +263,11 @@ public class InternationalFragment extends Fragment {
             list=new String[indianHindiInternationalUnVisibleList.size()];
             for (int i=0; i<indianHindiInternationalUnVisibleList.size(); i++) {
                 list[i]=indianHindiInternationalUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            list=new String[indianEnglishInternationalUnVisibleList.size()];
+            for (int i=0; i<indianEnglishInternationalUnVisibleList.size(); i++) {
+                list[i]=indianEnglishInternationalUnVisibleList.get(i).getPaperName();
             }
         }
 

@@ -22,6 +22,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdSports;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaSport;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishSports;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiSports;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -54,6 +55,7 @@ public class SportsNewsFragment extends Fragment {
     private List<BdSports> bdSportsUnVisibleList=new ArrayList<>();
     private List<IndianBanglaSport> indianBanglaSportsUnVisibleList=new ArrayList<>();
     private List<IndianHindiSports> indianHindiSportsUnVisibleList=new ArrayList<>();
+    private List<IndianEnglishSports> indianEnglishSportsUnVisibleList=new ArrayList<>();
 
 
     public SportsNewsFragment() {
@@ -103,6 +105,10 @@ public class SportsNewsFragment extends Fragment {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_sports_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_sports_news_list)));
             viewModel.checkIndianHindiSportsNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_sports_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_sports_news_list)));
+            viewModel.checkIndianEnglishSportsNewsDataInDb(nameList,urlList);
         }
     }
 
@@ -118,6 +124,8 @@ public class SportsNewsFragment extends Fragment {
                 viewModel.shortingIndianBanglaSportsList(recyclerItemModels);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 viewModel.shortingIndianHindiSportsList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                viewModel.shortingIndianEnglishSportsList(recyclerItemModels);
             }
         });
 
@@ -227,6 +235,11 @@ public class SportsNewsFragment extends Fragment {
                 indianHindiSportsUnVisibleList.clear();
                 indianHindiSportsUnVisibleList.addAll(indianHindiSports);
             });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            viewModel.getIndianEnglishSportsUnVisibleList().observe(this, indianEnglishSports -> {
+                indianEnglishSportsUnVisibleList.clear();
+                indianEnglishSportsUnVisibleList.addAll(indianEnglishSports);
+            });
         }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -249,6 +262,11 @@ public class SportsNewsFragment extends Fragment {
             list=new String[indianHindiSportsUnVisibleList.size()];
             for (int i=0; i<indianHindiSportsUnVisibleList.size(); i++) {
                 list[i]=indianHindiSportsUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            list=new String[indianEnglishSportsUnVisibleList.size()];
+            for (int i=0; i<indianEnglishSportsUnVisibleList.size(); i++) {
+                list[i]=indianEnglishSportsUnVisibleList.get(i).getPaperName();
             }
         }
 

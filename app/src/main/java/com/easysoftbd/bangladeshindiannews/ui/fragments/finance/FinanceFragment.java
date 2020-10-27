@@ -22,6 +22,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishFinance;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiFinance;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -53,6 +54,7 @@ public class FinanceFragment extends Fragment {
     private List<BdFinance> bdFinanceUnVisibleList=new ArrayList<>();
     private List<IndianBanglaFinance> indianBanglaFinanceUnVisibleList=new ArrayList<>();
     private List<IndianHindiFinance> indianHindiFinanceUnVisibleList=new ArrayList<>();
+    private List<IndianEnglishFinance> indianEnglishFinanceUnVisibleList=new ArrayList<>();
 
 
     public FinanceFragment() {
@@ -102,6 +104,10 @@ public class FinanceFragment extends Fragment {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_finance_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_finance_news_list)));
             viewModel.checkIndianHindiFinanceNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_finance_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_finance_news_list)));
+            viewModel.checkIndianEnglishFinanceNewsDataInDb(nameList,urlList);
         }
     }
 
@@ -117,6 +123,8 @@ public class FinanceFragment extends Fragment {
                 viewModel.shortingIndianBanglaFinanceList(recyclerItemModels);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 viewModel.shortingIndianHindiFinanceList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                viewModel.shortingIndianEnglishFinanceList(recyclerItemModels);
             }
         });
 
@@ -226,6 +234,11 @@ public class FinanceFragment extends Fragment {
                 indianHindiFinanceUnVisibleList.clear();
                 indianHindiFinanceUnVisibleList.addAll(indianHindiFinances);
             });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            viewModel.getIndianEnglishFinanceUnVisibleList().observe(this, indianEnglishFinances -> {
+                indianEnglishFinanceUnVisibleList.clear();
+                indianEnglishFinanceUnVisibleList.addAll(indianEnglishFinances);
+            });
         }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -249,6 +262,11 @@ public class FinanceFragment extends Fragment {
             list=new String[indianHindiFinanceUnVisibleList.size()];
             for (int i=0; i<indianHindiFinanceUnVisibleList.size(); i++) {
                 list[i]=indianHindiFinanceUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            list=new String[indianEnglishFinanceUnVisibleList.size()];
+            for (int i=0; i<indianEnglishFinanceUnVisibleList.size(); i++) {
+                list[i]=indianEnglishFinanceUnVisibleList.get(i).getPaperName();
             }
         }
 
