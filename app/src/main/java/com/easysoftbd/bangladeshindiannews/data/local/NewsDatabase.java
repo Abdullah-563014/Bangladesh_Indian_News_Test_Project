@@ -29,6 +29,18 @@ import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaS
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaSportDao;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannelDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishBreaking;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishBreakingDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishEntertainment;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishEntertainmentDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishFinance;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishFinanceDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishInternational;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishInternationalDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishSports;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishSportsDao;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishTvChannelDao;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiBreakingDao;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiEntertainment;
@@ -42,7 +54,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiSpo
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiTvChannelDao;
 
-@Database(entities = {BdBreaking.class, BdSports.class, BdFinance.class, BdInternational.class, BdTvChannel.class, BdEntertainment.class, IndianBanglaBreaking.class, IndianBanglaSport.class, IndianBanglaEntertainment.class, IndianBanglaFinance.class, IndianBanglaInternational.class, IndianBanglaTvChannel.class, IndianHindiBreaking.class, IndianHindiSports.class, IndianHindiFinance.class, IndianHindiEntertainment.class, IndianHindiInternational.class, IndianHindiTvChannel.class, FavouriteList.class}, version = 1, exportSchema = false)
+@Database(entities = {BdBreaking.class, BdSports.class, BdFinance.class, BdInternational.class, BdTvChannel.class, BdEntertainment.class, IndianBanglaBreaking.class, IndianBanglaSport.class, IndianBanglaEntertainment.class, IndianBanglaFinance.class, IndianBanglaInternational.class, IndianBanglaTvChannel.class, IndianHindiBreaking.class, IndianHindiSports.class, IndianHindiFinance.class, IndianHindiEntertainment.class, IndianHindiInternational.class, IndianHindiTvChannel.class, IndianEnglishBreaking.class, IndianEnglishEntertainment.class, IndianEnglishFinance.class, IndianEnglishInternational.class, IndianEnglishSports.class, IndianEnglishTvChannel.class, FavouriteList.class}, version = 1, exportSchema = false)
 public abstract class NewsDatabase extends RoomDatabase {
     public abstract BdBreakingDao bdBreakingDao();
     public abstract BdSportsDao bdSportsDao();
@@ -62,6 +74,12 @@ public abstract class NewsDatabase extends RoomDatabase {
     public abstract IndianHindiFinanceDao indianHindiFinanceDao();
     public abstract IndianHindiInternationalDao indianHindiInternationalDao();
     public abstract IndianHindiTvChannelDao indianHindiTvChannelDao();
+    public abstract IndianEnglishBreakingDao indianEnglishBreakingDao();
+    public abstract IndianEnglishEntertainmentDao indianEnglishEntertainmentDao();
+    public abstract IndianEnglishFinanceDao indianEnglishFinanceDao();
+    public abstract IndianEnglishInternationalDao indianEnglishInternationalDao();
+    public abstract IndianEnglishSportsDao indianEnglishSportsDao();
+    public abstract IndianEnglishTvChannelDao indianEnglishTvChannelDao();
 
 
     public abstract FavouriteListDao favouriteListDao();
