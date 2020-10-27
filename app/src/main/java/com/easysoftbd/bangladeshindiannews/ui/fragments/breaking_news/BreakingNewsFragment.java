@@ -20,6 +20,7 @@ import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaBreaking;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiBreaking;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -47,6 +48,7 @@ public class BreakingNewsFragment extends Fragment {
     private List<BdBreaking> bdBreakingUnVisibleList=new ArrayList<>();
     private List<IndianBanglaBreaking> indianBanglaBreakingUnVisibleList=new ArrayList<>();
     private List<IndianHindiBreaking> indianHindiBreakingUnVisibleList=new ArrayList<>();
+    private List<IndianEnglishBreaking> indianEnglishBreakingUnVisibleList=new ArrayList<>();
 
 
     public BreakingNewsFragment() {
@@ -95,6 +97,10 @@ public class BreakingNewsFragment extends Fragment {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_breaking_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_breaking_news_list)));
             viewModel.checkIndianHindiBreakingNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_breaking_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_breaking_news_list)));
+            viewModel.checkIndianEnglishBreakingNewsDataInDb(nameList,urlList);
         }
     }
 
@@ -110,6 +116,8 @@ public class BreakingNewsFragment extends Fragment {
                 viewModel.shortingIndianBanglaBreakingList(recyclerItemModels);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 viewModel.shortingIndianHindiBreakingList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                viewModel.shortingIndianEnglishBreakingList(recyclerItemModels);
             }
         });
 
@@ -219,6 +227,11 @@ public class BreakingNewsFragment extends Fragment {
                 indianHindiBreakingUnVisibleList.clear();
                 indianHindiBreakingUnVisibleList.addAll(indianHindiBreakings);
             });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            viewModel.getIndianEnglishBreakingUnVisibleList().observe(this, indianEnglishBreakings -> {
+                indianEnglishBreakingUnVisibleList.clear();
+                indianEnglishBreakingUnVisibleList.addAll(indianEnglishBreakings);
+            });
         }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -241,6 +254,11 @@ public class BreakingNewsFragment extends Fragment {
             list=new String[indianHindiBreakingUnVisibleList.size()];
             for (int i=0; i<indianHindiBreakingUnVisibleList.size(); i++) {
                 list[i]=indianHindiBreakingUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            list=new String[indianEnglishBreakingUnVisibleList.size()];
+            for (int i=0; i<indianEnglishBreakingUnVisibleList.size(); i++) {
+                list[i]=indianEnglishBreakingUnVisibleList.get(i).getPaperName();
             }
         }
 

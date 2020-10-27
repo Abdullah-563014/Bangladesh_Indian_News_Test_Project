@@ -12,6 +12,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdSports;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaSport;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -65,6 +66,12 @@ public class EntertainmentFragmentViewModel extends ViewModel {
     private MutableLiveData<List<IndianHindiEntertainment>> indianHindiEntertainmentUnVisibleList;
     private List<IndianHindiEntertainment> indianHindiEntertainmentList=new ArrayList<>();
     private List<IndianHindiEntertainment> indianHindiEntertainmentUnVisibleTemporaryList=new ArrayList<>();
+
+    private Observer<List<IndianEnglishEntertainment>> indianEnglishAllEntertainmentNewsObserver;
+    private LiveData<List<IndianEnglishEntertainment>> indianEnglishEntertainmentLiveData;
+    private MutableLiveData<List<IndianEnglishEntertainment>> indianEnglishEntertainmentUnVisibleList;
+    private List<IndianEnglishEntertainment> indianEnglishEntertainmentList=new ArrayList<>();
+    private List<IndianEnglishEntertainment> indianEnglishEntertainmentUnVisibleTemporaryList=new ArrayList<>();
 
 
 
@@ -256,6 +263,18 @@ public class EntertainmentFragmentViewModel extends ViewModel {
             IndianHindiEntertainment finalIndianHindiEntertainmentUpperItem = indianHindiEntertainmentUpperItem;
 
 
+            IndianEnglishEntertainment indianEnglishEntertainmentCurrentItem = null, indianEnglishEntertainmentUpperItem = null;
+            if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                indianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentList.get(serialNumber);
+                indianEnglishEntertainmentUpperItem = indianEnglishEntertainmentList.get(serialNumber - 1);
+
+                indianEnglishEntertainmentCurrentItem.setSerial(serialNumber - 1);
+                indianEnglishEntertainmentUpperItem.setSerial(serialNumber);
+            }
+            IndianEnglishEntertainment finalIndianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentCurrentItem;
+            IndianEnglishEntertainment finalIndianEnglishEntertainmentUpperItem = indianEnglishEntertainmentUpperItem;
+
+
 
             insertingDataFlag=true;
             dataStatusFlagInDb=true;
@@ -267,6 +286,8 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                     newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem, finalIndianBanglaEntertainmentUpperItem);
                 } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                     newsDatabase.indianHindiEntertainmentDao().updateNews(finalIndianHindiEntertainmentCurrentItem, finalIndianHindiEntertainmentUpperItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                    newsDatabase.indianEnglishEntertainmentDao().updateNews(finalIndianEnglishEntertainmentCurrentItem, finalIndianEnglishEntertainmentUpperItem);
                 }
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
@@ -330,6 +351,20 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         IndianHindiEntertainment finalIndianHindiEntertainmentDownItem = indianHindiEntertainmentDownItem;
 
 
+        IndianEnglishEntertainment indianEnglishEntertainmentCurrentItem = null, indianEnglishEntertainmentDownItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber < (indianEnglishEntertainmentList.size() - 1)) {
+                indianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentList.get(serialNumber);
+                indianEnglishEntertainmentDownItem = indianEnglishEntertainmentList.get(serialNumber + 1);
+
+                indianEnglishEntertainmentCurrentItem.setSerial(serialNumber + 1);
+                indianEnglishEntertainmentDownItem.setSerial(serialNumber);
+            }
+        }
+        IndianEnglishEntertainment finalIndianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentCurrentItem;
+        IndianEnglishEntertainment finalIndianEnglishEntertainmentDownItem = indianEnglishEntertainmentDownItem;
+
+
             insertingDataFlag=true;
             dataStatusFlagInDb=true;
 
@@ -340,6 +375,8 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                     newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem, finalIndianBanglaEntertainmentDownItem);
                 } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                     newsDatabase.indianHindiEntertainmentDao().updateNews(finalIndianHindiEntertainmentCurrentItem, finalIndianHindiEntertainmentDownItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                    newsDatabase.indianEnglishEntertainmentDao().updateNews(finalIndianEnglishEntertainmentCurrentItem, finalIndianEnglishEntertainmentDownItem);
                 }
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
@@ -389,6 +426,16 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         IndianHindiEntertainment finalIndianHindiEntertainmentCurrentItem = indianHindiEntertainmentCurrentItem;
 
 
+        IndianEnglishEntertainment indianEnglishEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber <= (indianEnglishEntertainmentList.size() - 1) && serialNumber >= 0) {
+                indianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentList.get(serialNumber);
+                indianEnglishEntertainmentCurrentItem.setVisibilityStatus("hidden");
+            }
+        }
+        IndianEnglishEntertainment finalIndianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -399,6 +446,8 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                 newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 newsDatabase.indianHindiEntertainmentDao().updateNews(finalIndianHindiEntertainmentCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishEntertainmentDao().updateNews(finalIndianEnglishEntertainmentCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -453,6 +502,19 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         }
         IndianHindiEntertainment finalIndianHindiEntertainmentCurrentItem = indianHindiEntertainmentCurrentItem;
 
+
+        IndianEnglishEntertainment indianEnglishEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            for (int i = 0; i < indianEnglishEntertainmentUnVisibleTemporaryList.size(); i++) {
+                if (paperName.equalsIgnoreCase(indianEnglishEntertainmentUnVisibleTemporaryList.get(i).getPaperName())) {
+                    indianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentUnVisibleTemporaryList.get(i);
+                    indianEnglishEntertainmentCurrentItem.setVisibilityStatus("visible");
+                }
+            }
+        }
+        IndianEnglishEntertainment finalIndianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -463,6 +525,8 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                 newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 newsDatabase.indianHindiEntertainmentDao().updateNews(finalIndianHindiEntertainmentCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishEntertainmentDao().updateNews(finalIndianEnglishEntertainmentCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -506,6 +570,14 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         IndianHindiEntertainment finalIndianHindiEntertainmentCurrentItem = indianHindiEntertainmentCurrentItem;
 
 
+        IndianEnglishEntertainment indianEnglishEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            indianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentList.get(serialNumber);
+            indianEnglishEntertainmentCurrentItem.setBackgroundColor(colorName);
+        }
+        IndianEnglishEntertainment finalIndianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentCurrentItem;
+
+
 
         insertingDataFlag=false;
         dataStatusFlagInDb=true;
@@ -517,6 +589,8 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                 newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 newsDatabase.indianHindiEntertainmentDao().updateNews(finalIndianHindiEntertainmentCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishEntertainmentDao().updateNews(finalIndianEnglishEntertainmentCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -560,6 +634,14 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         IndianHindiEntertainment finalIndianHindiEntertainmentCurrentItem = indianHindiEntertainmentCurrentItem;
 
 
+        IndianEnglishEntertainment indianEnglishEntertainmentCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            indianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentList.get(serialNumber);
+            indianEnglishEntertainmentCurrentItem.setTextColor(colorName);
+        }
+        IndianEnglishEntertainment finalIndianEnglishEntertainmentCurrentItem = indianEnglishEntertainmentCurrentItem;
+
+
 
         insertingDataFlag=false;
         dataStatusFlagInDb=true;
@@ -573,6 +655,8 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                 newsDatabase.indianBanglaEntertainmentDao().updateNews(finalIndianBanglaEntertainmentCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 newsDatabase.indianHindiEntertainmentDao().updateNews(finalIndianHindiEntertainmentCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishEntertainmentDao().updateNews(finalIndianEnglishEntertainmentCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -868,6 +952,98 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         }
         indianHindiEntertainmentLiveData=newsDatabase.indianHindiEntertainmentDao().getAllNews();
         indianHindiEntertainmentLiveData.observeForever(indianHindiAllEntertainmentNewsObserver);
+    }
+
+
+    public void shortingIndianEnglishEntertainmentList(List<RecyclerItemModel> recyclerItemModelList) {
+        if (shortedList==null) {
+            shortedList=new MutableLiveData<>();
+        }
+        temporaryShortingList.clear();
+        String title;
+        RecyclerItemModel recyclerItemModel;
+        for (int i=0; i<indianEnglishEntertainmentList.size(); i++) {
+            title=indianEnglishEntertainmentList.get(i).getPaperName();
+            for (int j=0; j<recyclerItemModelList.size(); j++) {
+                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    recyclerItemModel=recyclerItemModelList.get(j);
+                    recyclerItemModel.setSerialNumber(indianEnglishEntertainmentList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(indianEnglishEntertainmentList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(indianEnglishEntertainmentList.get(i).getTextColor());
+                    temporaryShortingList.add(recyclerItemModel);
+                }
+            }
+        }
+        shortedList.setValue(temporaryShortingList);
+    }
+    public LiveData<List<IndianEnglishEntertainment>> getIndianEnglishEntertainmentUnVisibleList() {
+        if (indianEnglishEntertainmentUnVisibleList==null) {
+            indianEnglishEntertainmentUnVisibleList=new MutableLiveData<>();
+        }
+        return indianEnglishEntertainmentUnVisibleList;
+    }
+    public void checkIndianEnglishEntertainmentNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (indianEnglishAllEntertainmentNewsObserver==null) {
+            indianEnglishAllEntertainmentNewsObserver= indianEnglishEntertainments -> {
+                indianEnglishEntertainmentList.clear();
+                indianEnglishEntertainmentList.addAll(indianEnglishEntertainments);
+                indianEnglishEntertainmentUnVisibleTemporaryList.clear();
+                if (dataStatusFlagInDb && itemList.getValue()!=null && itemList.getValue().size()>0) {
+                    itemList.setValue(itemList.getValue());
+                }
+                if (indianEnglishEntertainments.size()>0 && !insertingDataFlag) {
+                    temporaryList.clear();
+                    itemList.setValue(temporaryList);
+                    for (int i=0; i<indianEnglishEntertainments.size(); i++) {
+                        if (indianEnglishEntertainments.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(indianEnglishEntertainments.get(i).getPaperUrl());
+                        } else {
+                            indianEnglishEntertainmentUnVisibleTemporaryList.add(indianEnglishEntertainments.get(i));
+                        }
+                    }
+                    if (indianEnglishEntertainmentUnVisibleList==null) {
+                        indianEnglishEntertainmentUnVisibleList=new MutableLiveData<>();
+                    }
+                    indianEnglishEntertainmentUnVisibleList.setValue(indianEnglishEntertainmentUnVisibleTemporaryList);
+                    insertingDataFlag=true;
+                } else {
+                    insertingDataFlag=true;
+                    if (nameList!=null && urlList!=null && !dataStatusFlagInDb) {
+                        for (int i=0; i<urlList.size(); i++) {
+                            IndianEnglishEntertainment indianEnglishEntertainment=new IndianEnglishEntertainment();
+                            indianEnglishEntertainment.setSerial(i);
+                            indianEnglishEntertainment.setVisibilityStatus("visible");
+                            indianEnglishEntertainment.setPaperUrl(urlList.get(i));
+                            indianEnglishEntertainment.setPaperName(nameList.get(i));
+                            indianEnglishEntertainment.setBackgroundColor("SkyBlue");
+                            indianEnglishEntertainment.setTextColor("White");
+                            Completable.fromAction(()->{
+                                newsDatabase.indianEnglishEntertainmentDao().insertNews(indianEnglishEntertainment);
+                            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+                                    compositeDisposable.add(d);
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+
+                                }
+                            });
+                        }
+                        dataStatusFlagInDb=true;
+                    }
+                    insertingDataFlag=false;
+                }
+            };
+        }
+        indianEnglishEntertainmentLiveData=newsDatabase.indianEnglishEntertainmentDao().getAllNews();
+        indianEnglishEntertainmentLiveData.observeForever(indianEnglishAllEntertainmentNewsObserver);
     }
 
 
@@ -1819,6 +1995,8 @@ public class EntertainmentFragmentViewModel extends ViewModel {
             indianBanglaEntertainmentLiveData.removeObserver(indianBanglaAllEntertainmentNewsObserver);
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
             indianHindiEntertainmentLiveData.removeObserver(indianHindiAllEntertainmentNewsObserver);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            indianEnglishEntertainmentLiveData.removeObserver(indianEnglishAllEntertainmentNewsObserver);
         }
         super.onCleared();
         compositeDisposable.dispose();

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaBreaking;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiBreaking;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -64,6 +65,12 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private MutableLiveData<List<IndianHindiBreaking>> indianHindiBreakingUnVisibleList;
     private List<IndianHindiBreaking> indianHindiBreakingList = new ArrayList<>();
     private List<IndianHindiBreaking> indianHindiBreakingUnVisibleTemporaryList = new ArrayList<>();
+
+    private Observer<List<IndianEnglishBreaking>> indianEnglishAllBreakingNewsObserver;
+    private LiveData<List<IndianEnglishBreaking>> indianEnglishBreakingLiveData;
+    private MutableLiveData<List<IndianEnglishBreaking>> indianEnglishBreakingUnVisibleList;
+    private List<IndianEnglishBreaking> indianEnglishBreakingList = new ArrayList<>();
+    private List<IndianEnglishBreaking> indianEnglishBreakingUnVisibleTemporaryList = new ArrayList<>();
 
 
     public BreakingNewsFragmentViewModel(NewsDatabase newsDatabase, String countryName, String languageName) {
@@ -250,6 +257,18 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             IndianHindiBreaking finalIndianHindiBreakingUpperItem = indianHindiBreakingUpperItem;
 
 
+            IndianEnglishBreaking indianEnglishBreakingCurrentItem = null, indianEnglishBreakingUpperItem = null;
+            if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                indianEnglishBreakingCurrentItem = indianEnglishBreakingList.get(serialNumber);
+                indianEnglishBreakingUpperItem = indianEnglishBreakingList.get(serialNumber - 1);
+
+                indianEnglishBreakingCurrentItem.setSerial(serialNumber - 1);
+                indianEnglishBreakingUpperItem.setSerial(serialNumber);
+            }
+            IndianEnglishBreaking finalIndianEnglishBreakingCurrentItem = indianEnglishBreakingCurrentItem;
+            IndianEnglishBreaking finalIndianEnglishBreakingUpperItem = indianEnglishBreakingUpperItem;
+
+
             insertingDataFlag = true;
             dataStatusFlagInDb = true;
 
@@ -260,6 +279,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                     newsDatabase.indianBanglaBreakingDao().updateNews(finalIndianBanglaBreakingCurrentItem, finalIndianBanglaBreakingUpperItem);
                 } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                     newsDatabase.indianHindiBreakingDao().updateNews(finalIndianHindiBreakingCurrentItem, finalIndianHindiBreakingUpperItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                    newsDatabase.indianEnglishBreakingDao().updateNews(finalIndianEnglishBreakingCurrentItem, finalIndianEnglishBreakingUpperItem);
                 }
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
@@ -322,6 +343,20 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         IndianHindiBreaking finalIndianHindiBreakingDownItem = indianHindiBreakingDownItem;
 
 
+        IndianEnglishBreaking indianEnglishBreakingCurrentItem = null, indianEnglishBreakingDownItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber < (indianEnglishBreakingList.size() - 1)) {
+                indianEnglishBreakingCurrentItem = indianEnglishBreakingList.get(serialNumber);
+                indianEnglishBreakingDownItem = indianEnglishBreakingList.get(serialNumber + 1);
+
+                indianEnglishBreakingCurrentItem.setSerial(serialNumber + 1);
+                indianEnglishBreakingDownItem.setSerial(serialNumber);
+            }
+        }
+        IndianEnglishBreaking finalIndianEnglishBreakingCurrentItem = indianEnglishBreakingCurrentItem;
+        IndianEnglishBreaking finalIndianEnglishBreakingDownItem = indianEnglishBreakingDownItem;
+
+
             insertingDataFlag = true;
             dataStatusFlagInDb = true;
 
@@ -332,6 +367,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                     newsDatabase.indianBanglaBreakingDao().updateNews(finalIndianBanglaBreakingCurrentItem, finalIndianBanglaBreakingDownItem);
                 } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                     newsDatabase.indianHindiBreakingDao().updateNews(finalIndianHindiBreakingCurrentItem, finalIndianHindiBreakingDownItem);
+                } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                    newsDatabase.indianEnglishBreakingDao().updateNews(finalIndianEnglishBreakingCurrentItem, finalIndianEnglishBreakingDownItem);
                 }
             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
                 @Override
@@ -381,6 +418,16 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         IndianHindiBreaking finalIndianHindiBreakingCurrentItem = indianHindiBreakingCurrentItem;
 
 
+        IndianEnglishBreaking indianEnglishBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber <= (indianEnglishBreakingList.size() - 1) && serialNumber >= 0) {
+                indianEnglishBreakingCurrentItem = indianEnglishBreakingList.get(serialNumber);
+                indianEnglishBreakingCurrentItem.setVisibilityStatus("hidden");
+            }
+        }
+        IndianEnglishBreaking finalIndianEnglishBreakingCurrentItem = indianEnglishBreakingCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -391,6 +438,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 newsDatabase.indianBanglaBreakingDao().updateNews(finalIndianBanglaBreakingCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 newsDatabase.indianHindiBreakingDao().updateNews(finalIndianHindiBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishBreakingDao().updateNews(finalIndianEnglishBreakingCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -446,6 +495,18 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         IndianHindiBreaking finalIndianHindiBreakingCurrentItem = indianHindiBreakingCurrentItem;
 
 
+        IndianEnglishBreaking indianEnglishBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            for (int i = 0; i < indianEnglishBreakingUnVisibleTemporaryList.size(); i++) {
+                if (paperName.equalsIgnoreCase(indianEnglishBreakingUnVisibleTemporaryList.get(i).getPaperName())) {
+                    indianEnglishBreakingCurrentItem = indianEnglishBreakingUnVisibleTemporaryList.get(i);
+                    indianEnglishBreakingCurrentItem.setVisibilityStatus("visible");
+                }
+            }
+        }
+        IndianEnglishBreaking finalIndianEnglishBreakingCurrentItem = indianEnglishBreakingCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -456,6 +517,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 newsDatabase.indianBanglaBreakingDao().updateNews(finalIndianBanglaBreakingCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 newsDatabase.indianHindiBreakingDao().updateNews(finalIndianHindiBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishBreakingDao().updateNews(finalIndianEnglishBreakingCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -498,6 +561,14 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         IndianHindiBreaking finalIndianHindiBreakingCurrentItem = indianHindiBreakingCurrentItem;
 
 
+        IndianEnglishBreaking indianEnglishBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            indianEnglishBreakingCurrentItem = indianEnglishBreakingList.get(serialNumber);
+            indianEnglishBreakingCurrentItem.setBackgroundColor(colorName);
+        }
+        IndianEnglishBreaking finalIndianEnglishBreakingCurrentItem = indianEnglishBreakingCurrentItem;
+
+
 
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
@@ -510,6 +581,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 newsDatabase.indianBanglaBreakingDao().updateNews(finalIndianBanglaBreakingCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 newsDatabase.indianHindiBreakingDao().updateNews(finalIndianHindiBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishBreakingDao().updateNews(finalIndianEnglishBreakingCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -553,6 +626,14 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         IndianHindiBreaking finalIndianHindiBreakingCurrentItem = indianHindiBreakingCurrentItem;
 
 
+        IndianEnglishBreaking indianEnglishBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            indianEnglishBreakingCurrentItem = indianEnglishBreakingList.get(serialNumber);
+            indianEnglishBreakingCurrentItem.setTextColor(colorName);
+        }
+        IndianEnglishBreaking finalIndianEnglishBreakingCurrentItem = indianEnglishBreakingCurrentItem;
+
+
         insertingDataFlag = false;
         dataStatusFlagInDb = true;
 
@@ -564,6 +645,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                 newsDatabase.indianBanglaBreakingDao().updateNews(finalIndianBanglaBreakingCurrentItem);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 newsDatabase.indianHindiBreakingDao().updateNews(finalIndianHindiBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishBreakingDao().updateNews(finalIndianEnglishBreakingCurrentItem);
             }
         }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
             @Override
@@ -857,6 +940,98 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
         indianHindiBreakingLiveData = newsDatabase.indianHindiBreakingDao().getAllNews();
         indianHindiBreakingLiveData.observeForever(indianHindiAllBreakingNewsObserver);
+    }
+
+
+    public void shortingIndianEnglishBreakingList(List<RecyclerItemModel> recyclerItemModelList) {
+        if (shortedList == null) {
+            shortedList = new MutableLiveData<>();
+        }
+        temporaryShortingList.clear();
+        String title;
+        RecyclerItemModel recyclerItemModel;
+        for (int i = 0; i < indianEnglishBreakingList.size(); i++) {
+            title = indianEnglishBreakingList.get(i).getPaperName();
+            for (int j = 0; j < recyclerItemModelList.size(); j++) {
+                if (title.equalsIgnoreCase(recyclerItemModelList.get(j).getTitle())) {
+                    recyclerItemModel = recyclerItemModelList.get(j);
+                    recyclerItemModel.setSerialNumber(indianEnglishBreakingList.get(i).getSerial());
+                    recyclerItemModel.setBackgroundColor(indianEnglishBreakingList.get(i).getBackgroundColor());
+                    recyclerItemModel.setTextColor(indianEnglishBreakingList.get(i).getTextColor());
+                    temporaryShortingList.add(recyclerItemModel);
+                }
+            }
+        }
+        shortedList.setValue(temporaryShortingList);
+    }
+    public LiveData<List<IndianEnglishBreaking>> getIndianEnglishBreakingUnVisibleList() {
+        if (indianEnglishBreakingUnVisibleList == null) {
+            indianEnglishBreakingUnVisibleList = new MutableLiveData<>();
+        }
+        return indianEnglishBreakingUnVisibleList;
+    }
+    public void checkIndianEnglishBreakingNewsDataInDb(List<String> nameList, List<String> urlList) {
+        if (indianEnglishAllBreakingNewsObserver == null) {
+            indianEnglishAllBreakingNewsObserver = indianEnglishBreakings -> {
+                indianEnglishBreakingList.clear();
+                indianEnglishBreakingList.addAll(indianEnglishBreakings);
+                indianEnglishBreakingUnVisibleTemporaryList.clear();
+                if (dataStatusFlagInDb && itemList.getValue() != null && itemList.getValue().size() > 0) {
+                    itemList.setValue(itemList.getValue());
+                }
+                if (indianEnglishBreakings.size() > 0 && !insertingDataFlag) {
+                    temporaryList.clear();
+                    itemList.setValue(temporaryList);
+                    for (int i = 0; i < indianEnglishBreakings.size(); i++) {
+                        if (indianEnglishBreakings.get(i).getVisibilityStatus().equalsIgnoreCase("visible")) {
+                            loadPageDocument(indianEnglishBreakings.get(i).getPaperUrl());
+                        } else {
+                            indianEnglishBreakingUnVisibleTemporaryList.add(indianEnglishBreakings.get(i));
+                        }
+                    }
+                    if (indianEnglishBreakingUnVisibleList == null) {
+                        indianEnglishBreakingUnVisibleList = new MutableLiveData<>();
+                    }
+                    indianEnglishBreakingUnVisibleList.setValue(indianEnglishBreakingUnVisibleTemporaryList);
+                    insertingDataFlag = true;
+                } else {
+                    insertingDataFlag = true;
+                    if (nameList != null && urlList != null && !dataStatusFlagInDb) {
+                        for (int i = 0; i < urlList.size(); i++) {
+                            IndianEnglishBreaking indianEnglishBreaking = new IndianEnglishBreaking();
+                            indianEnglishBreaking.setSerial(i);
+                            indianEnglishBreaking.setVisibilityStatus("visible");
+                            indianEnglishBreaking.setPaperUrl(urlList.get(i));
+                            indianEnglishBreaking.setPaperName(nameList.get(i));
+                            indianEnglishBreaking.setBackgroundColor("SkyBlue");
+                            indianEnglishBreaking.setTextColor("White");
+                            Completable.fromAction(() -> {
+                                newsDatabase.indianEnglishBreakingDao().insertNews(indianEnglishBreaking);
+                            }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+                                @Override
+                                public void onSubscribe(@NonNull Disposable d) {
+                                    compositeDisposable.add(d);
+                                }
+
+                                @Override
+                                public void onComplete() {
+
+                                }
+
+                                @Override
+                                public void onError(@NonNull Throwable e) {
+
+                                }
+                            });
+                        }
+                        dataStatusFlagInDb = true;
+                    }
+                    insertingDataFlag = false;
+                }
+            };
+        }
+        indianEnglishBreakingLiveData = newsDatabase.indianEnglishBreakingDao().getAllNews();
+        indianEnglishBreakingLiveData.observeForever(indianEnglishAllBreakingNewsObserver);
     }
 
 
@@ -1790,6 +1965,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             indianBanglaBreakingLiveData.removeObserver(indianBanglaAllBreakingNewsObserver);
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
             indianHindiBreakingLiveData.removeObserver(indianHindiAllBreakingNewsObserver);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            indianEnglishBreakingLiveData.removeObserver(indianEnglishAllBreakingNewsObserver);
         }
         super.onCleared();
         compositeDisposable.dispose();

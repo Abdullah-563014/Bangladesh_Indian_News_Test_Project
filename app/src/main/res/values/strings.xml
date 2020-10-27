@@ -627,6 +627,56 @@
         <item>https://www.newsnationtv.com/</item>
     </string-array>
 
+    <string-array name="indian_english_breaking_news_list">
+
+    </string-array>
+
+    <string-array name="indian_english_breaking_url_list">
+
+    </string-array>
+
+    <string-array name="indian_english_entertainment_news_list">
+
+    </string-array>
+
+    <string-array name="indian_english_entertainment_url_list">
+
+    </string-array>
+
+    <string-array name="indian_english_finance_news_list">
+
+    </string-array>
+
+    <string-array name="indian_english_finance_url_list">
+
+    </string-array>
+
+    <string-array name="indian_english_international_news_list">
+
+    </string-array>
+
+    <string-array name="indian_english_international_url_list">
+
+    </string-array>
+
+    <string-array name="indian_english_sports_news_list">
+
+    </string-array>
+
+    <string-array name="indian_english_sports_url_list">
+
+    </string-array>
+
+    <string-array name="indian_english_tv_channel_news_list">
+
+    </string-array>
+
+    <string-array name="indian_english_tv_channel_url_list">
+
+    </string-array>
+
+
+
 
 
     <string name="read_write_permission_details">
