@@ -20,6 +20,7 @@ import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -50,6 +51,7 @@ public class TvChannelNewsFragment extends Fragment {
     private List<BdTvChannel> bdTvChannelUnVisibleList=new ArrayList<>();
     private List<IndianBanglaTvChannel> indianBanglaTvChannelUnVisibleList=new ArrayList<>();
     private List<IndianHindiTvChannel> indianHindiTvChannelUnVisibleList=new ArrayList<>();
+    private List<IndianEnglishTvChannel> indianEnglishTvChannelUnVisibleList=new ArrayList<>();
 
     public TvChannelNewsFragment() {
         // Required empty public constructor
@@ -97,6 +99,10 @@ public class TvChannelNewsFragment extends Fragment {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_tv_channel_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_hindi_tv_channel_news_list)));
             viewModel.checkIndianHindiTvChannelNewsDataInDb(nameList,urlList);
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_tv_channel_url_list)));
+            List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.indian_english_tv_channel_news_list)));
+            viewModel.checkIndianEnglishTvChannelNewsDataInDb(nameList,urlList);
         }
     }
 
@@ -112,6 +118,8 @@ public class TvChannelNewsFragment extends Fragment {
                 viewModel.shortingIndianBanglaTvChannelList(recyclerItemModels);
             } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
                 viewModel.shortingIndianHindiTvChannelList(recyclerItemModels);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                viewModel.shortingIndianEnglishTvChannelList(recyclerItemModels);
             }
         });
 
@@ -221,6 +229,11 @@ public class TvChannelNewsFragment extends Fragment {
                 indianHindiTvChannelUnVisibleList.clear();
                 indianHindiTvChannelUnVisibleList.addAll(indianHindiTvChannels);
             });
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            viewModel.getIndianEnglishTvChannelUnVisibleList().observe(this, indianEnglishTvChannels -> {
+                indianEnglishTvChannelUnVisibleList.clear();
+                indianEnglishTvChannelUnVisibleList.addAll(indianEnglishTvChannels);
+            });
         }
         viewModel.getItemMovedPosition().observe(this,(position) -> {
             Toast.makeText(getContext(), "Current item moved to position:- "+position, Toast.LENGTH_SHORT).show();
@@ -243,6 +256,11 @@ public class TvChannelNewsFragment extends Fragment {
             list=new String[indianHindiTvChannelUnVisibleList.size()];
             for (int i=0; i<indianHindiTvChannelUnVisibleList.size(); i++) {
                 list[i]=indianHindiTvChannelUnVisibleList.get(i).getPaperName();
+            }
+        } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            list=new String[indianEnglishTvChannelUnVisibleList.size()];
+            for (int i=0; i<indianEnglishTvChannelUnVisibleList.size(); i++) {
+                list[i]=indianEnglishTvChannelUnVisibleList.get(i).getPaperName();
             }
         }
 
