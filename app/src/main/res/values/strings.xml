@@ -631,12 +631,18 @@
         <item>Hindustan Times (Top News)</item>
         <item>The Indian Express (Breaking News)</item>
         <item>The Pioneer (Breaking News)</item>
+        <item>Deccan Herald (General News)</item>
+        <item>DNA India (Headlines)</item>
+        <item>Deccan Chronicle (Top Stories)</item>
     </string-array>
 
     <string-array name="indian_english_breaking_url_list">
         <item>https://www.hindustantimes.com/</item>
         <item>https://indianexpress.com/</item>
         <item>https://www.dailypioneer.com/</item>
+        <item>https://www.deccanherald.com/</item>
+        <item>https://www.dnaindia.com/headlines</item>
+        <item>https://www.deccanchronicle.com/</item>
     </string-array>
 
     <string-array name="indian_english_entertainment_news_list">

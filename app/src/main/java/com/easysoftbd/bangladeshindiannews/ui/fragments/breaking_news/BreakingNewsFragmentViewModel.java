@@ -2020,6 +2020,72 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
+    private void setDeccanHeraldBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("section#home-top-stories ul li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.deccanHeraldBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.deccanHeraldBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("Deccan Herald (General News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setDnaIndiaBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h3.headlines_pg a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.dnaIndiaBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.dnaIndiaHeadlinesBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("DNA India (Headlines)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setDeccanChronicleBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div#topStory div.col-sm-12.col-xs-12.tstry-feed-sml-a a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.deccanChronicleBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.deccanChronicleBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("Deccan Chronicle (Top Stories)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
 //====================================Indian English Breaking News method staying in above========================================
 
 

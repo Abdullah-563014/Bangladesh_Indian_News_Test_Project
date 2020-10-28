@@ -317,6 +317,10 @@ public class MyUrl {
     public static final String hindustanTimesBreakingNews="https://www.hindustantimes.com/";
     public static final String indianExpressEnglishBreakingNews="https://indianexpress.com/";
     public static final String dailyPioneerBreakingNews="https://www.dailypioneer.com/";
+    public static final String deccanHeraldBreakingNews="https://www.deccanherald.com/";
+    public static final String dnaIndiaBreakingNews="https://www.dnaindia.com";
+    public static final String dnaIndiaHeadlinesBreakingNews="https://www.dnaindia.com/headlines";
+    public static final String deccanChronicleBreakingNews="https://www.deccanchronicle.com/";
 // indian english breaking news link are staying above.
 
 
