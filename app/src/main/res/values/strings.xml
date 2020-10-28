@@ -634,6 +634,13 @@
         <item>Deccan Herald (General News)</item>
         <item>DNA India (Headlines)</item>
         <item>Deccan Chronicle (Top Stories)</item>
+        <item>The Asian Age (Top Stories)</item>
+        <item>Economic Times (Top News)</item>
+        <item>Business Standard (Just In)</item>
+        <item>Financial Express (Top News)</item>
+        <item>The New Indian Express (Good News)</item>
+        <item>The Tribune (Top Stories)</item>
+        <item>Mint (General News)</item>
     </string-array>
 
     <string-array name="indian_english_breaking_url_list">
@@ -643,6 +650,13 @@
         <item>https://www.deccanherald.com/</item>
         <item>https://www.dnaindia.com/headlines</item>
         <item>https://www.deccanchronicle.com/</item>
+        <item>https://www.asianage.com/</item>
+        <item>https://economictimes.indiatimes.com/</item>
+        <item>https://www.business-standard.com/</item>
+        <item>https://www.financialexpress.com/</item>
+        <item>https://www.newindianexpress.com/</item>
+        <item>https://www.tribuneindia.com/</item>
+        <item>https://www.livemint.com/</item>
     </string-array>
 
     <string-array name="indian_english_entertainment_news_list">

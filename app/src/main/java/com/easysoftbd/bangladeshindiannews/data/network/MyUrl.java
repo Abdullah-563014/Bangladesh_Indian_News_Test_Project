@@ -321,6 +321,13 @@ public class MyUrl {
     public static final String dnaIndiaBreakingNews="https://www.dnaindia.com";
     public static final String dnaIndiaHeadlinesBreakingNews="https://www.dnaindia.com/headlines";
     public static final String deccanChronicleBreakingNews="https://www.deccanchronicle.com/";
+    public static final String asianAgeBreakingNews="https://www.asianage.com/";
+    public static final String economicTimesBreakingNews="https://economictimes.indiatimes.com/";
+    public static final String businessStandardBreakingNews="https://www.business-standard.com/";
+    public static final String financialExpressBreakingNews="https://www.financialexpress.com/";
+    public static final String newIndianExpressBreakingNews="https://www.newindianexpress.com/";
+    public static final String tribuneIndiaBreakingNews="https://www.tribuneindia.com/";
+    public static final String liveMintBreakingNews="https://www.livemint.com/";
 // indian english breaking news link are staying above.
 
 

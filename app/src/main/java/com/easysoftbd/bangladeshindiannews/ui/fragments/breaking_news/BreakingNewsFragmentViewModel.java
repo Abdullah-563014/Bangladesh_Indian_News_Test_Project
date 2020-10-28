@@ -183,6 +183,33 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             setDainikTribuneOnlineBreakingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.samacharJagatBreakingNews)) {
                             setSamacharJagatBreakingNews(document);
+                        }//Indian english breaking news method called above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.hindustanTimesBreakingNews)) {
+                            setHindustanTimesBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.indianExpressEnglishBreakingNews)) {
+                            setIndianExpressBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyPioneerBreakingNews)) {
+                            setDailyPioneerBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.deccanHeraldBreakingNews)) {
+                            setDeccanHeraldBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dnaIndiaHeadlinesBreakingNews)) {
+                            setDnaIndiaBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.deccanChronicleBreakingNews)) {
+                            setDeccanChronicleBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.asianAgeBreakingNews)) {
+                            setAsianAgeBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.economicTimesBreakingNews)) {
+                            setEconomicTimesBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.businessStandardBreakingNews)) {
+                            setBusinessStandardBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.financialExpressBreakingNews)) {
+                            setFinancialExpressBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.newIndianExpressBreakingNews)) {
+                            setNewIndianExpressBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.tribuneIndiaBreakingNews)) {
+                            setTribuneIndiaBreakingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.liveMintBreakingNews)) {
+                            setLiveMintBreakingNews(document);
                         }
                     }
 
@@ -2081,6 +2108,161 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("Deccan Chronicle (Top Stories)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setAsianAgeBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.single_left_coloum_wrapper.other-top-stories h3 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.asianAgeBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.asianAgeBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("The Asian Age (Top Stories)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setEconomicTimesBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div#topNewsTabs ul.newsList.clearfix li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.economicTimesBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.economicTimesBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("Economic Times (Top News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setBusinessStandardBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.latestnews-txt  div.mt-news ul li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.businessStandardBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.businessStandardBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("Business Standard (Just In)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setFinancialExpressBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.topblock-left h2 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.financialExpressBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("Financial Express (Top News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setNewIndianExpressBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("a[href^=https://www.newindianexpress.com/good-news/]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                if (news.length()>=15) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.newIndianExpressBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("The New Indian Express (Good News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setTribuneIndiaBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div[title=Top Stories] h4 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.tribuneIndiaBreakingNews+temporaryLink;
+                String news = allList.get(i).text();
+                if (news.length()>=11) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.tribuneIndiaBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("The Tribune (Top Stories)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setLiveMintBreakingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("h2.headline a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.liveMintBreakingNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("Mint (General News)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
