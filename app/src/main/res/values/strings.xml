@@ -660,11 +660,29 @@
     </string-array>
 
     <string-array name="indian_english_entertainment_news_list">
-
+        <item>Hindustan Times (Entertainment News)</item>
+        <item>The Indian Express (Entertainment News)</item>
+        <item>The Pioneer (Entertainment News)</item>
+        <item>Deccan Herald (Entertainment News)</item>
+        <item>DNA India (Entertainment News)</item>
+        <item>Deccan Chronicle (Entertainment News)</item>
+        <item>The Asian Age (Entertainment News)</item>
+        <item>Financial Express (Entertainment News)</item>
+        <item>The New Indian Express (Entertainment News)</item>
+        <item>The Tribune (Entertainment News)</item>
     </string-array>
 
     <string-array name="indian_english_entertainment_url_list">
-
+        <item>https://www.hindustantimes.com/entertainment/</item>
+        <item>https://indianexpress.com/section/entertainment/</item>
+        <item>https://www.dailypioneer.com/entertainment/page/1</item>
+        <item>https://www.deccanherald.com/entertainment</item>
+        <item>https://www.dnaindia.com/entertainment?page=1</item>
+        <item>https://www.deccanchronicle.com/entertainment</item>
+        <item>https://www.asianage.com/entertainment</item>
+        <item>https://www.financialexpress.com/entertainment/</item>
+        <item>https://www.newindianexpress.com/entertainment</item>
+        <item>https://www.tribuneindia.com/news/special/entertainment</item>
     </string-array>
 
     <string-array name="indian_english_finance_news_list">

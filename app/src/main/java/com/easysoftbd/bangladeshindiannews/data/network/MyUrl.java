@@ -332,6 +332,20 @@ public class MyUrl {
 
 
 
+    public static final String hindustanTimesEntertainmentNews="https://www.hindustantimes.com/entertainment/";
+    public static final String indianExpressEntertainmentNews="https://indianexpress.com/section/entertainment/";
+    public static final String dailyPioneerEntertainmentNews="https://www.dailypioneer.com/entertainment/page/1";
+    public static final String deccanHeraldEntertainmentNews="https://www.deccanherald.com/entertainment";
+    public static final String dnaIndiaEntertainmentNews="https://www.dnaindia.com/entertainment?page=1";
+    public static final String deccanChronicleEntertainmentNews="https://www.deccanchronicle.com/entertainment";
+    public static final String asianAgeEntertainmentNews="https://www.asianage.com/entertainment";
+    public static final String financialExpressEntertainmentNews="https://www.financialexpress.com/entertainment/";
+    public static final String newIndianExpressEntertainmentNews="https://www.newindianexpress.com/entertainment";
+    public static final String tribuneIndiaEntertainmentNews="https://www.tribuneindia.com/news/special/entertainment";
+// indian english entertainment news link are staying above.
+
+
+
 
 
 
