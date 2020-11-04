@@ -346,6 +346,23 @@ public class MyUrl {
 
 
 
+    public static final String hindustanTimesFinanceNews="https://www.hindustantimes.com/business-news/";
+    public static final String indianExpressFinanceNews="https://indianexpress.com/section/business/";
+    public static final String dailyPioneerFinanceNews="https://www.dailypioneer.com/business/page/1";
+    public static final String deccanHeraldFinanceNews="https://www.deccanherald.com/business";
+    public static final String dnaIndiaFinanceNews="https://www.dnaindia.com/business";
+    public static final String deccanChronicleFinanceNews="https://www.deccanchronicle.com/business";
+    public static final String asianAgeFinanceNews="https://www.asianage.com/business";
+    public static final String economicTimesFinanceNews="https://economictimes.indiatimes.com/";
+    public static final String businessStandardFinanceNews="https://www.business-standard.com/finance";
+    public static final String financialExpressFinanceNews="https://www.financialexpress.com/economy/";
+    public static final String newIndianExpressFinanceNews="https://www.newindianexpress.com/business";
+    public static final String tribuneIndiaFinanceNews="https://www.tribuneindia.com/news/business";
+    public static final String liveMintFinanceNews="https://www.livemint.com/topic/money-with-monika-season-three";
+// indian english finance news link are staying above.
+
+
+
 
 
 

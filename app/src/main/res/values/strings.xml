@@ -686,11 +686,35 @@
     </string-array>
 
     <string-array name="indian_english_finance_news_list">
-
+        <item>Hindustan Times (Finance News)</item>
+        <item>The Indian Express (Finance News)</item>
+        <item>The Pioneer (Finance News)</item>
+        <item>Deccan Herald (Finance News)</item>
+        <item>DNA India (Finance News)</item>
+        <item>Deccan Chronicle (Finance News)</item>
+        <item>The Asian Age (Finance News)</item>
+        <item>Economic Times (Finance News)</item>
+        <item>Business Standard (Finance News)</item>
+        <item>Financial Express (Finance News)</item>
+        <item>The New Indian Express (Finance News)</item>
+        <item>The Tribune (Finance News)</item>
+        <item>Mint (Finance News)</item>
     </string-array>
 
     <string-array name="indian_english_finance_url_list">
-
+        <item>https://www.hindustantimes.com/business-news/</item>
+        <item>https://indianexpress.com/section/business/</item>
+        <item>https://www.dailypioneer.com/business/page/1</item>
+        <item>https://www.deccanherald.com/business</item>
+        <item>https://www.dnaindia.com/business</item>
+        <item>https://www.deccanchronicle.com/business</item>
+        <item>https://www.asianage.com/business</item>
+        <item>https://economictimes.indiatimes.com/</item>
+        <item>https://www.business-standard.com/finance</item>
+        <item>https://www.financialexpress.com/economy/</item>
+        <item>https://www.newindianexpress.com/business</item>
+        <item>https://www.tribuneindia.com/news/business</item>
+        <item>https://www.livemint.com/topic/money-with-monika-season-three</item>
     </string-array>
 
     <string-array name="indian_english_international_news_list">
