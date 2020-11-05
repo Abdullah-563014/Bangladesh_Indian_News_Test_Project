@@ -718,11 +718,35 @@
     </string-array>
 
     <string-array name="indian_english_international_news_list">
-
+        <item>Hindustan Times (International News)</item>
+        <item>The Indian Express (International News)</item>
+        <item>The Pioneer (International News)</item>
+        <item>Deccan Herald (International News)</item>
+        <item>DNA India (International News)</item>
+        <item>Deccan Chronicle (International News)</item>
+        <item>The Asian Age (International News)</item>
+        <item>Economic Times (International News)</item>
+        <item>Business Standard (International News)</item>
+        <item>Financial Express (International News)</item>
+        <item>The New Indian Express (International News)</item>
+        <item>The Tribune (International News)</item>
+        <item>Mint (International News)</item>
     </string-array>
 
     <string-array name="indian_english_international_url_list">
-
+        <item>https://www.hindustantimes.com/world-news/</item>
+        <item>https://indianexpress.com/section/world/</item>
+        <item>https://www.dailypioneer.com/world/page/1</item>
+        <item>https://www.deccanherald.com/international</item>
+        <item>https://www.dnaindia.com/world</item>
+        <item>https://www.deccanchronicle.com/world</item>
+        <item>https://www.asianage.com/world</item>
+        <item>https://economictimes.indiatimes.com/markets/global-markets</item>
+        <item>https://www.business-standard.com/international</item>
+        <item>https://www.financialexpress.com/world-news/</item>
+        <item>https://www.newindianexpress.com/world</item>
+        <item>https://www.tribuneindia.com/news/world</item>
+        <item>https://www.livemint.com/</item>
     </string-array>
 
     <string-array name="indian_english_sports_news_list">

@@ -363,6 +363,23 @@ public class MyUrl {
 
 
 
+    public static final String hindustanTimesInternationalNews="https://www.hindustantimes.com/world-news/";
+    public static final String indianExpressInternationalNews="https://indianexpress.com/section/world/";
+    public static final String dailyPioneerInternationalNews="https://www.dailypioneer.com/world/page/1";
+    public static final String deccanHeraldInternationalNews="https://www.deccanherald.com/international";
+    public static final String dnaIndiaInternationalNews="https://www.dnaindia.com/world";
+    public static final String deccanChronicleInternationalNews="https://www.deccanchronicle.com/world";
+    public static final String asianAgeInternationalNews="https://www.asianage.com/world";
+    public static final String economicTimesInternationalNews="https://economictimes.indiatimes.com/markets/global-markets";
+    public static final String businessStandardInternationalNews="https://www.business-standard.com/international";
+    public static final String financialExpressInternationalNews="https://www.financialexpress.com/world-news/";
+    public static final String newIndianExpressInternationalNews="https://www.newindianexpress.com/world";
+    public static final String tribuneIndiaInternationalNews="https://www.tribuneindia.com/news/world";
+    public static final String liveMintInternationalNews="https://www.livemint.com/";
+// indian english finance news link are staying above.
+
+
+
 
 
 
