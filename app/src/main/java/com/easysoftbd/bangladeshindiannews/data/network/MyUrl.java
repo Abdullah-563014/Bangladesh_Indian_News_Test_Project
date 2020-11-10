@@ -381,6 +381,23 @@ public class MyUrl {
 
 
 
+    public static final String hindustanTimesSportsNews="https://www.hindustantimes.com/sports-news/";
+    public static final String indianExpressSportsNews="https://indianexpress.com/section/sports/";
+    public static final String dailyPioneerSportsNews="https://www.dailypioneer.com/sports/page/1";
+    public static final String deccanHeraldSportsNews="https://www.deccanherald.com/sports";
+    public static final String dnaIndiaSportsNews="https://www.dnaindia.com/sports?page=2";
+    public static final String deccanChronicleSportsNews="https://www.deccanchronicle.com/sports";
+    public static final String asianAgeSportsNews="https://www.asianage.com/sports";
+    public static final String economicTimesSportsNews="https://economictimes.indiatimes.com/news/sports";
+    public static final String businessStandardSportsNews="https://www.business-standard.com/sports";
+    public static final String financialExpressSportsNews="https://www.financialexpress.com/sports/";
+    public static final String newIndianExpressSportsNews="https://www.newindianexpress.com/sport";
+    public static final String tribuneIndiaSportsNews="https://www.tribuneindia.com/news/sports";
+// indian english sports news link are staying above.
+
+
+
+
 
 
 

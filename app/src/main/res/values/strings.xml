@@ -750,11 +750,33 @@
     </string-array>
 
     <string-array name="indian_english_sports_news_list">
-
+        <item>Hindustan Times (Sports News)</item>
+        <item>The Indian Express (Sports News)</item>
+        <item>The Pioneer (Sports News)</item>
+        <item>Deccan Herald (Sports News)</item>
+        <item>DNA India (Sports News)</item>
+        <item>Deccan Chronicle (Sports News)</item>
+        <item>The Asian Age (Sports News)</item>
+        <item>Economic Times (Sports News)</item>
+        <item>Business Standard (Sports News)</item>
+        <item>Financial Express (Sports News)</item>
+        <item>The New Indian Express (Sports News)</item>
+        <item>The Tribune (Sports News)</item>
     </string-array>
 
     <string-array name="indian_english_sports_url_list">
-
+        <item>https://www.hindustantimes.com/sports-news/</item>
+        <item>https://indianexpress.com/section/sports/</item>
+        <item>https://www.dailypioneer.com/sports/page/1</item>
+        <item>https://www.deccanherald.com/sports</item>
+        <item>https://www.dnaindia.com/sports?page=2</item>
+        <item>https://www.deccanchronicle.com/sports</item>
+        <item>https://www.asianage.com/sports</item>
+        <item>https://economictimes.indiatimes.com/news/sports</item>
+        <item>https://www.business-standard.com/sports</item>
+        <item>https://www.financialexpress.com/sports/</item>
+        <item>https://www.newindianexpress.com/sport</item>
+        <item>https://www.tribuneindia.com/news/sports</item>
     </string-array>
 
     <string-array name="indian_english_tv_channel_news_list">
