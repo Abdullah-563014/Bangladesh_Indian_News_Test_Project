@@ -780,11 +780,27 @@
     </string-array>
 
     <string-array name="indian_english_tv_channel_news_list">
-
+        <item>Bloomberg (Breaking News)</item>
+        <item>CNBC TV 18 (Live Feed)</item>
+        <item>News 18 (General News)</item>
+        <item>Times Now (Latest News)</item>
+        <item>NDTV (Top Stories)</item>
+        <item>Republic World (General News)</item>
+        <item>Mirror Now (More Stories)</item>
+        <item>Wionews (Trending News)</item>
+        <item>Romedy Now (Food News)</item>
     </string-array>
 
     <string-array name="indian_english_tv_channel_url_list">
-
+        <item>https://www.bloombergquint.com/</item>
+        <item>https://www.cnbctv18.com/</item>
+        <item>https://www.news18.com/</item>
+        <item>https://www.timesnownews.com/</item>
+        <item>https://www.ndtv.com/</item>
+        <item>https://www.republicworld.com/</item>
+        <item>https://www.timesnownews.com/mirror-now</item>
+        <item>https://www.wionews.com/</item>
+        <item>http://www.romedynow.com/</item>
     </string-array>
 
 

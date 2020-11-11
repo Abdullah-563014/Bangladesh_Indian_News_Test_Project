@@ -166,6 +166,25 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.newsNationTvTvChannelNews)){
                             setNewsNationTvTvChannelNews(document);
                         }// indian hindi tv chanel news link are staying above.
+                        else if (document.baseUri().equalsIgnoreCase(MyUrl.bloombergQuintTvChannelNews)){
+                            setBloombergQuintTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.cnbcTv18TvChannelNews)){
+                            setCnbcTv18TvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.news18TvChannelNews)){
+                            setNews18TvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.timesNowNewsTvChannelNews)){
+                            setTimesNowNewsTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.ndtvTvChannelNews)){
+                            setNdtvTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.republicWorldTvChannelNews)){
+                            setRepublicWorldTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.mirrorNowTvChannelNews)){
+                            setMirrorNowTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.wioNewsTvChannelNews)){
+                            setWioNewsTvChannelNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.romedyNowTvChannelNews)){
+                            setRomedyNowTvChannelNews(document);
+                        }
                     }
 
                     @Override
@@ -1640,6 +1659,206 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("समाचार राष्ट्र टीवी (सामान्य समाचार)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+
+
+
+
+    private void setBloombergQuintTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.stories-scroller-m__story-headline__2gLve a.stories-scroller-m__story-link__3qVir[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.bloombergQuintTvChannelNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bloombergQuintTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("Bloomberg (Breaking News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setCnbcTv18TvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.live_left ul li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).select("div.list_des p strong").text();
+                if (news.length()>=15) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.cnbcTv18TvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("CNBC TV 18 (Live Feed)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setNews18TvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("ul.lead-mstory li a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.news18TvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("News 18 (General News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setTimesNowNewsTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.section-ten a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.timesNowNewsTvChannelNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.timesNowNewsTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("Times Now (Latest News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setNdtvTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div[data-tb-region=top-stories] ul li h2 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                if (news.length()>=15) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.ndtvTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("NDTV (Top Stories)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setRepublicWorldTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("a[href^=https://www.republicworld.com/india-news/general-news/]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.republicWorldTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("Republic World (General News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setMirrorNowTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.frame-one.more-articles a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.mirrorNowTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("Mirror Now (More Stories)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setWioNewsTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div#block-views-block-homepage-latestnews-block-6 h5 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.wioNewsTvChannelNews+temporaryLink;
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.wioNewsTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("Wionews (Trending News)");
+        itemModel.setNewsAndLinkModelList(list);
+
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setRomedyNowTvChannelNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.food-story a.story[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.romedyNowTvChannelNews);
+            list.add(newsAndLinkModel);
+        }
+        RecyclerItemModel itemModel=new RecyclerItemModel();
+        itemModel.setTitle("Romedy Now (Food News)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);

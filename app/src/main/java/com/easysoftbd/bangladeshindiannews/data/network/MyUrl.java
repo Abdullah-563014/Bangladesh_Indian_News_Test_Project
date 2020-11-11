@@ -397,6 +397,19 @@ public class MyUrl {
 
 
 
+    public static final String bloombergQuintTvChannelNews="https://www.bloombergquint.com/";
+    public static final String cnbcTv18TvChannelNews="https://www.cnbctv18.com/";
+    public static final String news18TvChannelNews="https://www.news18.com/";
+    public static final String timesNowNewsTvChannelNews="https://www.timesnownews.com/";
+    public static final String ndtvTvChannelNews="https://www.ndtv.com/";
+    public static final String republicWorldTvChannelNews="https://www.republicworld.com/";
+    public static final String mirrorNowTvChannelNews="https://www.timesnownews.com/mirror-now";
+    public static final String wioNewsTvChannelNews="https://www.wionews.com/";
+    public static final String romedyNowTvChannelNews="http://www.romedynow.com/";
+// indian english sports news link are staying above.
+
+
+
 
 
 
