@@ -11,6 +11,8 @@
         <item>Hide</item>
         <item>Set Background Color</item>
         <item>Set Text Color</item>
+        <item>Turn On Notification</item>
+        <item>Turn Off Notification</item>
     </string-array>
 
     <string-array name="color_list">

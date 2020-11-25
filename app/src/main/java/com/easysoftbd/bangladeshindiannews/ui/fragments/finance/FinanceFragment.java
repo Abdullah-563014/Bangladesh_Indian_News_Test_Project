@@ -190,6 +190,14 @@ public class FinanceFragment extends Fragment {
                         case 5:
                             showColorChooseAlertDialog(position,"text");
                             break;
+
+                        case 6:
+                            viewModel.turnOnNotificationStatus(position);
+                            break;
+
+                        case 7:
+                            viewModel.turnOffNotificationStatus(position);
+                            break;
                     }
                 });
         alertDialog = builder.create();

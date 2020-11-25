@@ -31,6 +31,9 @@ public class IndianEnglishFinance implements Serializable {
     @ColumnInfo(name = "visibilityStatus")
     private String visibilityStatus;
 
+    @ColumnInfo(name = "notificationStatus")
+    private String notificationStatus;
+
 
     public int getId() {
         return id;
@@ -86,6 +89,14 @@ public class IndianEnglishFinance implements Serializable {
 
     public void setVisibilityStatus(String visibilityStatus) {
         this.visibilityStatus = visibilityStatus;
+    }
+
+    public String getNotificationStatus() {
+        return notificationStatus;
+    }
+
+    public void setNotificationStatus(String notificationStatus) {
+        this.notificationStatus = notificationStatus;
     }
 }
 

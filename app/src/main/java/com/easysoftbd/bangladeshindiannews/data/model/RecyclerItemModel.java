@@ -8,18 +8,19 @@ public class RecyclerItemModel {
     private int serialNumber;
     private String backgroundColor;
     private String textColor;
+    private String notificationStatus;
     private List<NewsAndLinkModel> newsAndLinkModelList;
 
     public RecyclerItemModel() {
     }
 
 
-
-    public RecyclerItemModel(String title, int serialNumber, String backgroundColor, String textColor, List<NewsAndLinkModel> newsAndLinkModelList) {
+    public RecyclerItemModel(String title, int serialNumber, String backgroundColor, String textColor, String notificationStatus, List<NewsAndLinkModel> newsAndLinkModelList) {
         this.title = title;
         this.serialNumber = serialNumber;
         this.backgroundColor = backgroundColor;
         this.textColor = textColor;
+        this.notificationStatus = notificationStatus;
         this.newsAndLinkModelList = newsAndLinkModelList;
     }
 
@@ -53,6 +54,14 @@ public class RecyclerItemModel {
 
     public void setTextColor(String textColor) {
         this.textColor = textColor;
+    }
+
+    public String getNotificationStatus() {
+        return notificationStatus;
+    }
+
+    public void setNotificationStatus(String notificationStatus) {
+        this.notificationStatus = notificationStatus;
     }
 
     public List<NewsAndLinkModel> getNewsAndLinkModelList() {

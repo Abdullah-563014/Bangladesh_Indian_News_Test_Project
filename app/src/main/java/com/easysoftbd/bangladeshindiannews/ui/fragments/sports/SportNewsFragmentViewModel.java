@@ -12,7 +12,9 @@ import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdSports;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaSport;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishSports;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiSports;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -693,6 +695,148 @@ public class SportNewsFragmentViewModel extends ViewModel {
             }
         });
     }
+    public void turnOnNotificationStatus(int serialNumber) {
+        BdSports bdSportsCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber <= (bdSportsList.size() - 1) && serialNumber >= 0) {
+                bdSportsCurrentItem = bdSportsList.get(serialNumber);
+                bdSportsCurrentItem.setNotificationStatus("on");
+            }
+        }
+        BdSports finalBdSportCurrentItem = bdSportsCurrentItem;
+
+
+        IndianBanglaSport indianBanglaSportCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber <= (indianBanglaSportsList.size() - 1) && serialNumber >= 0) {
+                indianBanglaSportCurrentItem = indianBanglaSportsList.get(serialNumber);
+                indianBanglaSportCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianBanglaSport finalIndianBanglaSportCurrentItem = indianBanglaSportCurrentItem;
+
+
+        IndianHindiSports indianHindiSportsCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber <= (indianHindiSportsList.size() - 1) && serialNumber >= 0) {
+                indianHindiSportsCurrentItem = indianHindiSportsList.get(serialNumber);
+                indianHindiSportsCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianHindiSports finalIndianHindiSportCurrentItem = indianHindiSportsCurrentItem;
+
+
+        IndianEnglishSports indianEnglishSportsCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber <= (indianEnglishSportsList.size() - 1) && serialNumber >= 0) {
+                indianEnglishSportsCurrentItem = indianEnglishSportsList.get(serialNumber);
+                indianEnglishSportsCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianEnglishSports finalIndianEnglishSportCurrentItem = indianEnglishSportsCurrentItem;
+
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(() -> {
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdSportsDao().updateNews(finalBdSportCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaSportDao().updateNews(finalIndianBanglaSportCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiSportsDao().updateNews(finalIndianHindiSportCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishSportsDao().updateNews(finalIndianEnglishSportCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+    public void turnOffNotificationStatus(int serialNumber) {
+        BdSports bdSportsCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber <= (bdSportsList.size() - 1) && serialNumber >= 0) {
+                bdSportsCurrentItem = bdSportsList.get(serialNumber);
+                bdSportsCurrentItem.setNotificationStatus("off");
+            }
+        }
+        BdSports finalBdSportCurrentItem = bdSportsCurrentItem;
+
+
+        IndianBanglaSport indianBanglaSportCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber <= (indianBanglaSportsList.size() - 1) && serialNumber >= 0) {
+                indianBanglaSportCurrentItem = indianBanglaSportsList.get(serialNumber);
+                indianBanglaSportCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianBanglaSport finalIndianBanglaSportCurrentItem = indianBanglaSportCurrentItem;
+
+
+        IndianHindiSports indianHindiSportsCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber <= (indianHindiSportsList.size() - 1) && serialNumber >= 0) {
+                indianHindiSportsCurrentItem = indianHindiSportsList.get(serialNumber);
+                indianHindiSportsCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianHindiSports finalIndianHindiSportCurrentItem = indianHindiSportsCurrentItem;
+
+
+        IndianEnglishSports indianEnglishSportsCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber <= (indianEnglishSportsList.size() - 1) && serialNumber >= 0) {
+                indianEnglishSportsCurrentItem = indianEnglishSportsList.get(serialNumber);
+                indianEnglishSportsCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianEnglishSports finalIndianEnglishSportCurrentItem = indianEnglishSportsCurrentItem;
+
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(() -> {
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdSportsDao().updateNews(finalBdSportCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaSportDao().updateNews(finalIndianBanglaSportCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiSportsDao().updateNews(finalIndianHindiSportCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishSportsDao().updateNews(finalIndianEnglishSportCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
 
 
     public void shortingBdSportsList(List<RecyclerItemModel> recyclerItemModelList) {
@@ -710,6 +854,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(bdSportsList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(bdSportsList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(bdSportsList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(bdSportsList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -757,6 +902,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             bdSport.setPaperName(nameList.get(i));
                             bdSport.setBackgroundColor("SkyBlue");
                             bdSport.setTextColor("White");
+                            if (i==0) {
+                                bdSport.setNotificationStatus("on");
+                            } else {
+                                bdSport.setNotificationStatus("off");
+                            }
                             Completable.fromAction(()->{
                                 newsDatabase.bdSportsDao().insertNews(bdSport);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -802,6 +952,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianBanglaSportsList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianBanglaSportsList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianBanglaSportsList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianBanglaSportsList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -849,6 +1000,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianBanglaSport.setPaperName(nameList.get(i));
                             indianBanglaSport.setBackgroundColor("SkyBlue");
                             indianBanglaSport.setTextColor("White");
+                            if (i==0) {
+                                indianBanglaSport.setNotificationStatus("on");
+                            } else {
+                                indianBanglaSport.setNotificationStatus("off");
+                            }
                             Completable.fromAction(()->{
                                 newsDatabase.indianBanglaSportDao().insertNews(indianBanglaSport);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -894,6 +1050,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianHindiSportsList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianHindiSportsList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianHindiSportsList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianHindiSportsList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -941,6 +1098,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianHindiSport.setPaperName(nameList.get(i));
                             indianHindiSport.setBackgroundColor("SkyBlue");
                             indianHindiSport.setTextColor("White");
+                            if (i==0) {
+                                indianHindiSport.setNotificationStatus("on");
+                            } else {
+                                indianHindiSport.setNotificationStatus("off");
+                            }
                             Completable.fromAction(()->{
                                 newsDatabase.indianHindiSportsDao().insertNews(indianHindiSport);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -986,6 +1148,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianEnglishSportsList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianEnglishSportsList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianEnglishSportsList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianEnglishSportsList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -1033,6 +1196,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianEnglishSports.setPaperName(nameList.get(i));
                             indianEnglishSports.setBackgroundColor("SkyBlue");
                             indianEnglishSports.setTextColor("White");
+                            if (i==0) {
+                                indianEnglishSports.setNotificationStatus("on");
+                            } else {
+                                indianEnglishSports.setNotificationStatus("off");
+                            }
                             Completable.fromAction(()->{
                                 newsDatabase.indianEnglishSportsDao().insertNews(indianEnglishSports);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

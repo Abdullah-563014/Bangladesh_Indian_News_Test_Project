@@ -3,6 +3,12 @@ package com.easysoftbd.bangladeshindiannews.ui.activities.main;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,10 +17,13 @@ import android.view.View;
 
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.databinding.ActivityMainBinding;
+import com.easysoftbd.bangladeshindiannews.services.NewsLoaderService;
 import com.easysoftbd.bangladeshindiannews.ui.activities.favourite_list.FavouriteListActivity;
 import com.easysoftbd.bangladeshindiannews.ui.activities.home.HomeActivity;
 import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,8 +42,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         initAll();
+
+        showNotification();
+
+
     }
 
+
+    private void showNotification() {
+        String workerTag="Abdullah";
+        Constraints constraints=new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+        PeriodicWorkRequest request=new PeriodicWorkRequest.Builder(NewsLoaderService.class,15, TimeUnit.MINUTES)
+                .addTag(workerTag)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance(getApplicationContext())
+        .enqueueUniquePeriodicWork(workerTag, ExistingPeriodicWorkPolicy.REPLACE, request);
+    }
 
     private void initAll() {
         countryList[0]="Bangladesh";

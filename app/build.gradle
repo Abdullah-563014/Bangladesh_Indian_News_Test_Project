@@ -74,5 +74,9 @@ dependencies {
     implementation "androidx.room:room-rxjava2:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
+    def work_version = "2.4.0"
+    implementation "androidx.work:work-runtime:$work_version"
+    implementation "androidx.work:work-rxjava2:$work_version"
+
 
 }

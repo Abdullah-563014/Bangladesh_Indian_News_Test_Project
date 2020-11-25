@@ -8,12 +8,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdInternational;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaInternational;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.english.IndianEnglishTvChannel;
+import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiTvChannel;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
@@ -669,6 +673,148 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
             }
         });
     }
+    public void turnOnNotificationStatus(int serialNumber) {
+        BdTvChannel bdTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber <= (bdTvChannelList.size() - 1) && serialNumber >= 0) {
+                bdTvChannelCurrentItem = bdTvChannelList.get(serialNumber);
+                bdTvChannelCurrentItem.setNotificationStatus("on");
+            }
+        }
+        BdTvChannel finalBdTvChannelCurrentItem = bdTvChannelCurrentItem;
+
+
+        IndianBanglaTvChannel indianBanglaTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber <= (indianBanglaTvChannelList.size() - 1) && serialNumber >= 0) {
+                indianBanglaTvChannelCurrentItem = indianBanglaTvChannelList.get(serialNumber);
+                indianBanglaTvChannelCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianBanglaTvChannel finalIndianBanglaTvChannelCurrentItem = indianBanglaTvChannelCurrentItem;
+
+
+        IndianHindiTvChannel indianHindiTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber <= (indianHindiTvChannelList.size() - 1) && serialNumber >= 0) {
+                indianHindiTvChannelCurrentItem = indianHindiTvChannelList.get(serialNumber);
+                indianHindiTvChannelCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianHindiTvChannel finalIndianHindiTvChannelCurrentItem = indianHindiTvChannelCurrentItem;
+
+
+        IndianEnglishTvChannel indianEnglishTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber <= (indianEnglishTvChannelList.size() - 1) && serialNumber >= 0) {
+                indianEnglishTvChannelCurrentItem = indianEnglishTvChannelList.get(serialNumber);
+                indianEnglishTvChannelCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianEnglishTvChannel finalIndianEnglishTvChannelCurrentItem = indianEnglishTvChannelCurrentItem;
+
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdTvChannelDao().updateNews(finalBdTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaTvChannelDao().updateNews(finalIndianBanglaTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiTvChannelDao().updateNews(finalIndianHindiTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishTvChannelDao().updateNews(finalIndianEnglishTvChannelCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+    public void turnOffNotificationStatus(int serialNumber) {
+        BdTvChannel bdTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber <= (bdTvChannelList.size() - 1) && serialNumber >= 0) {
+                bdTvChannelCurrentItem = bdTvChannelList.get(serialNumber);
+                bdTvChannelCurrentItem.setNotificationStatus("off");
+            }
+        }
+        BdTvChannel finalBdTvChannelCurrentItem = bdTvChannelCurrentItem;
+
+
+        IndianBanglaTvChannel indianBanglaTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber <= (indianBanglaTvChannelList.size() - 1) && serialNumber >= 0) {
+                indianBanglaTvChannelCurrentItem = indianBanglaTvChannelList.get(serialNumber);
+                indianBanglaTvChannelCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianBanglaTvChannel finalIndianBanglaTvChannelCurrentItem = indianBanglaTvChannelCurrentItem;
+
+
+        IndianHindiTvChannel indianHindiTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber <= (indianHindiTvChannelList.size() - 1) && serialNumber >= 0) {
+                indianHindiTvChannelCurrentItem = indianHindiTvChannelList.get(serialNumber);
+                indianHindiTvChannelCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianHindiTvChannel finalIndianHindiTvChannelCurrentItem = indianHindiTvChannelCurrentItem;
+
+
+        IndianEnglishTvChannel indianEnglishTvChannelCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber <= (indianEnglishTvChannelList.size() - 1) && serialNumber >= 0) {
+                indianEnglishTvChannelCurrentItem = indianEnglishTvChannelList.get(serialNumber);
+                indianEnglishTvChannelCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianEnglishTvChannel finalIndianEnglishTvChannelCurrentItem = indianEnglishTvChannelCurrentItem;
+
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(()->{
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdTvChannelDao().updateNews(finalBdTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaTvChannelDao().updateNews(finalIndianBanglaTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiTvChannelDao().updateNews(finalIndianHindiTvChannelCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishTvChannelDao().updateNews(finalIndianEnglishTvChannelCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
 
 
 
@@ -687,6 +833,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(bdTvChannelList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(bdTvChannelList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(bdTvChannelList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(bdTvChannelList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -734,6 +881,11 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             bdTvChannel.setPaperName(nameList.get(i));
                             bdTvChannel.setBackgroundColor("SkyBlue");
                             bdTvChannel.setTextColor("White");
+                            if (i==0) {
+                                bdTvChannel.setNotificationStatus("on");
+                            } else {
+                                bdTvChannel.setNotificationStatus("off");
+                            }
                             Completable.fromAction(()->{
                                 newsDatabase.bdTvChannelDao().insertNews(bdTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -779,6 +931,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianBanglaTvChannelList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianBanglaTvChannelList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianBanglaTvChannelList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianBanglaTvChannelList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -826,6 +979,11 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianBanglaTvChannel.setPaperName(nameList.get(i));
                             indianBanglaTvChannel.setBackgroundColor("SkyBlue");
                             indianBanglaTvChannel.setTextColor("White");
+                            if (i==0) {
+                                indianBanglaTvChannel.setNotificationStatus("on");
+                            } else {
+                                indianBanglaTvChannel.setNotificationStatus("off");
+                            }
                             Completable.fromAction(()->{
                                 newsDatabase.indianBanglaTvChannelDao().insertNews(indianBanglaTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -871,6 +1029,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianHindiTvChannelList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianHindiTvChannelList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianHindiTvChannelList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianHindiTvChannelList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -918,6 +1077,11 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianHindiTvChannel.setPaperName(nameList.get(i));
                             indianHindiTvChannel.setBackgroundColor("SkyBlue");
                             indianHindiTvChannel.setTextColor("White");
+                            if (i==0) {
+                                indianHindiTvChannel.setNotificationStatus("on");
+                            } else {
+                                indianHindiTvChannel.setNotificationStatus("off");
+                            }
                             Completable.fromAction(()->{
                                 newsDatabase.indianHindiTvChannelDao().insertNews(indianHindiTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -963,6 +1127,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianEnglishTvChannelList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianEnglishTvChannelList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianEnglishTvChannelList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianEnglishTvChannelList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -1010,6 +1175,11 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianEnglishTvChannel.setPaperName(nameList.get(i));
                             indianEnglishTvChannel.setBackgroundColor("SkyBlue");
                             indianEnglishTvChannel.setTextColor("White");
+                            if (i==0) {
+                                indianEnglishTvChannel.setNotificationStatus("on");
+                            } else {
+                                indianEnglishTvChannel.setNotificationStatus("off");
+                            }
                             Completable.fromAction(()->{
                                 newsDatabase.indianEnglishTvChannelDao().insertNews(indianEnglishTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

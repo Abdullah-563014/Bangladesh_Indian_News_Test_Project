@@ -692,6 +692,148 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             }
         });
     }
+    public void turnOnNotificationStatus(int serialNumber) {
+        BdBreaking bdBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber <= (bdBreakingList.size() - 1) && serialNumber >= 0) {
+                bdBreakingCurrentItem = bdBreakingList.get(serialNumber);
+                bdBreakingCurrentItem.setNotificationStatus("on");
+            }
+        }
+        BdBreaking finalBdBreakingCurrentItem = bdBreakingCurrentItem;
+
+
+        IndianBanglaBreaking indianBanglaBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber <= (indianBanglaBreakingList.size() - 1) && serialNumber >= 0) {
+                indianBanglaBreakingCurrentItem = indianBanglaBreakingList.get(serialNumber);
+                indianBanglaBreakingCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianBanglaBreaking finalIndianBanglaBreakingCurrentItem = indianBanglaBreakingCurrentItem;
+
+
+        IndianHindiBreaking indianHindiBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber <= (indianHindiBreakingList.size() - 1) && serialNumber >= 0) {
+                indianHindiBreakingCurrentItem = indianHindiBreakingList.get(serialNumber);
+                indianHindiBreakingCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianHindiBreaking finalIndianHindiBreakingCurrentItem = indianHindiBreakingCurrentItem;
+
+
+        IndianEnglishBreaking indianEnglishBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber <= (indianEnglishBreakingList.size() - 1) && serialNumber >= 0) {
+                indianEnglishBreakingCurrentItem = indianEnglishBreakingList.get(serialNumber);
+                indianEnglishBreakingCurrentItem.setNotificationStatus("on");
+            }
+        }
+        IndianEnglishBreaking finalIndianEnglishBreakingCurrentItem = indianEnglishBreakingCurrentItem;
+
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(() -> {
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdBreakingDao().updateNews(finalBdBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaBreakingDao().updateNews(finalIndianBanglaBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiBreakingDao().updateNews(finalIndianHindiBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishBreakingDao().updateNews(finalIndianEnglishBreakingCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
+    public void turnOffNotificationStatus(int serialNumber) {
+        BdBreaking bdBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+            if (serialNumber <= (bdBreakingList.size() - 1) && serialNumber >= 0) {
+                bdBreakingCurrentItem = bdBreakingList.get(serialNumber);
+                bdBreakingCurrentItem.setNotificationStatus("off");
+            }
+        }
+        BdBreaking finalBdBreakingCurrentItem = bdBreakingCurrentItem;
+
+
+        IndianBanglaBreaking indianBanglaBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+            if (serialNumber <= (indianBanglaBreakingList.size() - 1) && serialNumber >= 0) {
+                indianBanglaBreakingCurrentItem = indianBanglaBreakingList.get(serialNumber);
+                indianBanglaBreakingCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianBanglaBreaking finalIndianBanglaBreakingCurrentItem = indianBanglaBreakingCurrentItem;
+
+
+        IndianHindiBreaking indianHindiBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+            if (serialNumber <= (indianHindiBreakingList.size() - 1) && serialNumber >= 0) {
+                indianHindiBreakingCurrentItem = indianHindiBreakingList.get(serialNumber);
+                indianHindiBreakingCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianHindiBreaking finalIndianHindiBreakingCurrentItem = indianHindiBreakingCurrentItem;
+
+
+        IndianEnglishBreaking indianEnglishBreakingCurrentItem = null;
+        if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+            if (serialNumber <= (indianEnglishBreakingList.size() - 1) && serialNumber >= 0) {
+                indianEnglishBreakingCurrentItem = indianEnglishBreakingList.get(serialNumber);
+                indianEnglishBreakingCurrentItem.setNotificationStatus("off");
+            }
+        }
+        IndianEnglishBreaking finalIndianEnglishBreakingCurrentItem = indianEnglishBreakingCurrentItem;
+
+
+        insertingDataFlag = false;
+        dataStatusFlagInDb = true;
+
+        Completable.fromAction(() -> {
+            if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
+                newsDatabase.bdBreakingDao().updateNews(finalBdBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
+                newsDatabase.indianBanglaBreakingDao().updateNews(finalIndianBanglaBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
+                newsDatabase.indianHindiBreakingDao().updateNews(finalIndianHindiBreakingCurrentItem);
+            } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
+                newsDatabase.indianEnglishBreakingDao().updateNews(finalIndianEnglishBreakingCurrentItem);
+            }
+        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                compositeDisposable.add(d);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+        });
+    }
 
 
     public void shortingBdBreakingList(List<RecyclerItemModel> recyclerItemModelList) {
@@ -709,6 +851,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(bdBreakingList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(bdBreakingList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(bdBreakingList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(bdBreakingList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -756,6 +899,11 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             bdBreaking.setPaperName(nameList.get(i));
                             bdBreaking.setBackgroundColor("SkyBlue");
                             bdBreaking.setTextColor("White");
+                            if (i==0) {
+                                bdBreaking.setNotificationStatus("on");
+                            } else {
+                                bdBreaking.setNotificationStatus("off");
+                            }
                             Completable.fromAction(() -> {
                                 newsDatabase.bdBreakingDao().insertNews(bdBreaking);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -801,6 +949,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianBanglaBreakingList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianBanglaBreakingList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianBanglaBreakingList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianBanglaBreakingList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -848,6 +997,11 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             indianBanglaBreaking.setPaperName(nameList.get(i));
                             indianBanglaBreaking.setBackgroundColor("SkyBlue");
                             indianBanglaBreaking.setTextColor("White");
+                            if (i==0) {
+                                indianBanglaBreaking.setNotificationStatus("on");
+                            } else {
+                                indianBanglaBreaking.setNotificationStatus("off");
+                            }
                             Completable.fromAction(() -> {
                                 newsDatabase.indianBanglaBreakingDao().insertNews(indianBanglaBreaking);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -893,6 +1047,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianHindiBreakingList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianHindiBreakingList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianHindiBreakingList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianHindiBreakingList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -940,6 +1095,11 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             indianHindiBreaking.setPaperName(nameList.get(i));
                             indianHindiBreaking.setBackgroundColor("SkyBlue");
                             indianHindiBreaking.setTextColor("White");
+                            if (i==0) {
+                                indianHindiBreaking.setNotificationStatus("on");
+                            } else {
+                                indianHindiBreaking.setNotificationStatus("off");
+                            }
                             Completable.fromAction(() -> {
                                 newsDatabase.indianHindiBreakingDao().insertNews(indianHindiBreaking);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -985,6 +1145,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                     recyclerItemModel.setSerialNumber(indianEnglishBreakingList.get(i).getSerial());
                     recyclerItemModel.setBackgroundColor(indianEnglishBreakingList.get(i).getBackgroundColor());
                     recyclerItemModel.setTextColor(indianEnglishBreakingList.get(i).getTextColor());
+                    recyclerItemModel.setNotificationStatus(indianEnglishBreakingList.get(i).getNotificationStatus());
                     temporaryShortingList.add(recyclerItemModel);
                 }
             }
@@ -1032,6 +1193,11 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             indianEnglishBreaking.setPaperName(nameList.get(i));
                             indianEnglishBreaking.setBackgroundColor("SkyBlue");
                             indianEnglishBreaking.setTextColor("White");
+                            if (i==0) {
+                                indianEnglishBreaking.setNotificationStatus("on");
+                            } else {
+                                indianEnglishBreaking.setNotificationStatus("off");
+                            }
                             Completable.fromAction(() -> {
                                 newsDatabase.indianEnglishBreakingDao().insertNews(indianEnglishBreaking);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

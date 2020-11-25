@@ -46,7 +46,11 @@ public class InternationalFragmentAdapter extends RecyclerView.Adapter<Internati
 
     @Override
     public void onBindViewHolder(@NonNull InternationalNewsViewHolder holder, int position) {
-        holder.binding.titleTextView.setText(list.get(position).getTitle());
+        if (list.get(position).getNotificationStatus().equalsIgnoreCase("on")) {
+            holder.binding.titleTextView.setText(list.get(position).getTitle()+" (Notification on)");
+        } else {
+            holder.binding.titleTextView.setText(list.get(position).getTitle()+" (Notification off)");
+        }
         List<String> contents=new ArrayList<>();
         List<NewsAndLinkModel> newsAndLinkModels=list.get(position).getNewsAndLinkModelList();
         for (int i=0; i<newsAndLinkModels.size(); i++) {
