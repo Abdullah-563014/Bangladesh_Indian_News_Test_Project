@@ -19,6 +19,9 @@ public interface BdSportsDao {
     @Query("SELECT * FROM bd_sports WHERE serial=:serial")
     BdSports getNews(int serial);
 
+    @Query("SELECT * FROM bd_sports WHERE notificationStatus=:tag")
+    List<BdSports> getAllNotificationNews(String tag);
+
     @Insert
     void insertNews(BdSports bdSports);
 

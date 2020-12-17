@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "111661541440",
+    "firebase_url": "https://bangladesh-indian-news.firebaseio.com",
+    "project_id": "bangladesh-indian-news",
+    "storage_bucket": "bangladesh-indian-news.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111661541440:android:f381b1d8e4b28eb36697a5",
+        "android_client_info": {
+          "package_name": "com.easysoftbd.bangladeshindiannews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "111661541440-e3fcvhnb0leigntv2bfm9dgq9iid2og0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.easysoftbd.bangladeshindiannews",
+            "certificate_hash": "515d94f2896c1dba1fd4228b7fd119d918c439cf"
+          }
+        },
+        {
+          "client_id": "111661541440-2aa8jf0nv3n65fu315ctjon3cpi5qj48.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS7FcbROBPzUwD-ZllGVRtYMlHs_ymmwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "111661541440-2aa8jf0nv3n65fu315ctjon3cpi5qj48.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

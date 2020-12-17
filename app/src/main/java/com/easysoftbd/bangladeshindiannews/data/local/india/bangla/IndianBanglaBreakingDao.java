@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdTvChannel;
 
 import java.util.List;
@@ -19,6 +20,9 @@ public interface IndianBanglaBreakingDao {
 
     @Query("SELECT * FROM indian_bangla_breaking WHERE serial=:serial")
     IndianBanglaBreaking getNews(int serial);
+
+    @Query("SELECT * FROM indian_bangla_breaking WHERE notificationStatus=:tag")
+    List<IndianBanglaBreaking> getAllNotificationNews(String tag);
 
     @Insert
     void insertNews(IndianBanglaBreaking indianBanglaBreaking);

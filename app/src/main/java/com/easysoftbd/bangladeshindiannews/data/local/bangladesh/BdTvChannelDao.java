@@ -19,6 +19,9 @@ public interface BdTvChannelDao {
     @Query("SELECT * FROM bd_tv_channel WHERE serial=:serial")
     BdTvChannel getNews(int serial);
 
+    @Query("SELECT * FROM bd_tv_channel WHERE notificationStatus=:tag")
+    List<BdTvChannel> getAllNotificationNews(String tag);
+
     @Insert
     void insertNews(BdTvChannel bdTvChannel);
 

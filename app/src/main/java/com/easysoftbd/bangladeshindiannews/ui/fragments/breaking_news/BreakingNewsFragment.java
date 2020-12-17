@@ -1,5 +1,6 @@
 package com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -85,6 +86,10 @@ public class BreakingNewsFragment extends Fragment {
     }
 
     private void loadAllUrl() {
+        if (countryName==null) {
+            countryName=Constants.bangladesh;
+            languageName=Constants.bangla;
+        }
         if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
             List<String> urlList= new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_url_list)));
             List<String> nameList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.bd_breaking_news_list)));

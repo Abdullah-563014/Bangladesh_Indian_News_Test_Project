@@ -7,6 +7,8 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
 
+import java.util.Random;
+
 public class CommonMethods {
 
     private static SharedPreferences sharedPreferences;
@@ -53,7 +55,10 @@ public class CommonMethods {
         return getSharedInstance(context).getString(key,defaultValue);
     }
 
-
+    public static int getRandomNumber(int range) {
+        Random random=new Random();
+        return random.nextInt(range);
+    }
 
 
 

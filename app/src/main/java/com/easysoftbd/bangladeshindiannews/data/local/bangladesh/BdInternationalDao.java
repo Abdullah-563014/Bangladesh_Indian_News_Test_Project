@@ -19,6 +19,9 @@ public interface BdInternationalDao {
     @Query("SELECT * FROM bd_international WHERE serial=:serial")
     BdInternational getNews(int serial);
 
+    @Query("SELECT * FROM bd_international WHERE notificationStatus=:tag")
+    List<BdInternational> getAllNotificationNews(String tag);
+
     @Insert
     void insertNews(BdInternational bdInternational);
 

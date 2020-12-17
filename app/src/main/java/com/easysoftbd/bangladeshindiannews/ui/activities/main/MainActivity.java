@@ -12,11 +12,13 @@ import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.databinding.ActivityMainBinding;
+import com.easysoftbd.bangladeshindiannews.services.MyForgroundService;
 import com.easysoftbd.bangladeshindiannews.services.NewsLoaderService;
 import com.easysoftbd.bangladeshindiannews.ui.activities.favourite_list.FavouriteListActivity;
 import com.easysoftbd.bangladeshindiannews.ui.activities.home.HomeActivity;
@@ -43,13 +45,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initAll();
 
-        showNotification();
+        startForgroundService();
 
 
     }
 
 
-    private void showNotification() {
+    private void startBackgroundService() {
         String workerTag="Abdullah";
         Constraints constraints=new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -60,6 +62,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
         WorkManager.getInstance(getApplicationContext())
         .enqueueUniquePeriodicWork(workerTag, ExistingPeriodicWorkPolicy.REPLACE, request);
+    }
+
+    private void startForgroundService() {
+        Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+//            startService(intent);
+            startBackgroundService();
+        }
     }
 
     private void initAll() {

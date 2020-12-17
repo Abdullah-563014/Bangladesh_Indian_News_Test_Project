@@ -19,6 +19,9 @@ public interface BdFinanceDao {
     @Query("SELECT * FROM bd_finance WHERE serial=:serial")
     BdFinance getNews(int serial);
 
+    @Query("SELECT * FROM bd_finance WHERE notificationStatus=:tag")
+    List<BdFinance> getAllNotificationNews(String tag);
+
     @Insert
     void insertNews(BdFinance bdFinance);
 

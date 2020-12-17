@@ -18,4 +18,8 @@ public class Constants {
     public static final String hindi="Hindi";
     public static final String english="English";
 
+    public static boolean onForground=false;
+    public static boolean startedForGroundService=false;
+    public static boolean isForgroundService=false;
+
 }
