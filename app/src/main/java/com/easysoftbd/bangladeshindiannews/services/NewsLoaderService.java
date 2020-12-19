@@ -1,8 +1,11 @@
 package com.easysoftbd.bangladeshindiannews.services;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
@@ -45,6 +48,7 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
 import com.easysoftbd.bangladeshindiannews.data.repositories.MyResponse;
+import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news.BreakingNewsFragment;
 import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
@@ -61,6 +65,8 @@ import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+
+import static com.easysoftbd.bangladeshindiannews.ui.MyApplication.MY_NOTIFICATION_CHANNEL_ID;
 
 public class NewsLoaderService extends Worker {
 
@@ -114,9 +120,8 @@ public class NewsLoaderService extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        displayNotification("Test title","Test description. Test description. Test description.");
-//        newsPaperUrl="https://www.kalerkantho.com/";
-//        loadPageDocument(newsPaperUrl);
+        displayNotification("Test title","Test description. Test description. Test description.","https://www.google.com");
+
         if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
             loadBangladeshiNews();
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
@@ -791,20 +796,36 @@ public class NewsLoaderService extends Worker {
                 });
     }
 
-    private void displayNotification(String title, String description) {
+    private void displayNotification(String title, String description, String targetUrl) {
         NotificationManager notificationManager= (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.putExtra(Constants.UrlTag,targetUrl);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel=new NotificationChannel(notificationId,notificationId,NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(notificationChannel);
+        NotificationCompat.Builder builder= null;
+        if (Build.VERSION.SDK_INT >= 26) {
+            builder = new NotificationCompat.Builder(getApplicationContext(),MY_NOTIFICATION_CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setTicker(title)
+                    .setContentText(description)
+                    .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(R.mipmap.ic_launcher);
+        } else {
+            builder = new NotificationCompat.Builder(getApplicationContext(),MY_NOTIFICATION_CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setTicker(title)
+                    .setContentText(description)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(pendingIntent)
+                    .setSmallIcon(R.mipmap.ic_launcher);
         }
 
-        NotificationCompat.Builder builder=new NotificationCompat.Builder(getApplicationContext(),notificationId)
-                .setContentTitle(title)
-                .setContentText(description)
-                .setSmallIcon(R.mipmap.ic_launcher);
-
-        notificationManager.notify(1,builder.build());
+        notificationManager.notify(CommonMethods.getRandomNumber(9999),builder.build());
     }
 
     private void loadBangladeshiNews() {
@@ -1184,8 +1205,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("প্রথম আলো (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("প্রথম আলো (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("প্রথম আলো (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("প্রথম আলো (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdProtidinBreekingNews(Document document) {
@@ -1206,8 +1233,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKalerKhantoBreekingNews(Document document) {
@@ -1231,8 +1264,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("কালের কণ্ঠ (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কালের কণ্ঠ (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কালের কণ্ঠ (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কালের কণ্ঠ (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSomokalBreekingNews(Document document) {
@@ -1253,8 +1292,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("সমকাল (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সমকাল (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সমকাল (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সমকাল (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyJanaKhantoBreekingNews(Document document) {
@@ -1276,8 +1321,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyInqilabBreekingNews(Document document) {
@@ -1298,8 +1349,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইনকিলাব (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইনকিলাব (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইনকিলাব (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইনকিলাব (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyNayaDigantaBreekingNews(Document document) {
@@ -1320,8 +1377,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("নয়া দিগন্ত (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("নয়া দিগন্ত (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("নয়া দিগন্ত (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("নয়া দিগন্ত (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarDesh24BreekingNews(Document document) {
@@ -1342,8 +1405,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("আমার দেশ 24 (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আমার দেশ 24 (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আমার দেশ 24 (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আমার দেশ 24 (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyIttefaqBreekingNews(Document document) {
@@ -1366,8 +1435,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSongbadProtidinBreekingNews(Document document) {
@@ -1390,8 +1465,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("সংবাদ প্রতিদিন (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সংবাদ প্রতিদিন (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সংবাদ প্রতিদিন (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সংবাদ প্রতিদিন (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setManobKanthaBreekingNews(Document document) {
@@ -1412,8 +1493,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("মানবকণ্ঠ (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মানবকণ্ঠ (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মানবকণ্ঠ (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মানবকণ্ঠ (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBangladeshJournalBreekingNews(Document document) {
@@ -1434,8 +1521,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setTheDailyVorerPataBreekingNews(Document document) {
@@ -1457,8 +1550,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("ভোরের পাতা (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ভোরের পাতা (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ভোরের পাতা (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ভোরের পাতা (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //====================================Bangladesh Breaking News method staying in above========================================
@@ -1482,8 +1581,14 @@ public class NewsLoaderService extends Worker {
         itemModel.setTitle("আনন্দবাজার পত্রিকা (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
 
+        if (list.size()>=1) {
+            displayNotification("আনন্দবাজার পত্রিকা (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আনন্দবাজার পত্রিকা (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আনন্দবাজার পত্রিকা (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSangbadPratidinBreekingNews(Document document) {
@@ -1505,8 +1610,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("সংবাদ প্রতিদিন (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সংবাদ প্রতিদিন (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সংবাদ প্রতিদিন (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সংবাদ প্রতিদিন (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBartamanPatrikaBreekingNews(Document document) {
@@ -1527,8 +1638,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("বর্তমান (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বর্তমান (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বর্তমান (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বর্তমান (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setGanaShaktiBreekingNews(Document document) {
@@ -1548,8 +1665,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("গণশক্তি (আজকের খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("গণশক্তি (আজকের খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("গণশক্তি (আজকের খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("গণশক্তি (আজকের খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setUttarBangaSambadBreekingNews(Document document) {
@@ -1569,8 +1692,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("উত্তরবঙ্গ সংবাদ (উত্তরবঙ্গ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (উত্তরবঙ্গ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("উত্তরবঙ্গ সংবাদ (উত্তরবঙ্গ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (উত্তরবঙ্গ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEbelaBreekingNews(Document document) {
@@ -1591,8 +1720,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("এবেলা (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("এবেলা (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("এবেলা (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("এবেলা (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAsomiyaPratidinBreekingNews(Document document) {
@@ -1612,8 +1747,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("অসমীয়া প্রতিদিন (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("অসমীয়া প্রতিদিন (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("অসমীয়া প্রতিদিন (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("অসমীয়া প্রতিদিন (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAajKaalBreekingNews(Document document) {
@@ -1633,8 +1774,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("আজকাল (আকর্ষনীয় খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আজকাল (আকর্ষনীয় খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আজকাল (আকর্ষনীয় খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আজকাল (আকর্ষনীয় খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhaborOnlineBreekingNews(Document document) {
@@ -1654,8 +1801,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("খবর অনলাইন (নজরে)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("খবর অনলাইন (নজরে)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("খবর অনলাইন (নজরে)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("খবর অনলাইন (নজরে)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJugaShankaBreekingNews(Document document) {
@@ -1675,8 +1828,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("যুগশঙ্ক (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("যুগশঙ্ক (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("যুগশঙ্ক (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("যুগশঙ্ক (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJagaranTripuraBreekingNews(Document document) {
@@ -1696,8 +1855,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("জাগরণত্রিপুরা (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("জাগরণত্রিপুরা (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("জাগরণত্রিপুরা (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("জাগরণত্রিপুরা (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setGanadabiBreekingNews(Document document) {
@@ -1717,8 +1882,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("গণদাবী (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("গণদাবী (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("গণদাবী (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("গণদাবী (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setOneIndiaBreekingNews(Document document) {
@@ -1739,8 +1910,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("ওয়ান ইন্ডিয়া (সাধারণ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ওয়ান ইন্ডিয়া (সাধারণ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ওয়ান ইন্ডিয়া (সাধারণ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ওয়ান ইন্ডিয়া (সাধারণ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKolkata247BreekingNews(Document document) {
@@ -1760,8 +1937,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("কলকাতা ২৪*৭ (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কলকাতা ২৪*৭ (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কলকাতা ২৪*৭ (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কলকাতা ২৪*৭ (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhabor24GhontaBreekingNews(Document document) {
@@ -1781,8 +1964,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("খবর ২৪ ঘন্টা (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("খবর ২৪ ঘন্টা (ব্রেকিং নিউজ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("খবর ২৪ ঘন্টা (ব্রেকিং নিউজ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("খবর ২৪ ঘন্টা (ব্রেকিং নিউজ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //====================================Indian Bangla Breaking News method staying in above========================================
@@ -1807,8 +1996,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("जागरण (ट्रेंडिंग न्यूज़)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जागरण (ट्रेंडिंग न्यूज़)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जागरण (ट्रेंडिंग न्यूज़)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जागरण (ट्रेंडिंग न्यूज़)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhaskarBreakingNews(Document document) {
@@ -1829,8 +2024,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("देनिक भास्कर (मुख्य समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("देनिक भास्कर (मुख्य समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("देनिक भास्कर (मुख्य समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("देनिक भास्कर (मुख्य समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarUjalaBreakingNews(Document document) {
@@ -1851,8 +2052,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("अमर उजाला (शीर्ष ट्रेंडिंग)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("अमर उजाला (शीर्ष ट्रेंडिंग)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("अमर उजाला (शीर्ष ट्रेंडिंग)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("अमर उजाला (शीर्ष ट्रेंडिंग)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setLiveHindustanBreakingNews(Document document) {
@@ -1873,8 +2080,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("लाइव हिन्दुस्तान (ताज़ा खबर)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("लाइव हिन्दुस्तान (ताज़ा खबर)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("लाइव हिन्दुस्तान (ताज़ा खबर)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("लाइव हिन्दुस्तान (ताज़ा खबर)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNavBharatTimesBreakingNews(Document document) {
@@ -1894,8 +2107,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("नव भारत टाइम्स (सबसे ज़्यादा पढ़ा हुआ)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("नव भारत टाइम्स (सबसे ज़्यादा पढ़ा हुआ)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("नव भारत टाइम्स (सबसे ज़्यादा पढ़ा हुआ)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("नव भारत टाइम्स (सबसे ज़्यादा पढ़ा हुआ)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJanSattaBreakingNews(Document document) {
@@ -1917,8 +2136,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("जनसत्ता (बड़ी खबर)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जनसत्ता (बड़ी खबर)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जनसत्ता (बड़ी खबर)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जनसत्ता (बड़ी खबर)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPunjabKeSariBreakingNews(Document document) {
@@ -1938,8 +2163,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("पंजाब केसरी (शीर्ष आलेख)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("पंजाब केसरी (शीर्ष आलेख)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("पंजाब केसरी (शीर्ष आलेख)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("पंजाब केसरी (शीर्ष आलेख)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setHariBhoomiBreakingNews(Document document) {
@@ -1960,8 +2191,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("हरिभूमि (वायरल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("हरिभूमि (वायरल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("हरिभूमि (वायरल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("हरिभूमि (वायरल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDivyaHimachalBreakingNews(Document document) {
@@ -1981,8 +2218,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("दिव्य हिमाचल (सामान्य समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दिव्य हिमाचल (सामान्य समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दिव्य हिमाचल (सामान्य समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दिव्य हिमाचल (सामान्य समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPrabhaSakshiBreakingNews(Document document) {
@@ -2003,8 +2246,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("प्रभा साक्षी (ताज़ा खबर)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("प्रभा साक्षी (ताज़ा खबर)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("प्रभा साक्षी (ताज़ा खबर)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("प्रभा साक्षी (ताज़ा खबर)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeshDootBreakingNews(Document document) {
@@ -2024,8 +2273,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("देशदूत (स्थानीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("देशदूत (स्थानीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("देशदूत (स्थानीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("देशदूत (स्थानीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDainikTribuneOnlineBreakingNews(Document document) {
@@ -2046,8 +2301,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("दैनिक ट्रिब्यून (विचार खबर)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दैनिक ट्रिब्यून (विचार खबर)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दैनिक ट्रिब्यून (विचार खबर)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दैनिक ट्रिब्यून (विचार खबर)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamacharJagatBreakingNews(Document document) {
@@ -2067,8 +2328,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("SamacharJagat (ताज़ा खबर)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("SamacharJagat (ताज़ा खबर)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("SamacharJagat (ताज़ा खबर)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("SamacharJagat (ताज़ा खबर)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhasKhabarBreakingNews(Document document) {
@@ -2088,8 +2355,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("अच्छी खबर (मुख्य समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("अच्छी खबर (मुख्य समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("अच्छी खबर (मुख्य समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("अच्छी खबर (मुख्य समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //====================================Indian Hindi Breaking News method staying in above========================================
@@ -2115,8 +2388,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("Hindustan Times (Top News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Hindustan Times (Top News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Hindustan Times (Top News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Hindustan Times (Top News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setIndianExpressBreakingNews(Document document) {
@@ -2136,8 +2415,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("The Indian Express (Breaking News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Indian Express (Breaking News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Indian Express (Breaking News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Indian Express (Breaking News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyPioneerBreakingNews(Document document) {
@@ -2158,8 +2443,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("The Pioneer (Breaking News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Pioneer (Breaking News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Pioneer (Breaking News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Pioneer (Breaking News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanHeraldBreakingNews(Document document) {
@@ -2180,8 +2471,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("Deccan Herald (General News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Herald (General News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Herald (General News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Herald (General News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDnaIndiaBreakingNews(Document document) {
@@ -2202,8 +2499,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("DNA India (Headlines)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("DNA India (Headlines)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("DNA India (Headlines)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("DNA India (Headlines)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanChronicleBreakingNews(Document document) {
@@ -2224,8 +2527,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("Deccan Chronicle (Top Stories)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Chronicle (Top Stories)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Chronicle (Top Stories)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Chronicle (Top Stories)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAsianAgeBreakingNews(Document document) {
@@ -2246,8 +2555,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("The Asian Age (Top Stories)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Asian Age (Top Stories)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Asian Age (Top Stories)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Asian Age (Top Stories)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEconomicTimesBreakingNews(Document document) {
@@ -2268,8 +2583,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("Economic Times (Top News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Economic Times (Top News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Economic Times (Top News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Economic Times (Top News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBusinessStandardBreakingNews(Document document) {
@@ -2290,8 +2611,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("Business Standard (Just In)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Business Standard (Just In)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Business Standard (Just In)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Business Standard (Just In)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setFinancialExpressBreakingNews(Document document) {
@@ -2311,8 +2638,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("Financial Express (Top News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Financial Express (Top News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Financial Express (Top News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Financial Express (Top News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNewIndianExpressBreakingNews(Document document) {
@@ -2334,8 +2667,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("The New Indian Express (Good News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The New Indian Express (Good News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The New Indian Express (Good News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The New Indian Express (Good News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setTribuneIndiaBreakingNews(Document document) {
@@ -2358,8 +2697,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("The Tribune (Top Stories)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Tribune (Top Stories)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Tribune (Top Stories)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Tribune (Top Stories)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setLiveMintBreakingNews(Document document) {
@@ -2379,8 +2724,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("Mint (General News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Mint (General News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Mint (General News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Mint (General News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //====================================Indian English Breaking News method staying in above========================================
@@ -2404,8 +2755,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আমাদের সময় (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আমাদের সময় (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আমাদের সময় (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আমাদের সময় (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdJournalEntertainmentNews(Document document) {
@@ -2427,8 +2784,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলাদেশ জার্নাল (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলাদেশ জার্নাল (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলাদেশ জার্নাল (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলাদেশ জার্নাল (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setManobKanthaEntertainmentNews(Document document) {
@@ -2448,8 +2811,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মানবকণ্ঠ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মানবকণ্ঠ (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মানবকণ্ঠ (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মানবকণ্ঠ (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSangbadPratidinEntertainmentNews(Document document) {
@@ -2469,8 +2838,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সংবাদ প্রতিদিন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সংবাদ প্রতিদিন (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সংবাদ প্রতিদিন (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সংবাদ প্রতিদিন (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyManobJominEntertainmentNews(Document document) {
@@ -2491,8 +2866,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মানবজমিন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মানবজমিন (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মানবজমিন (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মানবজমিন (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyIttefaqEntertainmentNews(Document document) {
@@ -2514,8 +2895,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইত্তেফাক (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইত্তেফাক (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইত্তেফাক (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইত্তেফাক (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarDesh24EntertainmentNews(Document document) {
@@ -2535,8 +2922,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আমার দেশ 24 (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আমার দেশ 24 (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আমার দেশ 24 (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আমার দেশ 24 (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyNayaDigantaEntertainmentNews(Document document) {
@@ -2556,8 +2949,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("নয়া দিগন্ত (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("নয়া দিগন্ত (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("নয়া দিগন্ত (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("নয়া দিগন্ত (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyInqilabEntertainmentNews(Document document) {
@@ -2577,8 +2976,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইনকিলাব (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইনকিলাব (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইনকিলাব (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইনকিলাব (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhorerKagojEntertainmentNews(Document document) {
@@ -2598,8 +3003,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ভোরের কাগজ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ভোরের কাগজ (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ভোরের কাগজ (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ভোরের কাগজ (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBanglaTribuneEntertainmentNews(Document document) {
@@ -2620,8 +3031,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলা ট্রিবিউন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলা ট্রিবিউন (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলা ট্রিবিউন (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলা ট্রিবিউন (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdNews24EntertainmentNews(Document document) {
@@ -2641,8 +3058,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বিডি নিউস ২৪ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বিডি নিউস ২৪ (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বিডি নিউস ২৪ (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বিডি নিউস ২৪ (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyJanakanthaEntertainmentNews(Document document) {
@@ -2663,8 +3086,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক জনকন্ঠ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক জনকন্ঠ (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক জনকন্ঠ (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক জনকন্ঠ (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamakalEntertainmentNews(Document document) {
@@ -2688,8 +3117,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সমকাল (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সমকাল (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সমকাল (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সমকাল (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKalerkanthoEntertainmentNews(Document document) {
@@ -2710,8 +3145,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কালের কণ্ঠ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কালের কণ্ঠ (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কালের কণ্ঠ (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কালের কণ্ঠ (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ===============================================================================================
@@ -2735,8 +3176,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আনন্দবাজার পত্রিকা (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আনন্দবাজার পত্রিকা (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আনন্দবাজার পত্রিকা (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আনন্দবাজার পত্রিকা (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSangbadPratidinIndianEntertainmentNews(Document document) {
@@ -2756,8 +3203,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সংবাদ প্রতিদিন (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সংবাদ প্রতিদিন (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সংবাদ প্রতিদিন (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সংবাদ প্রতিদিন (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBartamanPatrikaEntertainmentNews(Document document) {
@@ -2778,8 +3231,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বর্তমান (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বর্তমান (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বর্তমান (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বর্তমান (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setUttarBangaSambadEntertainmentNews(Document document) {
@@ -2799,8 +3258,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("উত্তরবঙ্গ সংবাদ (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("উত্তরবঙ্গ সংবাদ (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEbelaEntertainmentNews(Document document) {
@@ -2821,8 +3286,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("এবেলা (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("এবেলা (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("এবেলা (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("এবেলা (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAsomiyaPratidinEntertainmentNews(Document document) {
@@ -2842,8 +3313,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("অসমীয়া প্রতিদিন (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("অসমীয়া প্রতিদিন (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("অসমীয়া প্রতিদিন (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("অসমীয়া প্রতিদিন (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAajKaalEntertainmentNews(Document document) {
@@ -2863,8 +3340,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আজকাল (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আজকাল (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আজকাল (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আজকাল (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhaborOnlineEntertainmentNews(Document document) {
@@ -2884,8 +3367,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("খবর অনলাইন (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("খবর অনলাইন (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("খবর অনলাইন (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("খবর অনলাইন (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJugaSankhaEntertainmentNews(Document document) {
@@ -2905,8 +3394,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("যুগশঙ্ক (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("যুগশঙ্ক (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("যুগশঙ্ক (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("যুগশঙ্ক (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJagaranTripuraEntertainmentNews(Document document) {
@@ -2926,8 +3421,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("জাগরণত্রিপুরা (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("জাগরণত্রিপুরা (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("জাগরণত্রিপুরা (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("জাগরণত্রিপুরা (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setOneIndiaEntertainmentNews(Document document) {
@@ -2948,8 +3449,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ওয়ান ইন্ডিয়া (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ওয়ান ইন্ডিয়া (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ওয়ান ইন্ডিয়া (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ওয়ান ইন্ডিয়া (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKolkata247EntertainmentNews(Document document) {
@@ -2969,8 +3476,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কলকাতা ২৪*৭ (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কলকাতা ২৪*৭ (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কলকাতা ২৪*৭ (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কলকাতা ২৪*৭ (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhabor24EntertainmentNews(Document document) {
@@ -2990,8 +3503,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("খবর ২৪ ঘন্টা (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("খবর ২৪ ঘন্টা (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("খবর ২৪ ঘন্টা (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("খবর ২৪ ঘন্টা (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBengal2DayEntertainmentNews(Document document) {
@@ -3011,8 +3530,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলা টু ডে (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলা টু ডে (বিনোদনের শেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলা টু ডে (বিনোদনের শেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলা টু ডে (বিনোদনের শেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ===============================================================================================
@@ -3035,8 +3560,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("जागरण (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जागरण (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जागरण (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जागरण (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhaskarEntertainmentNews(Document document) {
@@ -3057,8 +3588,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("देनिक भास्कर (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("देनिक भास्कर (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("देनिक भास्कर (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("देनिक भास्कर (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarUjalaEntertainmentNews(Document document) {
@@ -3079,8 +3616,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("अमर उजाला (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("अमर उजाला (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("अमर उजाला (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("अमर उजाला (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setLiveHindustanEntertainmentNews(Document document) {
@@ -3103,8 +3646,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("लाइव हिन्दुस्तान (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("लाइव हिन्दुस्तान (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("लाइव हिन्दुस्तान (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("लाइव हिन्दुस्तान (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNavBharatTimesEntertainmentNews(Document document) {
@@ -3124,8 +3673,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("नव भारत टाइम्स (फिल्म और मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("नव भारत टाइम्स (फिल्म और मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("नव भारत टाइम्स (फिल्म और मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("नव भारत टाइम्स (फिल्म और मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJanSattaEntertainmentNews(Document document) {
@@ -3145,8 +3700,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("जनसत्ता (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जनसत्ता (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जनसत्ता (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जनसत्ता (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBollywoodTadkaEntertainmentNews(Document document) {
@@ -3166,8 +3727,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("बॉलीवुड तड़का (बॉलीवुड नेवस)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("बॉलीवुड तड़का (बॉलीवुड नेवस)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("बॉलीवुड तड़का (बॉलीवुड नेवस)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("बॉलीवुड तड़का (बॉलीवुड नेवस)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setHariBhoomiEntertainmentNews(Document document) {
@@ -3188,8 +3755,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("हरिभूमि (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("हरिभूमि (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("हरिभूमि (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("हरिभूमि (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhasKhabarEntertainmentNews(Document document) {
@@ -3209,8 +3782,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("खास खबर (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("खास खबर (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("खास खबर (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("खास खबर (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDivyaHimachalEntertainmentNews(Document document) {
@@ -3230,8 +3809,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("दिव्य हिमाचल (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दिव्य हिमाचल (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दिव्य हिमाचल (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दिव्य हिमाचल (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPrabhaSakshiEntertainmentNews(Document document) {
@@ -3254,8 +3839,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("प्रभा साक्षी (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("प्रभा साक्षी (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("प्रभा साक्षी (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("प्रभा साक्षी (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDainikTribuneOnlineEntertainmentNews(Document document) {
@@ -3276,8 +3867,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("दैनिक ट्रिब्यून (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दैनिक ट्रिब्यून (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दैनिक ट्रिब्यून (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दैनिक ट्रिब्यून (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamacharJagatEntertainmentNews(Document document) {
@@ -3297,8 +3894,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Samachar Jagat (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Samachar Jagat (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Samachar Jagat (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Samachar Jagat (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPatrikaEntertainmentNews(Document document) {
@@ -3318,8 +3921,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("पत्रिका (मनोरंजन समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("पत्रिका (मनोरंजन समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("पत्रिका (मनोरंजन समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("पत्रिका (मनोरंजन समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ===============================================================================================
@@ -3344,8 +3953,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Hindustan Times (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Hindustan Times (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Hindustan Times (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Hindustan Times (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setIndianExpressEntertainmentNews(Document document) {
@@ -3365,8 +3980,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Indian Express (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Indian Express (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Indian Express (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Indian Express (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyPioneerEntertainmentNews(Document document) {
@@ -3387,8 +4008,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Pioneer (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Pioneer (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Pioneer (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Pioneer (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanHeraldEntertainmentNews(Document document) {
@@ -3409,8 +4036,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Deccan Herald (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Herald (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Herald (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Herald (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDnaIndiaEntertainmentNews(Document document) {
@@ -3431,8 +4064,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("DNA India (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("DNA India (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("DNA India (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("DNA India (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanChronicleEntertainmentNews(Document document) {
@@ -3453,8 +4092,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Deccan Chronicle (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Chronicle (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Chronicle (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Chronicle (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setTheAsianAgeEntertainmentNews(Document document) {
@@ -3475,8 +4120,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Asian Age (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Asian Age (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Asian Age (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Asian Age (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setFinancialExpressEntertainmentNews(Document document) {
@@ -3497,8 +4148,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Financial Express (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Financial Express (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Financial Express (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Financial Express (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNewIndianExpressEntertainmentNews(Document document) {
@@ -3520,8 +4177,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The New Indian Express (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The New Indian Express (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The New Indian Express (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The New Indian Express (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setTribuneIndiaEntertainmentNews(Document document) {
@@ -3542,8 +4205,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Tribune (Entertainment News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Tribune (Entertainment News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Tribune (Entertainment News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Tribune (Entertainment News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -3567,8 +4236,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarDesh24FinanceNews(Document document) {
@@ -3588,8 +4263,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আমার দেশ 24 (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আমার দেশ 24 (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আমার দেশ 24 (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আমার দেশ 24 (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailySangramFinanceNews(Document document) {
@@ -3609,8 +4290,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক সংগ্রাম (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক সংগ্রাম (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক সংগ্রাম (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক সংগ্রাম (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDainikAmaderShomoyFinanceNews(Document document) {
@@ -3630,8 +4317,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আমাদের সময় (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আমাদের সময় (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আমাদের সময় (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আমাদের সময় (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJaiJaiDinBdFinanceNews(Document document) {
@@ -3651,8 +4344,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("যায়যায় দিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("যায়যায় দিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("যায়যায় দিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("যায়যায় দিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyVorerPataFinanceNews(Document document) {
@@ -3673,8 +4372,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ভোরের পাতা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ভোরের পাতা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ভোরের পাতা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ভোরের পাতা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdJournalFinanceNews(Document document) {
@@ -3694,8 +4399,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলাদেশ জার্নাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলাদেশ জার্নাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলাদেশ জার্নাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলাদেশ জার্নাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setManobKanthaFinanceNews(Document document) {
@@ -3715,8 +4426,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মানবকণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মানবকণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মানবকণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মানবকণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyIttefaqFinanceNews(Document document) {
@@ -3738,8 +4455,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইত্তেফাক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইত্তেফাক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইত্তেফাক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইত্তেফাক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhorerKagojFinanceNews(Document document) {
@@ -3759,8 +4482,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ভোরের কাগজ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ভোরের কাগজ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ভোরের কাগজ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ভোরের কাগজ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBanglaTribuneFinanceNews(Document document) {
@@ -3781,8 +4510,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলা ট্রিবিউন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলা ট্রিবিউন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলা ট্রিবিউন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলা ট্রিবিউন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdNews24FinanceNews(Document document) {
@@ -3802,8 +4537,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বিডি নিউস ২৪ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বিডি নিউস ২৪ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বিডি নিউস ২৪ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বিডি নিউস ২৪ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyJanakanthaFinanceNews(Document document) {
@@ -3826,8 +4567,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক জনকন্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক জনকন্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক জনকন্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক জনকন্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamakalFinanceNews(Document document) {
@@ -3847,8 +4594,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সমকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সমকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সমকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সমকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKalerKanthoFinanceNews(Document document) {
@@ -3869,8 +4622,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কালের কণ্ঠ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -3894,8 +4653,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আনন্দবাজার পত্রিকা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আনন্দবাজার পত্রিকা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আনন্দবাজার পত্রিকা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আনন্দবাজার পত্রিকা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBartamanPatrikaFinanceNews(Document document) {
@@ -3916,8 +4681,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বর্তমান (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বর্তমান (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বর্তমান (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বর্তমান (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setGanashaktiFinanceNews(Document document) {
@@ -3937,8 +4708,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("গণশক্তি (শিল্প কারখানার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("গণশক্তি (শিল্প কারখানার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("গণশক্তি (শিল্প কারখানার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("গণশক্তি (শিল্প কারখানার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setUttarBangaSambadFinanceNews(Document document) {
@@ -3958,8 +4735,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("উত্তরবঙ্গ সংবাদ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("উত্তরবঙ্গ সংবাদ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEbelaFinanceNews(Document document) {
@@ -3980,8 +4763,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("এবেলা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("এবেলা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("এবেলা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("এবেলা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAsomiyaPratidinFinanceNews(Document document) {
@@ -4001,8 +4790,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("অসমীয়া প্রতিদিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("অসমীয়া প্রতিদিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("অসমীয়া প্রতিদিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("অসমীয়া প্রতিদিন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAajKaalFinanceNews(Document document) {
@@ -4022,8 +4817,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আজকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আজকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আজকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আজকাল (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhaborOnlineFinanceNews(Document document) {
@@ -4043,8 +4844,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("খবর অনলাইন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("খবর অনলাইন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("খবর অনলাইন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("খবর অনলাইন (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJugasankhaFinanceNews(Document document) {
@@ -4064,8 +4871,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("যুগশঙ্ক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("যুগশঙ্ক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("যুগশঙ্ক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("যুগশঙ্ক (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJagaranTripuraFinanceNews(Document document) {
@@ -4085,8 +4898,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("জাগরণত্রিপুরা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("জাগরণত্রিপুরা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("জাগরণত্রিপুরা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("জাগরণত্রিপুরা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKolkata247FinanceNews(Document document) {
@@ -4106,8 +4925,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কলকাতা ২৪*৭ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কলকাতা ২৪*৭ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কলকাতা ২৪*৭ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কলকাতা ২৪*৭ (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -4131,8 +4956,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("जागरण (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जागरण (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जागरण (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जागरण (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhaskarFinanceNews(Document document) {
@@ -4153,8 +4984,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("देनिक भास्कर (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("देनिक भास्कर (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("देनिक भास्कर (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("देनिक भास्कर (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarUjalaFinanceNews(Document document) {
@@ -4175,8 +5012,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("अमर उजाला (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("अमर उजाला (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("अमर उजाला (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("अमर उजाला (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setLiveHindustanFinanceNews(Document document) {
@@ -4197,8 +5040,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("लाइव हिन्दुस्तान (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("लाइव हिन्दुस्तान (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("लाइव हिन्दुस्तान (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("लाइव हिन्दुस्तान (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNavBharatTimesFinanceNews(Document document) {
@@ -4218,8 +5067,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("नव भारत टाइम्स (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("नव भारत टाइम्स (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("नव भारत टाइम्स (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("नव भारत टाइम्स (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJanSattaFinanceNews(Document document) {
@@ -4239,8 +5094,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("जनसत्ता (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जनसत्ता (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जनसत्ता (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जनसत्ता (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPunjabKesariFinanceNews(Document document) {
@@ -4260,8 +5121,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("पंजाब केसरी (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("पंजाब केसरी (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("पंजाब केसरी (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("पंजाब केसरी (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhasKhabarFinanceNews(Document document) {
@@ -4281,8 +5148,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("खास खबर (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("खास खबर (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("खास खबर (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("खास खबर (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDivyaHimachalFinanceNews(Document document) {
@@ -4302,8 +5175,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("दिव्य हिमाचल (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दिव्य हिमाचल (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दिव्य हिमाचल (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दिव्य हिमाचल (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPrabhaSakshiFinanceNews(Document document) {
@@ -4326,8 +5205,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("प्रभा साक्षी (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("प्रभा साक्षी (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("प्रभा साक्षी (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("प्रभा साक्षी (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDainikTribuneOnlineFinanceNews(Document document) {
@@ -4348,8 +5233,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("दैनिक ट्रिब्यून (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दैनिक ट्रिब्यून (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दैनिक ट्रिब्यून (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दैनिक ट्रिब्यून (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamacharJagatFinanceNews(Document document) {
@@ -4369,8 +5260,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Samachar Jagat (व्यापार समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Samachar Jagat (व्यापार समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Samachar Jagat (व्यापार समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Samachar Jagat (व्यापार समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -4395,8 +5292,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Hindustan Times (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Hindustan Times (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Hindustan Times (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Hindustan Times (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setIndianExpressFinanceNews(Document document) {
@@ -4416,8 +5319,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Indian Express (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Indian Express (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Indian Express (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Indian Express (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyPioneerFinanceNews(Document document) {
@@ -4439,8 +5348,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Pioneer (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Pioneer (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Pioneer (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Pioneer (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanHeraldFinanceNews(Document document) {
@@ -4461,8 +5376,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Deccan Herald (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Herald (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Herald (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Herald (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDnaIndiaFinanceNews(Document document) {
@@ -4483,8 +5404,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("DNA India (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("DNA India (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("DNA India (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("DNA India (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanChronicleFinanceNews(Document document) {
@@ -4507,8 +5434,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Deccan Chronicle (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Chronicle (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Chronicle (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Chronicle (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAsianAgeFinanceNews(Document document) {
@@ -4529,8 +5462,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Asian Age (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Asian Age (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Asian Age (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Asian Age (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEconomicsTimesFinanceNews(Document document) {
@@ -4551,8 +5490,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Economic Times (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Economic Times (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Economic Times (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Economic Times (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBusinessStandardFinanceNews(Document document) {
@@ -4573,8 +5518,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Business Standard (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Business Standard (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Business Standard (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Business Standard (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setFinancialExpressFinanceNews(Document document) {
@@ -4594,8 +5545,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Financial Express (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Financial Express (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Financial Express (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Financial Express (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNewIndianExpressFinanceNews(Document document) {
@@ -4615,8 +5572,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The New Indian Express (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The New Indian Express (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The New Indian Express (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The New Indian Express (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setTribuneIndiaFinanceNews(Document document) {
@@ -4637,8 +5600,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Tribune (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Tribune (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Tribune (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Tribune (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setLiveMintFinanceNews(Document document) {
@@ -4659,8 +5628,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Mint (Finance News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Mint (Finance News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Mint (Finance News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Mint (Finance News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -4684,8 +5659,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কালের কণ্ঠ (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কালের কণ্ঠ (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কালের কণ্ঠ (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কালের কণ্ঠ (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamakalInternationalNews(Document document) {
@@ -4705,8 +5686,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সমকাল (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সমকাল (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সমকাল (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সমকাল (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyJanakanthaInternationalNews(Document document) {
@@ -4727,8 +5714,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক জনকন্ঠ (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক জনকন্ঠ (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক জনকন্ঠ (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক জনকন্ঠ (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdNews24InternationalNews(Document document) {
@@ -4748,8 +5741,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বিডি নিউস ২৪ (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বিডি নিউস ২৪ (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বিডি নিউস ২৪ (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বিডি নিউস ২৪ (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBanglaTribuneInternationalNews(Document document) {
@@ -4770,8 +5769,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলা ট্রিবিউন (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলা ট্রিবিউন (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলা ট্রিবিউন (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলা ট্রিবিউন (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhorerKagojInternationalNews(Document document) {
@@ -4791,8 +5796,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ভোরের কাগজ (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ভোরের কাগজ (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ভোরের কাগজ (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ভোরের কাগজ (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyInqilabInternationalNews(Document document) {
@@ -4812,8 +5823,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইনকিলাব (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইনকিলাব (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইনকিলাব (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইনকিলাব (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyNayadigantaInternationalNews(Document document) {
@@ -4833,8 +5850,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("নয়া দিগন্ত (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("নয়া দিগন্ত (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("নয়া দিগন্ত (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("নয়া দিগন্ত (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarDesh24InternationalNews(Document document) {
@@ -4854,8 +5877,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আমার দেশ 24 (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আমার দেশ 24 (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আমার দেশ 24 (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আমার দেশ 24 (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyIttefaqInternationalNews(Document document) {
@@ -4877,8 +5906,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইত্তেফাক (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইত্তেফাক (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইত্তেফাক (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইত্তেফাক (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setManobZaminInternationalNews(Document document) {
@@ -4899,8 +5934,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মানবজমিন (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মানবজমিন (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মানবজমিন (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মানবজমিন (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSangbadPratidinInternationalNews(Document document) {
@@ -4920,8 +5961,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setManobKanthaInternationalNews(Document document) {
@@ -4941,8 +5988,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মানবকণ্ঠ (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মানবকণ্ঠ (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মানবকণ্ঠ (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মানবকণ্ঠ (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdJournalInternationalNews(Document document) {
@@ -4962,8 +6015,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলাদেশ জার্নাল (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলাদেশ জার্নাল (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলাদেশ জার্নাল (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলাদেশ জার্নাল (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyVorerPataInternationalNews(Document document) {
@@ -4984,8 +6043,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ভোরের পাতা (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ভোরের পাতা (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ভোরের পাতা (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ভোরের পাতা (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyAmaderShomoyInternationalNews(Document document) {
@@ -5005,8 +6070,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আমাদের সময় (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আমাদের সময় (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আমাদের সময় (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আমাদের সময় (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -5030,8 +6101,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আনন্দবাজার পত্রিকা (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আনন্দবাজার পত্রিকা (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আনন্দবাজার পত্রিকা (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আনন্দবাজার পত্রিকা (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSangbadPratidinIndiaInternationalNews(Document document) {
@@ -5051,8 +6128,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সংবাদ প্রতিদিন (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBartamanPatrikaInternationalNews(Document document) {
@@ -5073,8 +6156,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বর্তমান (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বর্তমান (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বর্তমান (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বর্তমান (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setGanaShaktiInternationalNews(Document document) {
@@ -5094,8 +6183,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("গণশক্তি (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("গণশক্তি (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("গণশক্তি (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("গণশক্তি (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setUttarBangaSambadInternationalNews(Document document) {
@@ -5115,8 +6210,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("উত্তরবঙ্গ সংবাদ (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("উত্তরবঙ্গ সংবাদ (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEbelaInternationalNews(Document document) {
@@ -5137,8 +6238,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("এবেলা (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("এবেলা (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("এবেলা (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("এবেলা (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAajKaalInternationalNews(Document document) {
@@ -5158,8 +6265,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আজকাল (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আজকাল (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আজকাল (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আজকাল (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhaborOnlineInternationalNews(Document document) {
@@ -5179,8 +6292,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("খবর অনলাইন (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("খবর অনলাইন (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("খবর অনলাইন (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("খবর অনলাইন (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJugaSankhaInternationalNews(Document document) {
@@ -5200,8 +6319,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("যুগশঙ্ক (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("যুগশঙ্ক (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("যুগশঙ্ক (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("যুগশঙ্ক (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJagaranTripuraInternationalNews(Document document) {
@@ -5221,8 +6346,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("জাগরণত্রিপুরা (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("জাগরণত্রিপুরা (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("জাগরণত্রিপুরা (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("জাগরণত্রিপুরা (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setOneIndiaInternationalNews(Document document) {
@@ -5242,8 +6373,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ওয়ান ইন্ডিয়া (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ওয়ান ইন্ডিয়া (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ওয়ান ইন্ডিয়া (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ওয়ান ইন্ডিয়া (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKolkata247InternationalNews(Document document) {
@@ -5263,8 +6400,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কলকাতা ২৪*৭ (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কলকাতা ২৪*৭ (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কলকাতা ২৪*৭ (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কলকাতা ২৪*৭ (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBengal2DayInternationalNews(Document document) {
@@ -5284,8 +6427,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলা টু ডে (আন্তর্জাতিক খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলা টু ডে (আন্তর্জাতিক খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলা টু ডে (আন্তর্জাতিক খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলা টু ডে (আন্তর্জাতিক খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -5309,8 +6458,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("जागरण (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जागरण (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जागरण (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जागरण (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhaskarInternationalNews(Document document) {
@@ -5331,8 +6486,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("देनिक भास्कर (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("देनिक भास्कर (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("देनिक भास्कर (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("देनिक भास्कर (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarUjalaInternationalNews(Document document) {
@@ -5353,8 +6514,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("अमर उजाला (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("अमर उजाला (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("अमर उजाला (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("अमर उजाला (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setLiveHindustanInternationalNews(Document document) {
@@ -5375,8 +6542,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("लाइव हिन्दुस्तान (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("लाइव हिन्दुस्तान (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("लाइव हिन्दुस्तान (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("लाइव हिन्दुस्तान (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNavBharatTimesInternationalNews(Document document) {
@@ -5396,8 +6569,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("नव भारत टाइम्स (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("नव भारत टाइम्स (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("नव भारत टाइम्स (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("नव भारत टाइम्स (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJanSattaInternationalNews(Document document) {
@@ -5417,8 +6596,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("जनसत्ता (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जनसत्ता (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जनसत्ता (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जनसत्ता (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPunjabKesariInternationalNews(Document document) {
@@ -5438,8 +6623,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("पंजाब केसरी (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("पंजाब केसरी (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("पंजाब केसरी (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("पंजाब केसरी (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhasKhabarInternationalNews(Document document) {
@@ -5459,8 +6650,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("खास खबर (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("खास खबर (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("खास खबर (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("खास खबर (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPrabhaSakshiInternationalNews(Document document) {
@@ -5481,8 +6678,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("प्रभा साक्षी (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("प्रभा साक्षी (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("प्रभा साक्षी (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("प्रभा साक्षी (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDainikTribuneOnlineInternationalNews(Document document) {
@@ -5503,8 +6706,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("दैनिक ट्रिब्यून (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दैनिक ट्रिब्यून (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दैनिक ट्रिब्यून (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दैनिक ट्रिब्यून (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamacharJagatInternationalNews(Document document) {
@@ -5524,8 +6733,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Samachar Jagat (अंतरराष्ट्रीय समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Samachar Jagat (अंतरराष्ट्रीय समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Samachar Jagat (अंतरराष्ट्रीय समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Samachar Jagat (अंतरराष्ट्रीय समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -5548,8 +6763,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Hindustan Times (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Hindustan Times (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Hindustan Times (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Hindustan Times (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setIndianExpressInternationalNews(Document document) {
@@ -5569,8 +6790,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Indian Express (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Indian Express (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Indian Express (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Indian Express (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyPioneerInternationalNews(Document document) {
@@ -5591,8 +6818,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Pioneer (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Pioneer (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Pioneer (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Pioneer (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanHeraldInternationalNews(Document document) {
@@ -5613,8 +6846,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Deccan Herald (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Herald (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Herald (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Herald (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDnaIndiaInternationalNews(Document document) {
@@ -5635,8 +6874,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("DNA India (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("DNA India (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("DNA India (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("DNA India (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanChronicleInternationalNews(Document document) {
@@ -5659,8 +6904,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Deccan Chronicle (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Chronicle (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Chronicle (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Chronicle (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAsianAgeInternationalNews(Document document) {
@@ -5681,8 +6932,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Asian Age (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Asian Age (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Asian Age (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Asian Age (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEconomicTimesInternationalNews(Document document) {
@@ -5703,8 +6960,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Economic Times (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Economic Times (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Economic Times (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Economic Times (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBusinessStandardInternationalNews(Document document) {
@@ -5727,8 +6990,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Business Standard (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Business Standard (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Business Standard (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Business Standard (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setFinancialExpressInternationalNews(Document document) {
@@ -5748,8 +7017,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Financial Express (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Financial Express (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Financial Express (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Financial Express (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNewIndianExpressInternationalNews(Document document) {
@@ -5769,8 +7044,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The New Indian Express (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The New Indian Express (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The New Indian Express (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The New Indian Express (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setTribuneIndiaInternationalNews(Document document) {
@@ -5791,8 +7072,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Tribune (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Tribune (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Tribune (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Tribune (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setLiveMintInternationalNews(Document document) {
@@ -5812,8 +7099,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Mint (International News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Mint (International News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Mint (International News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Mint (International News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -5836,8 +7129,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক সংগ্রাম (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক সংগ্রাম (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক সংগ্রাম (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক সংগ্রাম (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdJournalSportNews(Document document) {
@@ -5857,8 +7156,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলাদেশ জার্নাল (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলাদেশ জার্নাল (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলাদেশ জার্নাল (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলাদেশ জার্নাল (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setManobKanthaSportNews(Document document) {
@@ -5880,8 +7185,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মানবকণ্ঠ (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মানবকণ্ঠ (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মানবকণ্ঠ (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মানবকণ্ঠ (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSangbadPratidinSportNews(Document document) {
@@ -5901,8 +7212,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সংবাদ প্রতিদিন (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সংবাদ প্রতিদিন (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সংবাদ প্রতিদিন (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সংবাদ প্রতিদিন (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyManobJominSportNews(Document document) {
@@ -5923,8 +7240,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মানবজমিন (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মানবজমিন (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মানবজমিন (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মানবজমিন (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyIttefaqSportNews(Document document) {
@@ -5946,8 +7269,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইত্তেফাক (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইত্তেফাক (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইত্তেফাক (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইত্তেফাক (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarDesh24SportNews(Document document) {
@@ -5967,8 +7296,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আমার দেশ 24 (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আমার দেশ 24 (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আমার দেশ 24 (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আমার দেশ 24 (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyNayaDigantaSportNews(Document document) {
@@ -5988,8 +7323,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("নয়া দিগন্ত (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("নয়া দিগন্ত (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("নয়া দিগন্ত (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("নয়া দিগন্ত (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyInqilabSportNews(Document document) {
@@ -6009,8 +7350,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইনকিলাব (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক ইনকিলাব (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক ইনকিলাব (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক ইনকিলাব (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhorerKagojSportNews(Document document) {
@@ -6030,8 +7377,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ভোরের কাগজ (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ভোরের কাগজ (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ভোরের কাগজ (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ভোরের কাগজ (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBanglaTribuneSportNews(Document document) {
@@ -6052,8 +7405,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলা ট্রিবিউন (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলা ট্রিবিউন (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলা ট্রিবিউন (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলা ট্রিবিউন (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBdNews24SportNews(Document document) {
@@ -6073,8 +7432,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বিডি নিউস ২৪ (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বিডি নিউস ২৪ (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বিডি নিউস ২৪ (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বিডি নিউস ২৪ (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyJanakanthaSportNews(Document document) {
@@ -6095,8 +7460,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("দৈনিক জনকণ্ঠ (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("দৈনিক জনকণ্ঠ (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("দৈনিক জনকণ্ঠ (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("দৈনিক জনকণ্ঠ (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamakalSportNews(Document document) {
@@ -6116,8 +7487,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সমকাল (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সমকাল (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সমকাল (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সমকাল (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKalerkhanthoSportNews(Document document) {
@@ -6138,8 +7515,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কালেরকণ্ঠ (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কালেরকণ্ঠ (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কালেরকণ্ঠ (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কালেরকণ্ঠ (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -6163,8 +7546,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আনন্দবাজার পত্রিকা (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আনন্দবাজার পত্রিকা (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আনন্দবাজার পত্রিকা (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আনন্দবাজার পত্রিকা (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSangbadPratidinIndianSportNews(Document document) {
@@ -6184,8 +7573,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সংবাদ প্রতিদিন (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সংবাদ প্রতিদিন (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সংবাদ প্রতিদিন (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সংবাদ প্রতিদিন (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBartamanPatrikaSportNews(Document document) {
@@ -6206,8 +7601,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বর্তমান (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বর্তমান (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বর্তমান (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বর্তমান (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setGanaShaktiSportNews(Document document) {
@@ -6227,8 +7628,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("গণশক্তি (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("গণশক্তি (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("গণশক্তি (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("গণশক্তি (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setUttarBangaSambadSportNews(Document document) {
@@ -6248,8 +7655,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("উত্তরবঙ্গ সংবাদ (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("উত্তরবঙ্গ সংবাদ (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("উত্তরবঙ্গ সংবাদ (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEbelaSportNews(Document document) {
@@ -6270,8 +7683,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("এবেলা (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("এবেলা (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("এবেলা (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("এবেলা (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAsomiyaPratidinSportNews(Document document) {
@@ -6291,8 +7710,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("অসমীয়া প্রতিদিন (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("অসমীয়া প্রতিদিন (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("অসমীয়া প্রতিদিন (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("অসমীয়া প্রতিদিন (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAajKaalSportNews(Document document) {
@@ -6312,8 +7737,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আজকাল (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আজকাল (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আজকাল (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আজকাল (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhaborOnlineSportNews(Document document) {
@@ -6333,8 +7764,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("খবর অনলাইন (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("খবর অনলাইন (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("খবর অনলাইন (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("খবর অনলাইন (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJugaSankhaSportNews(Document document) {
@@ -6354,8 +7791,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("যুগশঙ্ক (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("যুগশঙ্ক (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("যুগশঙ্ক (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("যুগশঙ্ক (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJagaranTripuraSportNews(Document document) {
@@ -6375,8 +7818,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("জাগরণত্রিপুরা (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("জাগরণত্রিপুরা (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("জাগরণত্রিপুরা (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("জাগরণত্রিপুরা (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setOneIndiaSportNews(Document document) {
@@ -6397,8 +7846,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ওয়ান ইন্ডিয়া (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ওয়ান ইন্ডিয়া (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ওয়ান ইন্ডিয়া (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ওয়ান ইন্ডিয়া (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKolkata247SportNews(Document document) {
@@ -6418,8 +7873,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কলকাতা ২৪*৭ (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কলকাতা ২৪*৭ (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কলকাতা ২৪*৭ (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কলকাতা ২৪*৭ (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhabor24SportNews(Document document) {
@@ -6439,8 +7900,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("খবর ২৪ ঘন্টা (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("খবর ২৪ ঘন্টা (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("খবর ২৪ ঘন্টা (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("খবর ২৪ ঘন্টা (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBengal2DaySportNews(Document document) {
@@ -6460,8 +7927,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলা টু ডে (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলা টু ডে (খেলার খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলা টু ডে (খেলার খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলা টু ডে (খেলার খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -6485,8 +7958,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("जागरण (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जागरण (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जागरण (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जागरण (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBhaskarSportNews(Document document) {
@@ -6507,8 +7986,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("देनिक भास्कर (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("देनिक भास्कर (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("देनिक भास्कर (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("देनिक भास्कर (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAmarUjalaSportNews(Document document) {
@@ -6529,8 +8014,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("अमर उजाला (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("अमर उजाला (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("अमर उजाला (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("अमर उजाला (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setLiveHindustanSportNews(Document document) {
@@ -6551,8 +8042,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("लाइव हिन्दुस्तान (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("लाइव हिन्दुस्तान (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("लाइव हिन्दुस्तान (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("लाइव हिन्दुस्तान (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNavBharatTimesSportNews(Document document) {
@@ -6572,8 +8069,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("नव भारत टाइम्स (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("नव भारत टाइम्स (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("नव भारत टाइम्स (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("नव भारत टाइम्स (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJanSattaSportNews(Document document) {
@@ -6593,8 +8096,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("जनसत्ता (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("जनसत्ता (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("जनसत्ता (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("जनसत्ता (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPunjabKesariSportNews(Document document) {
@@ -6614,8 +8123,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("पंजाब केसरी (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("पंजाब केसरी (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("पंजाब केसरी (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("पंजाब केसरी (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setHariBhoomiSportNews(Document document) {
@@ -6636,8 +8151,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("हरिभूमि (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("हरिभूमि (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("हरिभूमि (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("हरिभूमि (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhasKhabarSportNews(Document document) {
@@ -6659,8 +8180,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("अच्छी खबर (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("अच्छी खबर (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("अच्छी खबर (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("अच्छी खबर (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDivyaHimachalSportNews(Document document) {
@@ -6680,8 +8207,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("दिव्य हिमाचल (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दिव्य हिमाचल (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दिव्य हिमाचल (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दिव्य हिमाचल (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setPrabhaSakshiSportNews(Document document) {
@@ -6704,8 +8237,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("प्रभा साक्षी (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("प्रभा साक्षी (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("प्रभा साक्षी (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("प्रभा साक्षी (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDainikTribuneOnlineSportNews(Document document) {
@@ -6726,8 +8265,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("दैनिक ट्रिब्यून (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("दैनिक ट्रिब्यून (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("दैनिक ट्रिब्यून (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("दैनिक ट्रिब्यून (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setSamacharJagatSportNews(Document document) {
@@ -6747,8 +8292,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("SamacharJagat (खेल समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("SamacharJagat (खेल समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("SamacharJagat (खेल समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("SamacharJagat (खेल समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -6771,8 +8322,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Hindustan Times (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Hindustan Times (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Hindustan Times (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Hindustan Times (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setIndianExpressSportNews(Document document) {
@@ -6792,8 +8349,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Indian Express (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Indian Express (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Indian Express (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Indian Express (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDailyPioneerSportNews(Document document) {
@@ -6814,8 +8377,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Pioneer (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Pioneer (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Pioneer (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Pioneer (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanHeraldSportNews(Document document) {
@@ -6836,8 +8405,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Deccan Herald (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Herald (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Herald (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Herald (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDnaIndiaSportNews(Document document) {
@@ -6858,8 +8433,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("DNA India (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("DNA India (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("DNA India (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("DNA India (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDeccanChronicleSportNews(Document document) {
@@ -6880,8 +8461,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Deccan Chronicle (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Deccan Chronicle (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Deccan Chronicle (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Deccan Chronicle (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAsianAgeSportNews(Document document) {
@@ -6902,8 +8489,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Asian Age (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Asian Age (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Asian Age (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Asian Age (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEconomicTimesSportNews(Document document) {
@@ -6924,8 +8517,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Economic Times (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Economic Times (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Economic Times (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Economic Times (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBusinessStandardSportNews(Document document) {
@@ -6946,8 +8545,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Business Standard (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Business Standard (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Business Standard (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Business Standard (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setFinancialExpressSportNews(Document document) {
@@ -6967,8 +8572,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Financial Express (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Financial Express (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Financial Express (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Financial Express (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNewIndianExpressSportNews(Document document) {
@@ -6988,8 +8599,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The New Indian Express (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The New Indian Express (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The New Indian Express (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The New Indian Express (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setTribuneIndiaSportNews(Document document) {
@@ -7010,8 +8627,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("The Tribune (Sports News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("The Tribune (Sports News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("The Tribune (Sports News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("The Tribune (Sports News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -7035,8 +8658,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("নিউস ২৪ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("নিউস ২৪ (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("নিউস ২৪ (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("নিউস ২৪ (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setJamunaTvBreakingNews(Document document) {
@@ -7056,8 +8685,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("যমুনা টিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("যমুনা টিভি (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("যমুনা টিভি (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("যমুনা টিভি (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setMyTvBdBreakingNews(Document document) {
@@ -7077,8 +8712,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মাই টিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মাই টিভি (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মাই টিভি (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মাই টিভি (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setMohonaTvBreekingNews(Document document) {
@@ -7098,8 +8739,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("মোহনা টিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("মোহনা টিভি (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("মোহনা টিভি (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("মোহনা টিভি (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBoishakhiBreekingNews(Document document) {
@@ -7119,8 +8766,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বৈশাখী টিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বৈশাখী টিভি (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বৈশাখী টিভি (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বৈশাখী টিভি (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setRtvBreekingNews(Document document) {
@@ -7140,8 +8793,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আরটিভি নিউস (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আরটিভি নিউস (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আরটিভি নিউস (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আরটিভি নিউস (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setBanglaVisionBreekingNews(Document document) {
@@ -7161,8 +8820,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("বাংলা ভিশন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("বাংলা ভিশন (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("বাংলা ভিশন (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("বাংলা ভিশন (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setChannelIBreekingNews(Document document) {
@@ -7182,8 +8847,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("চ্যানেল আই (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("চ্যানেল আই (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("চ্যানেল আই (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("চ্যানেল আই (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setShomoyBreekingNews(Document document) {
@@ -7203,8 +8874,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("সময় টিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("সময় টিভি (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("সময় টিভি (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("সময় টিভি (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNtvBreekingNews(Document document) {
@@ -7225,8 +8902,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("এনটিভি (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("এনটিভি (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("এনটিভি (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("এনটিভি (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setEkusheyTvBreekingNews(Document document) {
@@ -7246,8 +8929,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("একুশে টেলিভশন (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("একুশে টেলিভশন (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("একুশে টেলিভশন (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("একুশে টেলিভশন (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -7271,8 +8960,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("জি ২৪ ঘণ্টা (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("জি ২৪ ঘণ্টা (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("জি ২৪ ঘণ্টা (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("জি ২৪ ঘণ্টা (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setAbpLiveTvChannelNews(Document document) {
@@ -7292,8 +8987,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আনন্দ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আনন্দ (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আনন্দ (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আনন্দ (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNews18BengaliTvChannelNews(Document document) {
@@ -7313,8 +9014,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("নিউস ১৮ বাংলা (শীর্ষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("নিউস ১৮ বাংলা (শীর্ষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("নিউস ১৮ বাংলা (শীর্ষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("নিউস ১৮ বাংলা (শীর্ষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNewsTimeBanglaTvChannelNews(Document document) {
@@ -7334,8 +9041,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("নিউস টাইম বাংলা (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("নিউস টাইম বাংলা (সর্বশেষ খবর)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("নিউস টাইম বাংলা (সর্বশেষ খবর)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("নিউস টাইম বাংলা (সর্বশেষ খবর)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setCalcuttaNewsTvChannelNews(Document document) {
@@ -7355,8 +9068,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কলকাতা নিউস (ব্রেকিং নিউস)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কলকাতা নিউস (ব্রেকিং নিউস)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কলকাতা নিউস (ব্রেকিং নিউস)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কলকাতা নিউস (ব্রেকিং নিউস)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKolkataTvTvChannelNews(Document document) {
@@ -7376,8 +9095,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কলকাতা টিভি (ব্রেকিং নিউস)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("কলকাতা টিভি (ব্রেকিং নিউস)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("কলকাতা টিভি (ব্রেকিং নিউস)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("কলকাতা টিভি (ব্রেকিং নিউস)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setRPlusNewsTvChannelNews(Document document) {
@@ -7397,8 +9122,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আর প্লাস নিউস (এক নজরে)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("আর প্লাস নিউস (এক নজরে)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("আর প্লাস নিউস (এক নজরে)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("আর প্লাস নিউস (এক নজরে)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setIndianExpressBanglaTvChannelNews(Document document) {
@@ -7418,8 +9149,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ইন্ডিয়ান এক্সপ্রেস বাংলা (ট্রেডিং নিউস)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("ইন্ডিয়ান এক্সপ্রেস বাংলা (ট্রেডিং নিউস)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("ইন্ডিয়ান এক্সপ্রেস বাংলা (ট্রেডিং নিউস)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("ইন্ডিয়ান এক্সপ্রেস বাংলা (ট্রেডিং নিউস)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -7444,8 +9181,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("एबीपी लाइव (खबर अभी)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("एबीपी लाइव (खबर अभी)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("एबीपी लाइव (खबर अभी)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("एबीपी लाइव (खबर अभी)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setInKhabarTvChannelNews(Document document) {
@@ -7465,8 +9208,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("इनखबर (मुख्य समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("इनखबर (मुख्य समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("इनखबर (मुख्य समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("इनखबर (मुख्य समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setIndiaTvTvChannelNews(Document document) {
@@ -7486,8 +9235,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("इंडिया टीवी (ताज़ा खबर)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("इंडिया टीवी (ताज़ा खबर)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("इंडिया टीवी (ताज़ा खबर)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("इंडिया टीवी (ताज़ा खबर)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setKhabarNdTvTvChannelNews(Document document) {
@@ -7507,8 +9262,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("खबर इंडिया (अन्य बड़ी खबरें)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("खबर इंडिया (अन्य बड़ी खबरें)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("खबर इंडिया (अन्य बड़ी खबरें)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("खबर इंडिया (अन्य बड़ी खबरें)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setHindiNews24OnlineTvChannelNews(Document document) {
@@ -7529,8 +9290,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("समाचार 24 ऑनलाइन (ट्रेंडिंग न्यूज़)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("समाचार 24 ऑनलाइन (ट्रेंडिंग न्यूज़)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("समाचार 24 ऑनलाइन (ट्रेंडिंग न्यूज़)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("समाचार 24 ऑनलाइन (ट्रेंडिंग न्यूज़)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setHindiMoneyControlTvChannelNews(Document document) {
@@ -7550,8 +9317,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("धन नियंत्रण (समाचार सुर्खियों)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("धन नियंत्रण (समाचार सुर्खियों)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("धन नियंत्रण (समाचार सुर्खियों)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("धन नियंत्रण (समाचार सुर्खियों)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setIbc24TvChannelNews(Document document) {
@@ -7571,8 +9344,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("IBC 24 (general news)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("IBC 24 (general news)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("IBC 24 (general news)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("IBC 24 (general news)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setHindiNews18TvChannelNews(Document document) {
@@ -7593,8 +9372,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("न्यूज 18 हिंदी (मुख्य समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("न्यूज 18 हिंदी (मुख्य समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("न्यूज 18 हिंदी (मुख्य समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("न्यूज 18 हिंदी (मुख्य समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setDdiNewsTvChannelNews(Document document) {
@@ -7615,8 +9400,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("DD न्यूज़ (ताज़ा खबर)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("DD न्यूज़ (ताज़ा खबर)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("DD न्यूज़ (ताज़ा खबर)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("DD न्यूज़ (ताज़ा खबर)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNewsNationTvTvChannelNews(Document document) {
@@ -7636,8 +9427,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("समाचार राष्ट्र टीवी (सामान्य समाचार)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("समाचार राष्ट्र टीवी (सामान्य समाचार)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("समाचार राष्ट्र टीवी (सामान्य समाचार)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("समाचार राष्ट्र टीवी (सामान्य समाचार)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================
@@ -7661,8 +9458,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Bloomberg (Breaking News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Bloomberg (Breaking News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Bloomberg (Breaking News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Bloomberg (Breaking News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setCnbcTv18TvChannelNews(Document document) {
@@ -7684,8 +9487,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("CNBC TV 18 (Live Feed)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("CNBC TV 18 (Live Feed)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("CNBC TV 18 (Live Feed)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("CNBC TV 18 (Live Feed)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNews18TvChannelNews(Document document) {
@@ -7705,8 +9514,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("News 18 (General News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("News 18 (General News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("News 18 (General News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("News 18 (General News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setTimesNowNewsTvChannelNews(Document document) {
@@ -7727,8 +9542,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Times Now (Latest News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Times Now (Latest News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Times Now (Latest News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Times Now (Latest News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setNdtvTvChannelNews(Document document) {
@@ -7750,8 +9571,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("NDTV (Top Stories)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("NDTV (Top Stories)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("NDTV (Top Stories)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("NDTV (Top Stories)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setRepublicWorldTvChannelNews(Document document) {
@@ -7771,8 +9598,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Republic World (General News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Republic World (General News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Republic World (General News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Republic World (General News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setMirrorNowTvChannelNews(Document document) {
@@ -7792,8 +9625,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Mirror Now (More Stories)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Mirror Now (More Stories)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Mirror Now (More Stories)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Mirror Now (More Stories)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setWioNewsTvChannelNews(Document document) {
@@ -7814,8 +9653,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Wionews (Trending News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Wionews (Trending News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Wionews (Trending News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Wionews (Trending News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
     private void setRomedyNowTvChannelNews(Document document) {
@@ -7835,8 +9680,14 @@ public class NewsLoaderService extends Worker {
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("Romedy Now (Food News)");
         itemModel.setNewsAndLinkModelList(list);
+        if (list.size()>=1) {
+            displayNotification("Romedy Now (Food News)",list.get(0).getNews(),list.get(0).getLink());
+        }
         if (list.size()>=2) {
-            displayNotification(list.get(0).getNews(),list.get(1).getNews());
+            displayNotification("Romedy Now (Food News)",list.get(1).getNews(),list.get(1).getLink());
+        }
+        if (list.size()>=3) {
+            displayNotification("Romedy Now (Food News)",list.get(2).getNews(),list.get(2).getLink());
         }
     }
 //    ============================================================================================

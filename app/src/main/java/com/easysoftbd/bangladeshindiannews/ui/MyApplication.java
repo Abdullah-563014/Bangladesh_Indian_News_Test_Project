@@ -23,7 +23,7 @@ public class MyApplication  extends Application {
                     MY_NOTIFICATION_CHANNEL_ID
                     ,notificationName
                     , NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager=getSystemService(NotificationManager.class);
+            NotificationManager manager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.createNotificationChannel(notificationChannel);
         }
     }
