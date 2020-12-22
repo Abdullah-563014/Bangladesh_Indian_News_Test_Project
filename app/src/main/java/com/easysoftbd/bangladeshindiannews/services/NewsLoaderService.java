@@ -120,16 +120,34 @@ public class NewsLoaderService extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        displayNotification("Test title","Test description. Test description. Test description.","https://www.google.com");
-
         if (countryName.equalsIgnoreCase(Constants.bangladesh)) {
-            loadBangladeshiNews();
+            loadBangladeshBreakingNewsDataFromDb();
+            loadBangladeshSportsNewsDataFromDb();
+            loadBangladeshEntertainmentNewsDataFromDb();
+            loadBangladeshFinanceNewsDataFromDb();
+            loadBangladeshTvChannelNewsDataFromDb();
+            loadBangladeshInternationalNewsDataFromDb();
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.bangla)) {
-            loadIndianBanglaNews();
+            loadIndianBanglaBreakingNewsDataFromDb();
+            loadIndianBanglaSportsNewsDataFromDb();
+            loadIndianBanglaEntertainmentNewsDataFromDb();
+            loadIndianBanglaFinanceNewsDataFromDb();
+            loadIndianBanglaTvChannelNewsDataFromDb();
+            loadIndianBanglaInternationalNewsDataFromDb();
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.hindi)) {
-            loadIndianHindiNews();
+            loadIndianHindiBreakingNewsDataFromDb();
+            loadIndianHindiSportsNewsDataFromDb();
+            loadIndianHindiEntertainmentNewsDataFromDb();
+            loadIndianHindiFinanceNewsDataFromDb();
+            loadIndianHindiTvChannelNewsDataFromDb();
+            loadIndianHindiInternationalNewsDataFromDb();
         } else if (countryName.equalsIgnoreCase(Constants.india) && languageName.equalsIgnoreCase(Constants.english)) {
-            loadIndianEnglishNews();
+            loadIndianEnglishBreakingNewsDataFromDb();
+            loadIndianEnglishSportsNewsDataFromDb();
+            loadIndianEnglishEntertainmentNewsDataFromDb();
+            loadIndianEnglishFinanceNewsDataFromDb();
+            loadIndianEnglishTvChannelNewsDataFromDb();
+            loadIndianEnglishInternationalNewsDataFromDb();
         }
         return null;
     }
@@ -799,12 +817,10 @@ public class NewsLoaderService extends Worker {
     private void displayNotification(String title, String description, String targetUrl) {
         NotificationManager notificationManager= (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(getApplicationContext(), WebViewActivity.class);
-        intent.setAction(Intent.ACTION_VIEW);
         intent.putExtra(Constants.UrlTag,targetUrl);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-
+        intent.setFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), CommonMethods.getRandomNumber(99999), intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder= null;
         if (Build.VERSION.SDK_INT >= 26) {
             builder = new NotificationCompat.Builder(getApplicationContext(),MY_NOTIFICATION_CHANNEL_ID)
@@ -814,6 +830,7 @@ public class NewsLoaderService extends Worker {
                     .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.ic_launcher);
         } else {
             builder = new NotificationCompat.Builder(getApplicationContext(),MY_NOTIFICATION_CHANNEL_ID)
@@ -822,123 +839,12 @@ public class NewsLoaderService extends Worker {
                     .setContentText(description)
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.ic_launcher);
         }
 
-        notificationManager.notify(CommonMethods.getRandomNumber(9999),builder.build());
-    }
-
-    private void loadBangladeshiNews() {
-        int categoryNumber=CommonMethods.getRandomNumber(6);
-        switch (categoryNumber) {
-            case 0:
-                loadBangladeshBreakingNewsDataFromDb();
-                break;
-
-            case 1:
-                loadBangladeshSportsNewsDataFromDb();
-                break;
-
-            case 2:
-                loadBangladeshEntertainmentNewsDataFromDb();
-                break;
-
-            case 3:
-                loadBangladeshFinanceNewsDataFromDb();
-                break;
-
-            case 4:
-                loadBangladeshTvChannelNewsDataFromDb();
-                break;
-
-            case 5:
-                loadBangladeshInternationalNewsDataFromDb();
-                break;
-        }
-    }
-    private void loadIndianBanglaNews() {
-        int categoryNumber=CommonMethods.getRandomNumber(6);
-        switch (categoryNumber) {
-            case 0:
-                loadIndianBanglaBreakingNewsDataFromDb();
-                break;
-
-            case 1:
-                loadIndianBanglaSportsNewsDataFromDb();
-                break;
-
-            case 2:
-                loadIndianBanglaEntertainmentNewsDataFromDb();
-                break;
-
-            case 3:
-                loadIndianBanglaFinanceNewsDataFromDb();
-                break;
-
-            case 4:
-                loadIndianBanglaTvChannelNewsDataFromDb();
-                break;
-
-            case 5:
-                loadIndianBanglaInternationalNewsDataFromDb();
-                break;
-        }
-    }
-    private void loadIndianHindiNews() {
-        int categoryNumber=CommonMethods.getRandomNumber(6);
-        switch (categoryNumber) {
-            case 0:
-                loadIndianHindiBreakingNewsDataFromDb();
-                break;
-
-            case 1:
-                loadIndianHindiSportsNewsDataFromDb();
-                break;
-
-            case 2:
-                loadIndianHindiEntertainmentNewsDataFromDb();
-                break;
-
-            case 3:
-                loadIndianHindiFinanceNewsDataFromDb();
-                break;
-
-            case 4:
-                loadIndianHindiTvChannelNewsDataFromDb();
-                break;
-
-            case 5:
-                loadIndianHindiInternationalNewsDataFromDb();
-                break;
-        }
-    }
-    private void loadIndianEnglishNews() {
-        int categoryNumber=CommonMethods.getRandomNumber(6);
-        switch (categoryNumber) {
-            case 0:
-                loadIndianEnglishBreakingNewsDataFromDb();
-                break;
-
-            case 1:
-                loadIndianEnglishSportsNewsDataFromDb();
-                break;
-
-            case 2:
-                loadIndianEnglishEntertainmentNewsDataFromDb();
-                break;
-
-            case 3:
-                loadIndianEnglishFinanceNewsDataFromDb();
-                break;
-
-            case 4:
-                loadIndianEnglishTvChannelNewsDataFromDb();
-                break;
-
-            case 5:
-                loadIndianEnglishInternationalNewsDataFromDb();
-                break;
-        }
+        Notification notification=builder.build();
+        notificationManager.notify(CommonMethods.getRandomNumber(99999),notification);
     }
 
 
@@ -947,244 +853,244 @@ public class NewsLoaderService extends Worker {
         bdBreakingList.clear();
         bdBreakingList = newsDatabase.bdBreakingDao().getAllNotificationNews("on");
         if (bdBreakingList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(bdBreakingList.size());
-            newsPaperUrl=bdBreakingList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<bdBreakingList.size(); i++) {
+                newsPaperUrl=bdBreakingList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"bd breaking list size is:- "+bdBreakingList.size());
     }
     public void loadBangladeshEntertainmentNewsDataFromDb() {
         bdEntertainmentList.clear();
         bdEntertainmentList = newsDatabase.bdEntertainmentDao().getAllNotificationNews("on");
         if (bdEntertainmentList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(bdEntertainmentList.size());
-            newsPaperUrl=bdEntertainmentList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<bdEntertainmentList.size(); i++) {
+                newsPaperUrl=bdEntertainmentList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"bd entertainment list size is:- "+bdEntertainmentList.size());
     }
     public void loadBangladeshFinanceNewsDataFromDb() {
         bdFinanceList.clear();
         bdFinanceList = newsDatabase.bdFinanceDao().getAllNotificationNews("on");
         if (bdFinanceList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(bdFinanceList.size());
-            newsPaperUrl=bdFinanceList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<bdFinanceList.size(); i++) {
+                newsPaperUrl=bdFinanceList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"bd finance list size is:- "+bdFinanceList.size());
     }
     public void loadBangladeshInternationalNewsDataFromDb() {
         bdInternationalList.clear();
         bdInternationalList = newsDatabase.bdInternationalDao().getAllNotificationNews("on");
         if (bdInternationalList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(bdInternationalList.size());
-            newsPaperUrl=bdInternationalList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<bdInternationalList.size(); i++) {
+                newsPaperUrl=bdInternationalList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"bd international list size is:- "+bdInternationalList.size());
     }
     public void loadBangladeshSportsNewsDataFromDb() {
         bdSportsList.clear();
         bdSportsList = newsDatabase.bdSportsDao().getAllNotificationNews("on");
         if (bdSportsList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(bdSportsList.size());
-            newsPaperUrl=bdSportsList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<bdSportsList.size(); i++) {
+                newsPaperUrl=bdSportsList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"bd sports list size is:- "+bdSportsList.size());
     }
     public void loadBangladeshTvChannelNewsDataFromDb() {
         bdTvChannelList.clear();
         bdTvChannelList = newsDatabase.bdTvChannelDao().getAllNotificationNews("on");
         if (bdTvChannelList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(bdTvChannelList.size());
-            newsPaperUrl=bdTvChannelList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<bdTvChannelList.size(); i++) {
+                newsPaperUrl=bdTvChannelList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"bd tv channel list size is:- "+bdTvChannelList.size());
     }
 
     public void loadIndianBanglaBreakingNewsDataFromDb() {
         indianBanglaBreakingList.clear();
         indianBanglaBreakingList = newsDatabase.indianBanglaBreakingDao().getAllNotificationNews("on");
         if (indianBanglaBreakingList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianBanglaBreakingList.size());
-            newsPaperUrl=indianBanglaBreakingList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianBanglaBreakingList.size(); i++) {
+                newsPaperUrl=indianBanglaBreakingList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian bangla breaking list size is:- "+indianBanglaBreakingList.size());
     }
     public void loadIndianBanglaEntertainmentNewsDataFromDb() {
         indianBanglaEntertainmentList.clear();
         indianBanglaEntertainmentList = newsDatabase.indianBanglaEntertainmentDao().getAllNotificationNews("on");
         if (indianBanglaEntertainmentList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianBanglaEntertainmentList.size());
-            newsPaperUrl=indianBanglaEntertainmentList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianBanglaEntertainmentList.size(); i++) {
+                newsPaperUrl=indianBanglaEntertainmentList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian bangla entertainment list size is:- "+indianBanglaEntertainmentList.size());
     }
     public void loadIndianBanglaFinanceNewsDataFromDb() {
         indianBanglaFinanceList.clear();
         indianBanglaFinanceList = newsDatabase.indianBanglaFinanceDao().getAllNotificationNews("on");
         if (indianBanglaFinanceList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianBanglaFinanceList.size());
-            newsPaperUrl=indianBanglaFinanceList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianBanglaFinanceList.size(); i++) {
+                newsPaperUrl=indianBanglaFinanceList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian bangla finance list size is:- "+indianBanglaFinanceList.size());
     }
     public void loadIndianBanglaInternationalNewsDataFromDb() {
         indianBanglaInternationalList.clear();
         indianBanglaInternationalList = newsDatabase.indianBanglaInternationalDao().getAllNotificationNews("on");
         if (indianBanglaInternationalList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianBanglaInternationalList.size());
-            newsPaperUrl=indianBanglaInternationalList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianBanglaInternationalList.size(); i++) {
+                newsPaperUrl=indianBanglaInternationalList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian bangla international list size is:- "+indianBanglaInternationalList.size());
     }
     public void loadIndianBanglaSportsNewsDataFromDb() {
         indianBanglaSportList.clear();
         indianBanglaSportList = newsDatabase.indianBanglaSportDao().getAllNotificationNews("on");
         if (indianBanglaSportList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianBanglaSportList.size());
-            newsPaperUrl=indianBanglaSportList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianBanglaSportList.size(); i++) {
+                newsPaperUrl=indianBanglaSportList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian bangla sports list size is:- "+indianBanglaSportList.size());
     }
     public void loadIndianBanglaTvChannelNewsDataFromDb() {
         indianBanglaTvChannelList.clear();
         indianBanglaTvChannelList = newsDatabase.indianBanglaTvChannelDao().getAllNotificationNews("on");
         if (indianBanglaTvChannelList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianBanglaTvChannelList.size());
-            newsPaperUrl=indianBanglaTvChannelList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianBanglaTvChannelList.size(); i++) {
+                newsPaperUrl=indianBanglaTvChannelList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian bangla tv channel list size is:- "+indianBanglaTvChannelList.size());
     }
 
     public void loadIndianHindiBreakingNewsDataFromDb() {
         indianHindiBreakingList.clear();
         indianHindiBreakingList = newsDatabase.indianHindiBreakingDao().getAllNotificationNews("on");
         if (indianHindiBreakingList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianHindiBreakingList.size());
-            newsPaperUrl=indianHindiBreakingList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianHindiBreakingList.size(); i++) {
+                newsPaperUrl=indianHindiBreakingList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian hindi breaking list size is:- "+indianHindiBreakingList.size());
     }
     public void loadIndianHindiEntertainmentNewsDataFromDb() {
         indianHindiEntertainmentList.clear();
         indianHindiEntertainmentList = newsDatabase.indianHindiEntertainmentDao().getAllNotificationNews("on");
         if (indianHindiEntertainmentList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianHindiEntertainmentList.size());
-            newsPaperUrl=indianHindiEntertainmentList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianHindiEntertainmentList.size(); i++) {
+                newsPaperUrl=indianHindiEntertainmentList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian hindi entertainment list size is:- "+indianHindiEntertainmentList.size());
     }
     public void loadIndianHindiFinanceNewsDataFromDb() {
         indianHindiFinanceList.clear();
         indianHindiFinanceList = newsDatabase.indianHindiFinanceDao().getAllNotificationNews("on");
         if (indianHindiFinanceList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianHindiFinanceList.size());
-            newsPaperUrl=indianHindiFinanceList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianHindiFinanceList.size(); i++) {
+                newsPaperUrl=indianHindiFinanceList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian hindi finance list size is:- "+indianHindiFinanceList.size());
     }
     public void loadIndianHindiInternationalNewsDataFromDb() {
         indianHindiInternationalList.clear();
         indianHindiInternationalList = newsDatabase.indianHindiInternationalDao().getAllNotificationNews("on");
         if (indianHindiInternationalList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianHindiInternationalList.size());
-            newsPaperUrl=indianHindiInternationalList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianHindiInternationalList.size(); i++) {
+                newsPaperUrl=indianHindiInternationalList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian hindi international list size is:- "+indianHindiInternationalList.size());
     }
     public void loadIndianHindiSportsNewsDataFromDb() {
         indianHindiSportsList.clear();
         indianHindiSportsList = newsDatabase.indianHindiSportsDao().getAllNotificationNews("on");
         if (indianHindiSportsList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianHindiSportsList.size());
-            newsPaperUrl=indianHindiSportsList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianHindiSportsList.size(); i++) {
+                newsPaperUrl=indianHindiSportsList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian hindi sports list size is:- "+indianHindiSportsList.size());
     }
     public void loadIndianHindiTvChannelNewsDataFromDb() {
         indianHindiTvChannelList.clear();
         indianHindiTvChannelList = newsDatabase.indianHindiTvChannelDao().getAllNotificationNews("on");
         if (indianHindiTvChannelList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianHindiTvChannelList.size());
-            newsPaperUrl=indianHindiTvChannelList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianHindiTvChannelList.size(); i++) {
+                newsPaperUrl=indianHindiTvChannelList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian hindi tv channel list size is:- "+indianHindiTvChannelList.size());
     }
 
     public void loadIndianEnglishBreakingNewsDataFromDb() {
         indianEnglishBreakingList.clear();
         indianEnglishBreakingList = newsDatabase.indianEnglishBreakingDao().getAllNotificationNews("on");
         if (indianEnglishBreakingList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianEnglishBreakingList.size());
-            newsPaperUrl=indianEnglishBreakingList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianEnglishBreakingList.size(); i++) {
+                newsPaperUrl=indianEnglishBreakingList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian english breaking list size is:- "+indianEnglishBreakingList.size());
     }
     public void loadIndianEnglishEntertainmentNewsDataFromDb() {
         indianEnglishEntertainmentList.clear();
         indianEnglishEntertainmentList = newsDatabase.indianEnglishEntertainmentDao().getAllNotificationNews("on");
         if (indianEnglishEntertainmentList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianEnglishEntertainmentList.size());
-            newsPaperUrl=indianEnglishEntertainmentList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianEnglishEntertainmentList.size(); i++) {
+                newsPaperUrl=indianEnglishEntertainmentList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian english entertainment list size is:- "+indianEnglishEntertainmentList.size());
     }
     public void loadIndianEnglishFinanceNewsDataFromDb() {
         indianEnglishFinanceList.clear();
         indianEnglishFinanceList = newsDatabase.indianEnglishFinanceDao().getAllNotificationNews("on");
         if (indianEnglishFinanceList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianEnglishFinanceList.size());
-            newsPaperUrl=indianEnglishFinanceList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianEnglishFinanceList.size(); i++) {
+                newsPaperUrl=indianEnglishFinanceList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian english finance list size is:- "+indianEnglishFinanceList.size());
     }
     public void loadIndianEnglishInternationalNewsDataFromDb() {
         indianEnglishInternationalList.clear();
         indianEnglishInternationalList = newsDatabase.indianEnglishInternationalDao().getAllNotificationNews("on");
         if (indianEnglishInternationalList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianEnglishInternationalList.size());
-            newsPaperUrl=indianEnglishInternationalList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianEnglishInternationalList.size(); i++) {
+                newsPaperUrl=indianEnglishInternationalList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian english international list size is:- "+indianEnglishInternationalList.size());
     }
     public void loadIndianEnglishSportsNewsDataFromDb() {
         indianEnglishSportsList.clear();
         indianEnglishSportsList = newsDatabase.indianEnglishSportsDao().getAllNotificationNews("on");
         if (indianEnglishSportsList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianEnglishSportsList.size());
-            newsPaperUrl=indianEnglishSportsList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianEnglishSportsList.size(); i++) {
+                newsPaperUrl=indianEnglishSportsList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian english sports list size is:- "+indianEnglishSportsList.size());
     }
     public void loadIndianEnglishTvChannelNewsDataFromDb() {
         indianEnglishTvChannelList.clear();
         indianEnglishTvChannelList = newsDatabase.indianEnglishTvChannelDao().getAllNotificationNews("on");
         if (indianEnglishTvChannelList.size()>0) {
-            int targetedNewsPaperIndex=CommonMethods.getRandomNumber(indianEnglishTvChannelList.size());
-            newsPaperUrl=indianEnglishTvChannelList.get(targetedNewsPaperIndex).getPaperUrl();
-            loadPageDocument(newsPaperUrl);
+            for (int i=0; i<indianEnglishTvChannelList.size(); i++) {
+                newsPaperUrl=indianEnglishTvChannelList.get(i).getPaperUrl();
+                loadPageDocument(newsPaperUrl);
+            }
         }
-        Log.d(Constants.TAG,"indian english tv channel list size is:- "+indianEnglishTvChannelList.size());
     }
 
 

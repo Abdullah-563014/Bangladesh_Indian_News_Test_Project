@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
@@ -204,6 +205,7 @@ public class WebViewActivity extends AppCompatActivity {
         compositeDisposable=new CompositeDisposable();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     public void openWebPage(String myUrl) {
         binding.myWebView.getSettings().setJavaScriptEnabled(true);
         binding.myWebView.getSettings().setSupportMultipleWindows(false);
