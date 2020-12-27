@@ -647,11 +647,19 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Constants.isUserActive=true;
         if (!CommonMethods.haveInternet(connectivityManager)) {
             Intent intent = new Intent(WebViewActivity.this, NoInternetActivity.class);
             startActivity(intent);
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Constants.isUserActive=false;
+    }
+
 
 
 }

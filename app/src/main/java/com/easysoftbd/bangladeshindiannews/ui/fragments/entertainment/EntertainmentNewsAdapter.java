@@ -44,9 +44,11 @@ public class EntertainmentNewsAdapter extends RecyclerView.Adapter<Entertainment
     @Override
     public void onBindViewHolder(@NonNull EntertainmentViewHolder holder, int position) {
         if (list.get(position).getNotificationStatus().equalsIgnoreCase("on")) {
-            holder.binding.titleTextView.setText(list.get(position).getTitle()+" (Notification on)");
+            holder.binding.titleTextView.setText(list.get(position).getTitle()+" -> (Notification on)");
+            holder.binding.titleTextView.setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
         } else {
-            holder.binding.titleTextView.setText(list.get(position).getTitle()+" (Notification off)");
+            holder.binding.titleTextView.setText(list.get(position).getTitle());
+            holder.binding.titleTextView.setTextColor(ContextCompat.getColor(context,getColorCode(list.get(position).getTextColor())));
         }
         List<String> contents=new ArrayList<>();
         List<NewsAndLinkModel> newsAndLinkModels=list.get(position).getNewsAndLinkModelList();
@@ -56,7 +58,7 @@ public class EntertainmentNewsAdapter extends RecyclerView.Adapter<Entertainment
         holder.binding.marqueeView.setContent(contents);
 
         holder.binding.marqueeView.setTextColor(getColorCode(list.get(position).getTextColor()));
-        holder.binding.titleTextView.setTextColor(ContextCompat.getColor(context,getColorCode(list.get(position).getTextColor())));
+//        holder.binding.titleTextView.setTextColor(ContextCompat.getColor(context,getColorCode(list.get(position).getTextColor())));
         holder.binding.recyclerViewModelRootLayout.setBackgroundColor(ContextCompat.getColor(context,getColorCode(list.get(position).getBackgroundColor())));
 
 

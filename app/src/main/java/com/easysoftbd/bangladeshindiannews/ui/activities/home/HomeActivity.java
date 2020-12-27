@@ -14,6 +14,7 @@ import com.easysoftbd.bangladeshindiannews.ui.fragments.finance.FinanceFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.international.InternationalFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.sports.SportsNewsFragment;
 import com.easysoftbd.bangladeshindiannews.ui.fragments.tv_channel.TvChannelNewsFragment;
+import com.easysoftbd.bangladeshindiannews.utils.Constants;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.List;
@@ -101,6 +102,19 @@ public class HomeActivity extends AppCompatActivity {
     public void showInternationalMoreOption(int serialNo) {
         InternationalFragment internationalFragment= (InternationalFragment) activityFragmentStateAdapter.createFragment(5);
         internationalFragment.showMoreOptionAlertDialog(serialNo);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Constants.isUserActive=true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Constants.isUserActive=false;
     }
 
 

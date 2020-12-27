@@ -6,11 +6,21 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RemoteViews;
+import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -56,6 +66,7 @@ import com.easysoftbd.bangladeshindiannews.utils.Constants;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -827,6 +838,7 @@ public class NewsLoaderService extends Worker {
                     .setContentTitle(title)
                     .setTicker(title)
                     .setContentText(description)
+                    .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorAccent))
                     .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setContentIntent(pendingIntent)
@@ -837,6 +849,7 @@ public class NewsLoaderService extends Worker {
                     .setContentTitle(title)
                     .setTicker(title)
                     .setContentText(description)
+                    .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorAccent))
                     .setDefaults(Notification.DEFAULT_ALL)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
@@ -844,7 +857,10 @@ public class NewsLoaderService extends Worker {
         }
 
         Notification notification=builder.build();
-        notificationManager.notify(CommonMethods.getRandomNumber(99999),notification);
+        if (!Constants.isUserActive) {
+            notificationManager.notify(CommonMethods.getRandomNumber(99999),notification);
+        }
+
     }
 
 

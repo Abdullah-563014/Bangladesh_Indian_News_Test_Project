@@ -83,10 +83,11 @@ public class MyForgroundService extends Service {
             }
             notification.flags = Notification.FLAG_NO_CLEAR;
             startForeground(notificationId, notification);
+            startBackgroundService();
             Constants.startedForGroundService=true;
         }
 //        registerReceiver(myReceiver, new IntentFilter("android.intent.action.PHONE_STATE"));
-        startBackgroundService();
+//        startBackgroundService();
         return START_STICKY;
     }
 

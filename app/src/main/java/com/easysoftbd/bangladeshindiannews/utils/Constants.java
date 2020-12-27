@@ -21,5 +21,6 @@ public class Constants {
     public static boolean onForground=false;
     public static boolean startedForGroundService=false;
     public static boolean isForgroundService=false;
+    public static boolean isUserActive=false;
 
 }

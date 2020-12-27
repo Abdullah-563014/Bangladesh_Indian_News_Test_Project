@@ -8,23 +8,30 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.databinding.ActivityMainBinding;
 import com.easysoftbd.bangladeshindiannews.services.MyForgroundService;
 import com.easysoftbd.bangladeshindiannews.services.NewsLoaderService;
+import com.easysoftbd.bangladeshindiannews.ui.activities.contact_us.ContactUsActivity;
 import com.easysoftbd.bangladeshindiannews.ui.activities.favourite_list.FavouriteListActivity;
 import com.easysoftbd.bangladeshindiannews.ui.activities.home.HomeActivity;
 import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
+import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -64,13 +71,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         .enqueueUniquePeriodicWork(workerTag, ExistingPeriodicWorkPolicy.REPLACE, request);
     }
 
+    private boolean isWorkScheduled(String tag) {
+        WorkManager instance = WorkManager.getInstance();
+        ListenableFuture<List<WorkInfo>> statuses = instance.getWorkInfosByTag(tag);
+        try {
+            boolean running = false;
+            List<WorkInfo> workInfoList = statuses.get();
+            for (WorkInfo workInfo : workInfoList) {
+                WorkInfo.State state = workInfo.getState();
+                running = state == WorkInfo.State.RUNNING | state == WorkInfo.State.ENQUEUED;
+            }
+            return running;
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private void startForgroundService() {
-        Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
-        } else {
+        if (!isWorkScheduled(Constants.TAG)) {
+            Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            } else {
 //            startService(intent);
-            startBackgroundService();
+                startBackgroundService();
+            }
         }
     }
 
@@ -86,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.nextButton.setOnClickListener(this);
         binding.setCountryButton.setOnClickListener(this);
         binding.favouriteListButton.setOnClickListener(this);
+        binding.contactUsButton.setOnClickListener(this);
+        binding.giveFiveStarButton.setOnClickListener(this);
+        binding.moreAppsButton.setOnClickListener(this);
+        binding.shareAppsButton.setOnClickListener(this);
     }
 
     private void goToHomeActivity() {
@@ -158,6 +191,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.selectedLanguageTextView.setText("Language:- "+selectedLanguage);
     }
 
+    private void shareApp() {
+        String url="https://play.google.com/store/apps/details?id="+getPackageName();
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.app_name));
+            String shareMessage= "\nLet me recommend you this application\n\n";
+            shareMessage = shareMessage + url +"\n\n";
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+            startActivity(Intent.createChooser(shareIntent, "choose one"));
+        } catch(Exception e) {
+            //e.toString();
+        }
+    }
+
+    private void rateApp() {
+        String url="https://play.google.com/store/apps/details?id="+getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        }
+    }
+
+    private void moreApps() {
+        String url="https://play.google.com/store/apps/developer?id=Easy+Soft+BD&hl=en";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
 
     @Override
     public void onClick(View v) {
@@ -179,13 +240,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent=new Intent(MainActivity.this, FavouriteListActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.contactUsButton:
+                intent=new Intent(MainActivity.this, ContactUsActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.giveFiveStarButton:
+                rateApp();
+                break;
+
+            case R.id.moreAppsButton:
+                moreApps();
+                break;
+
+            case R.id.shareAppsButton:
+                shareApp();
+                break;
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Constants.isUserActive=true;
         updateUiForCountryAndLanguage();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Constants.isUserActive=false;
     }
 
     @Override

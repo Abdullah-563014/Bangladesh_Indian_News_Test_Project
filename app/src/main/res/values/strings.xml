@@ -36,7 +36,6 @@
     </string-array>
 
 
-
     <string-array name="bd_breaking_news_list">
         <item>বাংলাদেশ প্রতিদিন (ব্রেকিং নিউজ)</item>
         <item>প্রথম আলো (ব্রেকিং নিউজ)</item>
@@ -254,7 +253,6 @@
         <item>ভোরের পাতা (আন্তর্জাতিক খবর)</item>
         <item>আমাদের সময় (আন্তর্জাতিক খবর)</item>
     </string-array>
-
 
 
     <string-array name="indian_bangla_breaking_news_list">
@@ -804,9 +802,6 @@
         <item>https://www.wionews.com/</item>
         <item>http://www.romedynow.com/</item>
     </string-array>
-
-
-
 
 
     <string name="read_write_permission_details">
