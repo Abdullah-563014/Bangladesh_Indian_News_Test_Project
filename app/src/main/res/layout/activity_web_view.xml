@@ -22,9 +22,9 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/webViewActivitySwipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@+id/webActivityProgressBar"
-            app:layout_constraintBottom_toTopOf="@+id/webViewActivityFacebookBannerAdsContainer"
+            app:layout_constraintBottom_toTopOf="@+id/webViewActivityBannerAdsContainerId"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <WebView
@@ -33,7 +33,29 @@
                 android:layout_height="match_parent" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
+        <RelativeLayout
+            android:id="@+id/webViewActivityBannerAdsContainerId"
+            app:layout_constraintTop_toBottomOf="@+id/webViewActivitySwipeRefreshLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/webViewActivityFacebookBannerAdsContainerId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"/>
+            <com.mopub.mobileads.MoPubView
+                android:id="@+id/webViewActivityMoPubBannerAdsContainerId"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:moPubAdSize="match_view">
+            </com.mopub.mobileads.MoPubView>
+        </RelativeLayout>
         <TextView
             android:id="@+id/addToFavouriteListTextView"
             android:layout_width="wrap_content"
@@ -43,18 +65,10 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/radious_background"
             android:padding="5dp"
-            android:text="ফেভারিট করুন"
+            android:text="Add To Bookmark"
             android:textColor="#5c0ce7"
             android:textSize="16sp"
             android:textStyle="bold" />
-        <LinearLayout
-            android:id="@+id/webViewActivityFacebookBannerAdsContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/spin_kit"

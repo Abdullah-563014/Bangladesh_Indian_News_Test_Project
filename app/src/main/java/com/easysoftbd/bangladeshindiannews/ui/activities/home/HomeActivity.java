@@ -104,6 +104,10 @@ public class HomeActivity extends AppCompatActivity {
         internationalFragment.showMoreOptionAlertDialog(serialNo);
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 
     @Override
     protected void onResume() {

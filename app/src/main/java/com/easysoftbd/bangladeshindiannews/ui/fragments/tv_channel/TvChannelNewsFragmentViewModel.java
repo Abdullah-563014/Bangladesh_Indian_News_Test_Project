@@ -881,11 +881,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             bdTvChannel.setPaperName(nameList.get(i));
                             bdTvChannel.setBackgroundColor("SkyBlue");
                             bdTvChannel.setTextColor("White");
-                            if (i==0) {
-                                bdTvChannel.setNotificationStatus("on");
-                            } else {
-                                bdTvChannel.setNotificationStatus("off");
-                            }
+                            bdTvChannel.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.bdTvChannelDao().insertNews(bdTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -979,11 +975,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianBanglaTvChannel.setPaperName(nameList.get(i));
                             indianBanglaTvChannel.setBackgroundColor("SkyBlue");
                             indianBanglaTvChannel.setTextColor("White");
-                            if (i==0) {
-                                indianBanglaTvChannel.setNotificationStatus("on");
-                            } else {
-                                indianBanglaTvChannel.setNotificationStatus("off");
-                            }
+                            indianBanglaTvChannel.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianBanglaTvChannelDao().insertNews(indianBanglaTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1077,11 +1069,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianHindiTvChannel.setPaperName(nameList.get(i));
                             indianHindiTvChannel.setBackgroundColor("SkyBlue");
                             indianHindiTvChannel.setTextColor("White");
-                            if (i==0) {
-                                indianHindiTvChannel.setNotificationStatus("on");
-                            } else {
-                                indianHindiTvChannel.setNotificationStatus("off");
-                            }
+                            indianHindiTvChannel.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianHindiTvChannelDao().insertNews(indianHindiTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1175,11 +1163,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianEnglishTvChannel.setPaperName(nameList.get(i));
                             indianEnglishTvChannel.setBackgroundColor("SkyBlue");
                             indianEnglishTvChannel.setTextColor("White");
-                            if (i==0) {
-                                indianEnglishTvChannel.setNotificationStatus("on");
-                            } else {
-                                indianEnglishTvChannel.setNotificationStatus("off");
-                            }
+                            indianEnglishTvChannel.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianEnglishTvChannelDao().insertNews(indianEnglishTvChannel);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

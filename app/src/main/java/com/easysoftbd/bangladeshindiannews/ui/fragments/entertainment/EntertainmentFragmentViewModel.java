@@ -909,11 +909,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             bdEntertainment.setPaperName(nameList.get(i));
                             bdEntertainment.setBackgroundColor("SkyBlue");
                             bdEntertainment.setTextColor("White");
-                            if (i==0) {
-                                bdEntertainment.setNotificationStatus("on");
-                            } else {
-                                bdEntertainment.setNotificationStatus("off");
-                            }
+                            bdEntertainment.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.bdEntertainmentDao().insertNews(bdEntertainment);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1007,11 +1003,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             indianBanglaEntertainment.setPaperName(nameList.get(i));
                             indianBanglaEntertainment.setBackgroundColor("SkyBlue");
                             indianBanglaEntertainment.setTextColor("White");
-                            if (i==0) {
-                                indianBanglaEntertainment.setNotificationStatus("on");
-                            } else {
-                                indianBanglaEntertainment.setNotificationStatus("off");
-                            }
+                            indianBanglaEntertainment.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianBanglaEntertainmentDao().insertNews(indianBanglaEntertainment);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1105,11 +1097,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             indianHindiEntertainment.setPaperName(nameList.get(i));
                             indianHindiEntertainment.setBackgroundColor("SkyBlue");
                             indianHindiEntertainment.setTextColor("White");
-                            if (i==0) {
-                                indianHindiEntertainment.setNotificationStatus("on");
-                            } else {
-                                indianHindiEntertainment.setNotificationStatus("off");
-                            }
+                            indianHindiEntertainment.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianHindiEntertainmentDao().insertNews(indianHindiEntertainment);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1203,11 +1191,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             indianEnglishEntertainment.setPaperName(nameList.get(i));
                             indianEnglishEntertainment.setBackgroundColor("SkyBlue");
                             indianEnglishEntertainment.setTextColor("White");
-                            if (i==0) {
-                                indianEnglishEntertainment.setNotificationStatus("on");
-                            } else {
-                                indianEnglishEntertainment.setNotificationStatus("off");
-                            }
+                            indianEnglishEntertainment.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianEnglishEntertainmentDao().insertNews(indianEnglishEntertainment);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

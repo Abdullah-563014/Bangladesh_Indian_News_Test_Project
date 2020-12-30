@@ -902,11 +902,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                             bdFinance.setPaperName(nameList.get(i));
                             bdFinance.setBackgroundColor("SkyBlue");
                             bdFinance.setTextColor("White");
-                            if (i==0) {
-                                bdFinance.setNotificationStatus("on");
-                            } else {
-                                bdFinance.setNotificationStatus("off");
-                            }
+                            bdFinance.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.bdFinanceDao().insertNews(bdFinance);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1000,11 +996,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                             indianBanglaFinance.setPaperName(nameList.get(i));
                             indianBanglaFinance.setBackgroundColor("SkyBlue");
                             indianBanglaFinance.setTextColor("White");
-                            if (i==0) {
-                                indianBanglaFinance.setNotificationStatus("on");
-                            } else {
-                                indianBanglaFinance.setNotificationStatus("off");
-                            }
+                            indianBanglaFinance.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianBanglaFinanceDao().insertNews(indianBanglaFinance);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1098,11 +1090,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                             indianHindiFinance.setPaperName(nameList.get(i));
                             indianHindiFinance.setBackgroundColor("SkyBlue");
                             indianHindiFinance.setTextColor("White");
-                            if (i==0) {
-                                indianHindiFinance.setNotificationStatus("on");
-                            } else {
-                                indianHindiFinance.setNotificationStatus("off");
-                            }
+                            indianHindiFinance.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianHindiFinanceDao().insertNews(indianHindiFinance);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1196,11 +1184,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                             indianEnglishFinance.setPaperName(nameList.get(i));
                             indianEnglishFinance.setBackgroundColor("SkyBlue");
                             indianEnglishFinance.setTextColor("White");
-                            if (i==0) {
-                                indianEnglishFinance.setNotificationStatus("on");
-                            } else {
-                                indianEnglishFinance.setNotificationStatus("off");
-                            }
+                            indianEnglishFinance.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianEnglishFinanceDao().insertNews(indianEnglishFinance);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.easysoftbd.bangladeshindiannews.R;
+import com.easysoftbd.bangladeshindiannews.adapter.MarqueeItemRecyclerAdapter;
 import com.easysoftbd.bangladeshindiannews.data.local.DatabaseClient;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaEntertainment;
@@ -25,6 +26,7 @@ import com.easysoftbd.bangladeshindiannews.data.local.india.hindi.IndianHindiEnt
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.databinding.FragmentEntertainmentBinding;
+import com.easysoftbd.bangladeshindiannews.databinding.MarqueeItemRecyclerViewLayoutBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
 import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
@@ -42,7 +44,9 @@ public class EntertainmentFragment extends Fragment {
     private EntertainmentFragmentViewModel viewModel;
     private FragmentEntertainmentBinding binding;
     private EntertainmentNewsAdapter adapter;
-    private LinearLayoutManager linearLayoutManager;
+    private LinearLayoutManager linearLayoutManager,marqueeItemRecyclerViewLayoutManager;
+    private MarqueeItemRecyclerAdapter marqueeItemRecyclerAdapter;
+    private MarqueeItemRecyclerViewLayoutBinding marqueeItemRecyclerViewLayoutBinding;
     private List<RecyclerItemModel> list=new ArrayList<>();
     private String countryName,languageName;
 
@@ -128,27 +132,22 @@ public class EntertainmentFragment extends Fragment {
         });
     }
 
-    private void openUrl(String url) {
-        intent = new Intent(getContext(), WebViewActivity.class);
-        intent.putExtra(Constants.UrlTag, url);
-        startActivity(intent);
-    }
-
     public void showItemChooseAlertDialog(List<NewsAndLinkModel> list) {
         if (list != null && list.size() > 0) {
-            String[] items = new String[list.size()];
-            for (int i = 0; i < list.size(); i++) {
-                items[i] = list.get(i).getNews();
-            }
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                    .setTitle("Select an Item.")
-                    .setSingleChoiceItems(items, 0, (DialogInterface.OnClickListener) (dialog, which) -> {
-                        openUrl(list.get(which).getLink());
-                        dialog.dismiss();
-                    });
-            alertDialog = builder.create();
+            marqueeItemRecyclerViewLayoutBinding=DataBindingUtil.inflate(getLayoutInflater(),R.layout.marquee_item_recycler_view_layout,null,false);
+            marqueeItemRecyclerViewLayoutManager=new LinearLayoutManager(getContext());
+            marqueeItemRecyclerAdapter=new MarqueeItemRecyclerAdapter(getContext(),list);
+            marqueeItemRecyclerViewLayoutBinding.marqueeItemRecyclerView.setLayoutManager(marqueeItemRecyclerViewLayoutManager);
+            marqueeItemRecyclerViewLayoutBinding.marqueeItemRecyclerView.setAdapter(marqueeItemRecyclerAdapter);
+            AlertDialog.Builder builder=new AlertDialog.Builder(getContext())
+                    .setCancelable(true)
+                    .setView(marqueeItemRecyclerViewLayoutBinding.getRoot());
+            AlertDialog alertDialog=builder.create();
+            int width = (int)(getResources().getDisplayMetrics().widthPixels*0.98);
+            int height = (int)(getResources().getDisplayMetrics().heightPixels*0.80);
             if (!isRemoving()) {
                 alertDialog.show();
+                alertDialog.getWindow().setLayout(width,height);
             }
         }
     }

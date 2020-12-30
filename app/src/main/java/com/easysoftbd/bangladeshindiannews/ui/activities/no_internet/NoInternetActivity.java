@@ -89,7 +89,7 @@ public class NoInternetActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void copyNumber(){
-        ClipData clipData=ClipData.newPlainText("AdminNumber","01303628419");
+        ClipData clipData=ClipData.newPlainText("AdminNumber","+8801303628419");
         clipboardManager.setPrimaryClip(clipData);
         Toast.makeText(NoInternetActivity.this, "Copied Successfully", Toast.LENGTH_SHORT).show();
     }

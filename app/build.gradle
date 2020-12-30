@@ -10,6 +10,7 @@ android {
         applicationId "com.easysoftbd.bangladeshindiannews"
         minSdkVersion 19
         targetSdkVersion 30
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
 
@@ -31,6 +32,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    repositories {
+        jcenter()
     }
 
     dataBinding {
@@ -80,9 +85,24 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
     implementation "androidx.work:work-rxjava2:$work_version"
 
-    implementation platform('com.google.firebase:firebase-bom:26.1.0')
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation platform('com.google.firebase:firebase-bom:26.2.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-database'
+
+    def multidex_version = "2.0.1"
+    implementation "androidx.multidex:multidex:$multidex_version"
+
+
+    implementation 'com.facebook.android:audience-network-sdk:5.+'
+    implementation 'com.google.android.gms:play-services-ads:19.6.0'
+    implementation files('libs/unity-ads.aar')
+    implementation('com.mopub:mopub-sdk:5.13.1@aar') {
+        transitive = true
+    }
 
 
 }

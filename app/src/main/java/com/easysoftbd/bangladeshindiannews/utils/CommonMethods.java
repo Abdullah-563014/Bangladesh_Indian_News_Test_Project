@@ -2,11 +2,15 @@ package com.easysoftbd.bangladeshindiannews.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
 
+import com.squareup.picasso.Transformation;
+
+import java.util.Date;
 import java.util.Random;
 
 public class CommonMethods {
@@ -55,10 +59,81 @@ public class CommonMethods {
         return getSharedInstance(context).getString(key,defaultValue);
     }
 
+    public static void setBooleanToSharedPreference(Context context, String key, boolean value) {
+        SharedPreferences.Editor editor=getSharedInstance(context).edit();
+        editor.putBoolean(key,value);
+        editor.apply();
+    }
+
+    public static boolean getBooleanFromSharedPreference(Context context, String key, boolean defaultValue) {
+        return getSharedInstance(context).getBoolean(key,defaultValue);
+    }
+
     public static int getRandomNumber(int range) {
         Random random=new Random();
         return random.nextInt(range);
     }
+
+    public static String getCurrentTime() {
+        Date date=new Date();
+        return String.valueOf(date.getTime());
+    }
+
+    public static String getTimeDifBetweenToTime(String startTime, String endTime) {
+        try {
+
+            long date1=Long.parseLong(startTime);
+            long date2=Long.parseLong(endTime);
+
+            long difference = date2 - date1;
+            long differenceDates = difference / (60 * 60 * 1000);
+
+            return Long.toString(differenceDates);
+
+        } catch (Exception exception) {
+            return null;
+        }
+    }
+
+    public static String getMinDifBetweenToTime(String startTime, String endTime) {
+        try {
+
+            long date1=Long.parseLong(startTime);
+            long date2=Long.parseLong(endTime);
+
+            long difference = date2 - date1;
+            long differenceDates = difference / (60 * 1000);
+
+            return Long.toString(differenceDates);
+
+        } catch (Exception exception) {
+            return null;
+        }
+    }
+
+    public static class PicassoTransform implements Transformation {
+        int targetWidth;
+        public PicassoTransform(int targetWidth) {
+            this.targetWidth=targetWidth;
+        }
+
+        @Override
+        public Bitmap transform(Bitmap source) {
+            double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
+            int targetHeight = (int) (targetWidth * aspectRatio);
+            Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+            if (result != source) {
+                // Same bitmap is returned if sizes are the same
+                source.recycle();
+            }
+            return result;
+        }
+
+        @Override
+        public String key() {
+            return "transformation" + " desiredWidth";
+        }
+    };
 
 
 

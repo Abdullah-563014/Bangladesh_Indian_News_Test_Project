@@ -1,5 +1,6 @@
 package com.easysoftbd.bangladeshindiannews.ui.activities.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -11,26 +12,42 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.easysoftbd.bangladeshindiannews.R;
+import com.easysoftbd.bangladeshindiannews.data.model.ImageNotice;
 import com.easysoftbd.bangladeshindiannews.databinding.ActivityMainBinding;
 import com.easysoftbd.bangladeshindiannews.services.MyForgroundService;
 import com.easysoftbd.bangladeshindiannews.services.NewsLoaderService;
 import com.easysoftbd.bangladeshindiannews.ui.activities.contact_us.ContactUsActivity;
 import com.easysoftbd.bangladeshindiannews.ui.activities.favourite_list.FavouriteListActivity;
 import com.easysoftbd.bangladeshindiannews.ui.activities.home.HomeActivity;
+import com.easysoftbd.bangladeshindiannews.ui.activities.my_webview.WebViewActivity;
 import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -43,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String[] languageList=new String[3];
     private String selectedCountry,selectedLanguage;
     private ConnectivityManager connectivityManager;
+    private DatabaseReference databaseReference;
+    private ImageNotice imageNotice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +73,195 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         startForgroundService();
 
+        checkUpdate();
+
+        loadAdminImageNotice();
+
+        showAdminNoticeImage();
+
 
     }
 
+
+    public void checkUpdate() {
+        DatabaseReference versionRef = FirebaseDatabase.getInstance().getReference().child("VersionCode");
+        versionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                String version = null;
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    version = dataSnapshot.getValue(String.class);
+                }
+
+                PackageManager manager = getApplicationContext().getPackageManager();
+                PackageInfo info = null;
+                try {
+                    info = manager.getPackageInfo(getApplicationContext().getPackageName(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                int code = 0;
+                if (info != null) {
+                    code = info.versionCode;
+                }
+
+                if (version != null && code < Integer.parseInt(version)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Found New Update");
+                    builder.setMessage("Your app is not updated, Do you want to update now?");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName()));
+                            startActivity(browserIntent);
+                        }
+                    })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    if (!isFinishing()) {
+                        alertDialog.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, "Failed to check update.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void checkMandatoryUpdate() {
+        DatabaseReference versionRef = FirebaseDatabase.getInstance().getReference().child("VersionName");
+        versionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                double version = 1.0;
+                if (dataSnapshot.exists() && dataSnapshot.getValue() != null) {
+                    version = Double.parseDouble(dataSnapshot.getValue(String.class));
+                }
+
+                PackageManager manager = getApplicationContext().getPackageManager();
+                PackageInfo info = null;
+                try {
+                    info = manager.getPackageInfo(getApplicationContext().getPackageName(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                double versionName = 1.0;
+                if (info != null) {
+                    versionName = Double.parseDouble(info.versionName);
+                }
+
+                if (versionName < version) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Found New Update");
+                    builder.setMessage("Your app is not updated, Please update now.");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("Update Now", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName()));
+                            startActivity(browserIntent);
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    if (!isFinishing()) {
+                        alertDialog.show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, "Failed to check update.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadAdminImageNotice() {
+        databaseReference.child("adminMessage").child("image_notice").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<ImageNotice> imageNoticeList=new ArrayList<>();
+                if (dataSnapshot.exists() && dataSnapshot.hasChildren()){
+                    for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                        imageNoticeList.add(snapshot.getValue(ImageNotice.class));
+                    }
+                }
+                if (imageNoticeList.size()>0){
+                    saveImageUrlToStorage(imageNoticeList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void saveImageUrlToStorage(List<ImageNotice> list) {
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeImageOneUrlKey,list.get(0).getImageUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeTargetOneUrlKey,list.get(0).getTargetUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeImageTwoUrlKey,list.get(1).getImageUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeTargetTwoUrlKey,list.get(1).getTargetUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeImageThreeUrlKey,list.get(2).getImageUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeTargetThreeUrlKey,list.get(2).getTargetUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeImageFourUrlKey,list.get(3).getImageUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeTargetFourUrlKey,list.get(3).getTargetUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeImageFiveUrlKey,list.get(4).getImageUrl());
+        CommonMethods.setStringToSharedPreference(MainActivity.this,Constants.adminNoticeTargetFiveUrlKey,list.get(4).getTargetUrl());
+    }
+
+    private void showAdminNoticeImage() {
+        imageNotice =new ImageNotice();
+        Random random=new Random();
+        int value=random.nextInt(5);
+        if (value==0){
+            imageNotice.setImageUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeImageOneUrlKey,null));
+            imageNotice.setTargetUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeTargetOneUrlKey,null));
+        }else if (value==1){
+            imageNotice.setImageUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeImageTwoUrlKey,null));
+            imageNotice.setTargetUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeTargetTwoUrlKey,null));
+        }else if (value==2){
+            imageNotice.setImageUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeImageThreeUrlKey,null));
+            imageNotice.setTargetUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeTargetThreeUrlKey,null));
+        }else if (value==3){
+            imageNotice.setImageUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeImageFourUrlKey,null));
+            imageNotice.setTargetUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeTargetFourUrlKey,null));
+        }else if (value==4){
+            imageNotice.setImageUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeImageFiveUrlKey,null));
+            imageNotice.setTargetUrl(CommonMethods.getStringFromSharedPreference(MainActivity.this,Constants.adminNoticeTargetFiveUrlKey,null));
+        }
+
+        if (imageNotice.getImageUrl()!=null && !imageNotice.getImageUrl().isEmpty() && !imageNotice.getImageUrl().equalsIgnoreCase(" ") && !imageNotice.getImageUrl().contains(" ")){
+            binding.mainActivityAdminNoticeImageView.setVisibility(View.VISIBLE);
+            try {
+                Picasso.get().load(imageNotice.getImageUrl()).transform(new CommonMethods.PicassoTransform(getDisplayWidthInPixel())).into(binding.mainActivityAdminNoticeImageView);
+            } catch (Exception e) {
+                binding.mainActivityAdminNoticeImageView.setVisibility(View.GONE);
+            }
+        }else {
+            binding.mainActivityAdminNoticeImageView.setVisibility(View.GONE);
+        }
+    }
+
+    private int getDisplayWidthInPixel() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
+    }
 
     private void startBackgroundService() {
         String workerTag="Abdullah";
@@ -111,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         languageList[2]="English";
         selectedCountry="Bangladesh";
         selectedLanguage="Bangla";
+        databaseReference=FirebaseDatabase.getInstance().getReference();
         connectivityManager= (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         binding.nextButton.setOnClickListener(this);
         binding.setCountryButton.setOnClickListener(this);
@@ -119,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.giveFiveStarButton.setOnClickListener(this);
         binding.moreAppsButton.setOnClickListener(this);
         binding.shareAppsButton.setOnClickListener(this);
+        binding.mainActivityAdminNoticeImageView.setOnClickListener(this);
     }
 
     private void goToHomeActivity() {
@@ -126,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         CommonMethods.setStringToSharedPreference(getApplicationContext(), Constants.selectedLanguageTag,selectedLanguage);
         Intent intent=new Intent(MainActivity.this, HomeActivity.class);
         startActivity(intent);
-        finish();
     }
 
     private void showCountryAlertDialog() {
@@ -257,6 +463,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.shareAppsButton:
                 shareApp();
                 break;
+
+            case R.id.mainActivityAdminNoticeImageView:
+                if (imageNotice!=null && imageNotice.getTargetUrl()!=null) {
+                    intent=new Intent(MainActivity.this, WebViewActivity.class);
+                    intent.putExtra(Constants.UrlTag,imageNotice.getTargetUrl());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "Sorry, Target url is not detected.", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
@@ -265,6 +481,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         Constants.isUserActive=true;
         updateUiForCountryAndLanguage();
+        checkMandatoryUpdate();
     }
 
     @Override

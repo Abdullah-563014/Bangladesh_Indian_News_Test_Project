@@ -906,11 +906,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             bdInternational.setPaperName(nameList.get(i));
                             bdInternational.setBackgroundColor("SkyBlue");
                             bdInternational.setTextColor("White");
-                            if (i==0) {
-                                bdInternational.setNotificationStatus("on");
-                            } else {
-                                bdInternational.setNotificationStatus("off");
-                            }
+                            bdInternational.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.bdInternationalDao().insertNews(bdInternational);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1004,11 +1000,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             indianBanglaInternational.setPaperName(nameList.get(i));
                             indianBanglaInternational.setBackgroundColor("SkyBlue");
                             indianBanglaInternational.setTextColor("White");
-                            if (i==0) {
-                                indianBanglaInternational.setNotificationStatus("on");
-                            } else {
-                                indianBanglaInternational.setNotificationStatus("off");
-                            }
+                            indianBanglaInternational.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianBanglaInternationalDao().insertNews(indianBanglaInternational);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1102,11 +1094,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             indianHindiInternational.setPaperName(nameList.get(i));
                             indianHindiInternational.setBackgroundColor("SkyBlue");
                             indianHindiInternational.setTextColor("White");
-                            if (i==0) {
-                                indianHindiInternational.setNotificationStatus("on");
-                            } else {
-                                indianHindiInternational.setNotificationStatus("off");
-                            }
+                            indianHindiInternational.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianHindiInternationalDao().insertNews(indianHindiInternational);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1200,11 +1188,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             indianEnglishInternational.setPaperName(nameList.get(i));
                             indianEnglishInternational.setBackgroundColor("SkyBlue");
                             indianEnglishInternational.setTextColor("White");
-                            if (i==0) {
-                                indianEnglishInternational.setNotificationStatus("on");
-                            } else {
-                                indianEnglishInternational.setNotificationStatus("off");
-                            }
+                            indianEnglishInternational.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianEnglishInternationalDao().insertNews(indianEnglishInternational);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {

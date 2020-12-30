@@ -902,11 +902,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             bdSport.setPaperName(nameList.get(i));
                             bdSport.setBackgroundColor("SkyBlue");
                             bdSport.setTextColor("White");
-                            if (i==0) {
-                                bdSport.setNotificationStatus("on");
-                            } else {
-                                bdSport.setNotificationStatus("off");
-                            }
+                            bdSport.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.bdSportsDao().insertNews(bdSport);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1000,11 +996,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianBanglaSport.setPaperName(nameList.get(i));
                             indianBanglaSport.setBackgroundColor("SkyBlue");
                             indianBanglaSport.setTextColor("White");
-                            if (i==0) {
-                                indianBanglaSport.setNotificationStatus("on");
-                            } else {
-                                indianBanglaSport.setNotificationStatus("off");
-                            }
+                            indianBanglaSport.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianBanglaSportDao().insertNews(indianBanglaSport);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1098,11 +1090,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianHindiSport.setPaperName(nameList.get(i));
                             indianHindiSport.setBackgroundColor("SkyBlue");
                             indianHindiSport.setTextColor("White");
-                            if (i==0) {
-                                indianHindiSport.setNotificationStatus("on");
-                            } else {
-                                indianHindiSport.setNotificationStatus("off");
-                            }
+                            indianHindiSport.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianHindiSportsDao().insertNews(indianHindiSport);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
@@ -1196,11 +1184,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianEnglishSports.setPaperName(nameList.get(i));
                             indianEnglishSports.setBackgroundColor("SkyBlue");
                             indianEnglishSports.setTextColor("White");
-                            if (i==0) {
-                                indianEnglishSports.setNotificationStatus("on");
-                            } else {
-                                indianEnglishSports.setNotificationStatus("off");
-                            }
+                            indianEnglishSports.setNotificationStatus("off");
                             Completable.fromAction(()->{
                                 newsDatabase.indianEnglishSportsDao().insertNews(indianEnglishSports);
                             }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new CompletableObserver() {
