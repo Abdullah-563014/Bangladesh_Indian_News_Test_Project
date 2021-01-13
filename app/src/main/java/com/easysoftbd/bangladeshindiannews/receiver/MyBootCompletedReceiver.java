@@ -1,10 +1,14 @@
 package com.easysoftbd.bangladeshindiannews.receiver;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.service.notification.StatusBarNotification;
+import android.util.Log;
 
+import androidx.core.content.ContextCompat;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
@@ -24,27 +28,18 @@ import java.util.concurrent.TimeUnit;
 
 public class MyBootCompletedReceiver extends BroadcastReceiver {
 
+    private NotificationManager notificationManager;
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (notificationManager==null) {
+            notificationManager= (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        }
         startForgroundService(context);
     }
 
-
-    private void startBackgroundService(Context context) {
-        String workerTag="Abdullah";
-        Constraints constraints=new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-        PeriodicWorkRequest request=new PeriodicWorkRequest.Builder(NewsLoaderService.class,15, TimeUnit.MINUTES)
-                .addTag(workerTag)
-                .setConstraints(constraints)
-                .build();
-        WorkManager.getInstance(context)
-                .enqueueUniquePeriodicWork(workerTag, ExistingPeriodicWorkPolicy.REPLACE, request);
-    }
-
-    private boolean isWorkScheduled(String tag) {
-        WorkManager instance = WorkManager.getInstance();
+    private boolean isWorkScheduled(Context context, String tag) {
+        WorkManager instance = WorkManager.getInstance(context.getApplicationContext());
         ListenableFuture<List<WorkInfo>> statuses = instance.getWorkInfosByTag(tag);
         try {
             boolean running = false;
@@ -54,24 +49,39 @@ public class MyBootCompletedReceiver extends BroadcastReceiver {
                 running = state == WorkInfo.State.RUNNING | state == WorkInfo.State.ENQUEUED;
             }
             return running;
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return false;
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             return false;
         }
     }
 
+    private boolean isForgroundServiceVisible() {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            StatusBarNotification[] notifications = notificationManager.getActiveNotifications();
+            if (notifications.length > 0) {
+                for (StatusBarNotification notification : notifications) {
+                    if (notification.getId() == 11111) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private void startForgroundService(Context context) {
-        if (!isWorkScheduled(Constants.TAG)) {
-            Intent intent = new Intent(context, MyForgroundService.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent);
-            } else {
-//            startService(intent);
-                startBackgroundService(context);
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            if (!isWorkScheduled(context,Constants.TAG) || !isForgroundServiceVisible()) {
+                Intent intent = new Intent(context.getApplicationContext(), MyForgroundService.class);
+                ContextCompat.startForegroundService(context.getApplicationContext(),intent);
+            }
+        } else {
+            if (!isWorkScheduled(context,Constants.TAG)) {
+                Intent intent = new Intent(context.getApplicationContext(), MyForgroundService.class);
+                ContextCompat.startForegroundService(context.getApplicationContext(),intent);
             }
         }
     }
+
+
 }

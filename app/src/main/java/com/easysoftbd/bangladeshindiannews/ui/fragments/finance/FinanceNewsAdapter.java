@@ -52,6 +52,15 @@ public class FinanceNewsAdapter extends RecyclerView.Adapter<FinanceNewsAdapter.
             holder.binding.titleTextView.setText(list.get(position).getTitle());
             holder.binding.titleTextView.setTextColor(ContextCompat.getColor(context,getColorCode(list.get(position).getTextColor())));
         }
+
+        if (list.get(position).getNewsAndLinkModelList().size()<=0) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel("No data found, need to update.", "https://www.google.com/");
+            List<NewsAndLinkModel> newsAndLinkModels=new ArrayList<>();
+            newsAndLinkModels.add(newsAndLinkModel);
+            newsAndLinkModels.add(newsAndLinkModel);
+            newsAndLinkModels.add(newsAndLinkModel);
+            list.get(position).setNewsAndLinkModelList(newsAndLinkModels);
+        }
         List<String> contents=new ArrayList<>();
         List<NewsAndLinkModel> newsAndLinkModels=list.get(position).getNewsAndLinkModelList();
         for (int i=0; i<newsAndLinkModels.size(); i++) {

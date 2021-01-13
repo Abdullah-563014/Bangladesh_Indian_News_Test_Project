@@ -126,7 +126,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             setAmarDesh24InternationalNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyIttefaqInternational)){
                             setDailyIttefaqInternationalNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.manobZaminInternational)){
+                        } else if (document.baseUri().equalsIgnoreCase("https://mzamin.com/category.php?cid=8")){
                             setManobZaminInternationalNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.sangbadpratidinInternational)){
                             setSangbadPratidinInternationalNews(document);
@@ -189,7 +189,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.samacharJagatInternationalNews)){
                             setSamacharJagatInternationalNews(document);
                         }// Indian hindi international news link are staying above.
-                        else if (document.baseUri().equalsIgnoreCase(MyUrl.hindustanTimesInternationalNews)){
+                        else if (MyUrl.hindustanTimesInternationalNews.contains(document.baseUri())){
                             setHindustanTimesInternationalNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.indianExpressInternationalNews)){
                             setIndianExpressInternationalNews(document);
@@ -1246,9 +1246,9 @@ public class InternationalFragmentViewModel extends ViewModel {
     private void setSamakalInternationalNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("a.link-overlay[href]");
+            Elements allList = document.select("div.news-content.xs-100.cpItemMarginB");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String link = allList.get(i).select("a[href]").attr("href");
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
@@ -1310,11 +1310,11 @@ public class InternationalFragmentViewModel extends ViewModel {
     private void setBanglaTribuneInternationalNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("h2.title_holder a[href]");
+            Elements allList = document.select("a.link_overlay[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
-                String link="https://www.banglatribune.com"+temporaryLink;
-                String news = allList.get(i).text();
+                String link="https://"+temporaryLink.substring(2);
+                String news = allList.get(i).attr("title");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
@@ -1783,9 +1783,11 @@ public class InternationalFragmentViewModel extends ViewModel {
     private void setOneIndiaInternationalNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("article h2 a[href]");
+            Elements allList = document.select("ul li div.cityblock-title.news-desc a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
+                String link=MyUrl.oneIndiaBanglaBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
@@ -2089,9 +2091,11 @@ public class InternationalFragmentViewModel extends ViewModel {
     private void setHindustanTimesInternationalNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div#scroll-container ul li div.media-heading.headingfour a[href]");
+            Elements allList = document.select("div.storyShortDetail h2 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
+                String link=MyUrl.hindustanTimesBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
@@ -2223,7 +2227,8 @@ public class InternationalFragmentViewModel extends ViewModel {
         try {
             Elements allList = document.select("h3 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
                 String link=MyUrl.asianAgeBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);

@@ -42,12 +42,12 @@
         <item>কালের কণ্ঠ (ব্রেকিং নিউজ)</item>
         <item>সমকাল (ব্রেকিং নিউজ)</item>
         <item>দৈনিক জনকন্ঠ (ব্রেকিং নিউজ)</item>
-        <!--        <item>ভোরের কাগজ (ব্রেকিং নিউজ)</item>-->
+        <item>ভোরের কাগজ (ব্রেকিং নিউজ)</item>
         <item>দৈনিক ইনকিলাব (ব্রেকিং নিউজ)</item>
         <item>নয়া দিগন্ত (ব্রেকিং নিউজ)</item>
         <item>আমার দেশ 24 (ব্রেকিং নিউজ)</item>
         <item>দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)</item>
-        <!--        <item>মানবজমিন (ব্রেকিং নিউজ)</item>-->
+        <item>মানবজমিন (ব্রেকিং নিউজ)</item>
         <item>সংবাদ প্রতিদিন (ব্রেকিং নিউজ)</item>
         <item>মানবকণ্ঠ (ব্রেকিং নিউজ)</item>
         <item>বাংলাদেশ জার্নাল (ব্রেকিং নিউজ)</item>
@@ -60,12 +60,12 @@
         <item>https://www.kalerkantho.com/</item>
         <item>https://samakal.com/</item>
         <item>https://www.dailyjanakantha.com/</item>
-        <!--        <item>https://www.bhorerkagoj.com/</item>-->
+        <item>https://www.bhorerkagoj.com/</item>
         <item>https://www.dailyinqilab.com/</item>
         <item>https://www.dailynayadiganta.com/</item>
         <item>https://amar-desh24.com/bangla/</item>
         <item>https://www.ittefaq.com.bd/wholecountry/</item>
-        <!--        <item>https://www.mzamin.com/</item>-->
+        <item>https://www.mzamin.com/</item>
         <item>https://www.sangbadpratidin.in/</item>
         <item>https://www.manobkantha.com.bd/</item>
         <item>https://www.bd-journal.com/</item>
@@ -149,7 +149,7 @@
         <item>সমকাল (সর্বশেষ খবর)</item>
         <item>দৈনিক জনকন্ঠ (সর্বশেষ খবর)</item>
         <item>বিডি নিউস ২৪ (সর্বশেষ খবর)</item>
-        <item>বাংলা ট্রিবিউন (সর্বশেষ খবর)</item>
+        <item>বাংলা ট্রিবিউন (বিনোদনের খবর)</item>
         <item>ভোরের কাগজ (সর্বশেষ খবর)</item>
         <item>দৈনিক ইনকিলাব (সর্বশেষ খবর)</item>
         <item>নয়া দিগন্ত (সর্বশেষ খবর)</item>
@@ -324,7 +324,7 @@
         <item>https://bengali.oneindia.com/news/sports</item>
         <item>https://www.kolkata24x7.com/category/sports/</item>
         <item>http://khabor24.in/category/sports/</item>
-        <item>https://bengal2day.com/%e0%a6%96%e0%a7%87%e0%a6%b2%e0%a6%be/</item>
+        <item>https://bengal2day.com/category/%e0%a6%96%e0%a7%87%e0%a6%b2%e0%a6%be/</item>
     </string-array>
 
     <string-array name="indian_bangla_entertainment_news_list">
@@ -358,7 +358,7 @@
         <item>https://bengali.oneindia.com/movies/</item>
         <item>https://www.kolkata24x7.com/category/entertainment-news/</item>
         <item>http://khabor24.in/category/entertainment/</item>
-        <item>https://bengal2day.com/entertainment/</item>
+        <item>https://bengal2day.com/category/entertainment/</item>
     </string-array>
 
     <string-array name="indian_bangla_finance_news_list">
@@ -418,7 +418,7 @@
         <item>http://jagarantripura.com/category/world/</item>
         <item>https://bengali.oneindia.com/news/international/</item>
         <item>https://www.kolkata24x7.com/category/international-news/</item>
-        <item>https://bengal2day.com/international/</item>
+        <item>https://bengal2day.com/category/international/</item>
     </string-array>
 
     <string-array name="indian_bangla_tv_channel_news_list">

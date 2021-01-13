@@ -16,6 +16,7 @@ import com.acoder.itemclickable.itemclickablemarqueeview.interfaces.ItemClickLis
 import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
+import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
 import com.easysoftbd.bangladeshindiannews.databinding.RecyclerViewModelLayoutBinding;
 import com.easysoftbd.bangladeshindiannews.ui.activities.home.HomeActivity;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
@@ -53,6 +54,15 @@ public class BreakingNewsAdapter extends RecyclerView.Adapter<BreakingNewsAdapte
         } else {
             holder.binding.titleTextView.setText(list.get(position).getTitle());
             holder.binding.titleTextView.setTextColor(ContextCompat.getColor(context,getColorCode(list.get(position).getTextColor())));
+        }
+
+        if (list.get(position).getNewsAndLinkModelList().size()<=0) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel("No data found, need to update.", "https://www.google.com/");
+            List<NewsAndLinkModel> newsAndLinkModels=new ArrayList<>();
+            newsAndLinkModels.add(newsAndLinkModel);
+            newsAndLinkModels.add(newsAndLinkModel);
+            newsAndLinkModels.add(newsAndLinkModel);
+            list.get(position).setNewsAndLinkModelList(newsAndLinkModels);
         }
         List<String> contents=new ArrayList<>();
         List<NewsAndLinkModel> newsAndLinkModels=list.get(position).getNewsAndLinkModelList();

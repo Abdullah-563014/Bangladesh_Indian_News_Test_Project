@@ -36,28 +36,44 @@
                 app:layout_constraintTop_toBottomOf="@+id/selectedLanguageTextView"
                 style="@style/ButtonCustomStyle"
                 android:text="Set Country"
-                android:layout_width="match_parent"
+                android:textSize="@dimen/_9ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.33"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"/>
             <Button
                 android:id="@+id/nextButton"
                 app:layout_constraintTop_toBottomOf="@+id/setCountryButton"
                 style="@style/ButtonCustomStyle"
                 android:text="Next"
-                android:layout_width="match_parent"
+                android:textSize="@dimen/_9ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.33"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"/>
             <Button
                 android:id="@+id/favouriteListButton"
                 app:layout_constraintTop_toBottomOf="@+id/nextButton"
                 style="@style/ButtonCustomStyle"
                 android:text="Favourite List"
-                android:layout_width="match_parent"
+                android:textSize="@dimen/_7ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.33"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"/>
             <Button
                 android:id="@+id/contactUsButton"
                 app:layout_constraintTop_toBottomOf="@+id/favouriteListButton"
                 style="@style/ButtonCustomStyle"
                 android:text="Contact Us"
-                android:layout_width="match_parent"
+                android:textSize="@dimen/_9ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.33"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"/>
             <LinearLayout
                 android:id="@+id/mainActivityRatingButtonRootLayout"

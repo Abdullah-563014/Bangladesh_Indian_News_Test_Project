@@ -127,12 +127,12 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             setMohonaTvBreekingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.myTvBd)){
                             setMyTvBdBreakingNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.jamunaTv)){
+                        } else if (document.baseUri().equalsIgnoreCase("https://www.jamuna.tv/")){
                             setJamunaTvBreakingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.news24Bd)){
                             setNews24BdBreakingNews(document);
                         }// bangladeshi tv chanel news link are staying above.
-                        else if (document.baseUri().equalsIgnoreCase(MyUrl.zeeNews24HoursTvChannelNews)){
+                        else if (MyUrl.zeeNews24HoursTvChannelNews.contains(document.baseUri())){
                             setZee24HoursTvChannelNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.abpLiveTvChannelNews)){
                             setAbpLiveTvChannelNews(document);
@@ -189,6 +189,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.romedyNowTvChannelNews)){
                             setRomedyNowTvChannelNews(document);
                         }
+//                        Log.d(Constants.TAG,"base url:- "+document.baseUri());
                     }
 
                     @Override
@@ -1388,11 +1389,11 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
     private void setNtvBreekingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.news-tracker-content.marquee.overflow-hidden ul li a");
+            Elements allList = document.select("ul.number-list.popular-news.pt-20 li a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
                 String news = allList.get(i).text();
-                String link=MyUrl.ntvBd+temporaryLink;
+                String link=MyUrl.ntvBd+linkWithExtras.substring(1);
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
@@ -1519,9 +1520,10 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
     private void setCalcuttaNewsTvChannelNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.td_module_trending_now.td-trending-now-post h3.entry-title.td-module-title a[href]");
+            Elements allList = document.select("a.brklink[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.calcuttaNewsTvChannelNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
@@ -1692,7 +1694,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
     private void setHindiNews24OnlineTvChannelNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.container div.row div.col-lg-2.col-md-2.col-sm-2.col-xs-6 h2 a[href]");
+            Elements allList = document.select("h4 a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
                 String link=MyUrl.hindiNews24OnlineTvChannelNews+temporaryLink;
@@ -1850,7 +1852,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
             Elements allList = document.select("div.live_left ul li a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String link = allList.get(i).attr("href");
-                String news = allList.get(i).select("div.list_des p strong").text();
+                String news = allList.get(i).text();
                 if (news.length()>=15) {
                     NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                     list.add(newsAndLinkModel);

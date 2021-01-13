@@ -2,6 +2,7 @@ package com.easysoftbd.bangladeshindiannews.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class MarqueeItemRecyclerAdapter extends RecyclerView.Adapter<MarqueeItem
         holder.binding.marqueeItemRecyclerTextView.setText(list.get(position).getNews());
         holder.binding.getRoot().setOnClickListener(view -> {
             openUrl(list.get(position).getLink());
+//            Log.d(Constants.TAG,"target url is:- "+list.get(position).getLink());
         });
     }
 

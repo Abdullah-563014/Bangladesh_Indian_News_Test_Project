@@ -3,6 +3,7 @@ package com.easysoftbd.bangladeshindiannews.ui.activities.main;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -12,6 +13,8 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import android.app.ActivityManager;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -20,6 +23,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ConnectivityManager connectivityManager;
     private DatabaseReference databaseReference;
     private ImageNotice imageNotice;
+    private NotificationManager mNotificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,21 +268,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return displayMetrics.widthPixels;
     }
 
-    private void startBackgroundService() {
-        String workerTag="Abdullah";
-        Constraints constraints=new Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build();
-        PeriodicWorkRequest request=new PeriodicWorkRequest.Builder(NewsLoaderService.class,15, TimeUnit.MINUTES)
-                .addTag(workerTag)
-                .setConstraints(constraints)
-                .build();
-        WorkManager.getInstance(getApplicationContext())
-        .enqueueUniquePeriodicWork(workerTag, ExistingPeriodicWorkPolicy.REPLACE, request);
-    }
-
     private boolean isWorkScheduled(String tag) {
-        WorkManager instance = WorkManager.getInstance();
+        WorkManager instance = WorkManager.getInstance(getApplicationContext());
         ListenableFuture<List<WorkInfo>> statuses = instance.getWorkInfosByTag(tag);
         try {
             boolean running = false;
@@ -287,23 +279,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 running = state == WorkInfo.State.RUNNING | state == WorkInfo.State.ENQUEUED;
             }
             return running;
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-            return false;
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
             return false;
         }
     }
 
+    private boolean isForgroundServiceVisible() {
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            StatusBarNotification[] notifications = mNotificationManager.getActiveNotifications();
+            if (notifications.length > 0) {
+                for (StatusBarNotification notification : notifications) {
+                    if (notification.getId() == 11111) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     private void startForgroundService() {
-        if (!isWorkScheduled(Constants.TAG)) {
-            Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent);
-            } else {
-//            startService(intent);
-                startBackgroundService();
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            if (!isWorkScheduled(Constants.TAG) || !isForgroundServiceVisible()) {
+                Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
+                ContextCompat.startForegroundService(getApplicationContext(),intent);
+            }
+        } else {
+            if (!isWorkScheduled(Constants.TAG)) {
+                Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
+                ContextCompat.startForegroundService(getApplicationContext(),intent);
             }
         }
     }
@@ -326,6 +331,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding.moreAppsButton.setOnClickListener(this);
         binding.shareAppsButton.setOnClickListener(this);
         binding.mainActivityAdminNoticeImageView.setOnClickListener(this);
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     private void goToHomeActivity() {

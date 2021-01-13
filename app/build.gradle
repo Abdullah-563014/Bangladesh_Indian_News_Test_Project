@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.easysoftbd.bangladeshindiannews"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         multiDexEnabled true
         versionCode 1
@@ -96,6 +96,7 @@ dependencies {
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
 
+    implementation 'com.github.MonsterTechnoGits:WebViewAdblock:1.1'
 
     implementation 'com.facebook.android:audience-network-sdk:5.+'
     implementation 'com.google.android.gms:play-services-ads:19.6.0'

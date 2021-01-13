@@ -183,7 +183,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.samacharJagatFinanceNews)){
                             setSamacharJagatFinanceNews(document);
                         }// Indian hindi finance news link are staying above.
-                        else if (document.baseUri().equalsIgnoreCase(MyUrl.hindustanTimesFinanceNews)){
+                        else if (MyUrl.hindustanTimesFinanceNews.contains(document.baseUri())){
                             setHindustanTimesFinanceNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.indianExpressFinanceNews)){
                             setIndianExpressFinanceNews(document);
@@ -1432,10 +1432,10 @@ public class FinanceFragmentViewModel extends ViewModel {
     private void setBanglaTribuneFinanceNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("h2.title_holder a[href]");
+            Elements allList = document.select("div.each_tab.tab_latest.oh.db ul li a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
-                String link="https://www.banglatribune.com"+temporaryLink;
+                String link="https://"+temporaryLink.substring(2);
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
@@ -2044,9 +2044,11 @@ public class FinanceFragmentViewModel extends ViewModel {
     private void setHindustanTimesFinanceNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div#scroll-container ul li a[href]");
+            Elements allList = document.select("div.storyShortDetail h2 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
+                String link=MyUrl.hindustanTimesBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 if (news.length()>=11) {
                     NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
@@ -2181,7 +2183,8 @@ public class FinanceFragmentViewModel extends ViewModel {
         try {
             Elements allList = document.select("div.col-lg-9.col-md-8.noPadding.leftCol h3 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
                 String link=MyUrl.asianAgeBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);

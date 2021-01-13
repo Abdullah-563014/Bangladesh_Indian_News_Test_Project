@@ -120,7 +120,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             setAmarDesh24SportNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyIttefaqSports)) {
                             setDailyIttefaqSportNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyManobJominSports)) {
+                        } else if (document.baseUri().equalsIgnoreCase("https://mzamin.com/category.php?cid=4")) {
                             setDailyManobJominSportNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.sangbadPratidinSports)) {
                             setSangbadPratidinSportNews(document);
@@ -189,7 +189,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.samacharJagatSportsNews)) {
                             setSamacharJagatSportNews(document);
                         }// Indian hindi sports news papers list are staying above.
-                        else if (document.baseUri().equalsIgnoreCase(MyUrl.hindustanTimesSportsNews)) {
+                        else if (MyUrl.hindustanTimesSportsNews.contains(document.baseUri())) {
                             setHindustanTimesSportNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.indianExpressSportsNews)) {
                             setIndianExpressSportNews(document);
@@ -214,6 +214,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.tribuneIndiaSportsNews)) {
                             setTribuneIndiaSportNews(document);
                         }
+//                        Log.d(Constants.TAG,"base url:- "+document.baseUri());
                     }
 
                     @Override
@@ -1435,11 +1436,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
     private void setBanglaTribuneSportNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.title_time_author_holder h2.title_holder a[href]");
+            Elements allList = document.select("div.col.col3 a.link_overlay[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
-                String link=MyUrl.banglaTribunesSports+temporaryLink.substring(6);
-                String news = allList.get(i).text();
+                String link="https://"+temporaryLink.substring(2);
+                String news = allList.get(i).attr("title");
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
@@ -2154,9 +2155,11 @@ public class SportNewsFragmentViewModel extends ViewModel {
     private void setHindustanTimesSportNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.media-heading.headingfour a[href]");
+            Elements allList = document.select("div.storyShortDetail h2 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
+                String link=MyUrl.hindustanTimesBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
@@ -2286,7 +2289,8 @@ public class SportNewsFragmentViewModel extends ViewModel {
         try {
             Elements allList = document.select("div.top-stories-box.col-lg-6.col-md-6.col-sm-6 h3 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
                 String link=MyUrl.asianAgeBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);

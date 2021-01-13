@@ -2,6 +2,7 @@ package com.easysoftbd.bangladeshindiannews.data.network;
 
 public class MyUrl {
 
+
     public static final String bdProtidin="https://www.bd-pratidin.com/";
     public static final String prothomAlo="https://www.prothomalo.com/";
     public static final String kalerKhanto="https://www.kalerkantho.com/";
@@ -150,7 +151,7 @@ public class MyUrl {
     public static final String oneIndiaSportsNews="https://bengali.oneindia.com/news/sports";
     public static final String kolkata247SportsNews="https://www.kolkata24x7.com/category/sports/";
     public static final String khabor24SportsNews="http://khabor24.in/category/sports/";
-    public static final String bengal2DaySportsNews="https://bengal2day.com/%e0%a6%96%e0%a7%87%e0%a6%b2%e0%a6%be/";
+    public static final String bengal2DaySportsNews="https://bengal2day.com/category/%e0%a6%96%e0%a7%87%e0%a6%b2%e0%a6%be/";
 // indian bangla sports news link are staying above.
 
 
@@ -169,7 +170,7 @@ public class MyUrl {
     public static final String oneIndiaEntertainmentNews="https://bengali.oneindia.com/movies/";
     public static final String kolkata247EntertainmentNews="https://www.kolkata24x7.com/category/entertainment-news/";
     public static final String khabor24EntertainmentNews="http://khabor24.in/category/entertainment/";
-    public static final String bengal2DayEntertainmentNews="https://bengal2day.com/entertainment/";
+    public static final String bengal2DayEntertainmentNews="https://bengal2day.com/category/entertainment/";
 // indian bangla entertainment news link are staying above.
 
 
@@ -201,7 +202,7 @@ public class MyUrl {
     public static final String jagaranTripuraInternationalNews="http://jagarantripura.com/category/world/";
     public static final String oneIndiaInternationalNews="https://bengali.oneindia.com/news/international/";
     public static final String kolkata247InternationalNews="https://www.kolkata24x7.com/category/international-news/";
-    public static final String bengal2DayInternationalNews="https://bengal2day.com/international/";
+    public static final String bengal2DayInternationalNews="https://bengal2day.com/category/international/";
 // indian bangla international news link are staying above.
 
 

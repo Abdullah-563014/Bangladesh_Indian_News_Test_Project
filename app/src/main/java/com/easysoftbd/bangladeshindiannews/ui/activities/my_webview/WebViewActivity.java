@@ -47,6 +47,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -75,6 +76,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.JsonElement;
+import com.monstertechno.adblocker.AdBlockerWebView;
+import com.monstertechno.adblocker.util.AdBlocker;
 import com.mopub.common.MoPub;
 import com.mopub.common.SdkConfiguration;
 import com.mopub.common.logging.MoPubLog;
@@ -151,6 +154,7 @@ public class WebViewActivity extends AppCompatActivity {
             url = bundle.getString("Url", null);
             willLoadFirstInterstitialAds=bundle.getBoolean("WillShowInterstitialAds",true);
         }
+//        Log.d(Constants.TAG,"url is:- "+url);
         if (url != null) {
             openWebPage(url);
         } else {
@@ -883,6 +887,7 @@ public class WebViewActivity extends AppCompatActivity {
         connectivityManager= (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         newsDatabase= DatabaseClient.getInstance(getApplicationContext()).getAppDatabase();
         compositeDisposable=new CompositeDisposable();
+        new AdBlockerWebView.init(this).initializeWebView(binding.myWebView);
 
         initCustomProgressBar();
     }
@@ -1148,6 +1153,11 @@ public class WebViewActivity extends AppCompatActivity {
                 }
                 pageFinishedFlag=true;
             }
+            if (url.contains("www.kalerkantho.com")) {
+                binding.webViewActivitySwipeRefreshLayout.setEnabled(false);
+            } else {
+                binding.webViewActivitySwipeRefreshLayout.setEnabled(true);
+            }
         }
 
         @Override
@@ -1201,6 +1211,24 @@ public class WebViewActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
         }
+
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Nullable
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            return AdBlockerWebView.blockAds(view,request.getUrl().toString()) ? AdBlocker.createEmptyResource() :
+                    super.shouldInterceptRequest(view, request);
+        }
+
+        @SuppressWarnings("deprecation")
+        @Nullable
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            return AdBlockerWebView.blockAds(view,url) ? AdBlocker.createEmptyResource() :
+                    super.shouldInterceptRequest(view, url);
+        }
+
+
     }
 
     private boolean openFacebookApp(String url) {

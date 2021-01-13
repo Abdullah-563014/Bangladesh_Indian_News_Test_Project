@@ -107,6 +107,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             setSomokalBreekingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyJonoKhanto)) {
                             setDailyJanaKhantoBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.bhorerKagoj)) {
+                            setBhorerKagojBreekingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyInqilab)) {
                             setDailyInqilabBreekingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyNayaDiganta)) {
@@ -115,6 +117,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             setAmarDesh24BreekingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyIttefaq)) {
                             setDailyIttefaqBreekingNews(document);
+                        } else if (document.baseUri().equalsIgnoreCase("https://mzamin.com/")) {
+                            setManobJominBreekingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.songbadProtidin)) {
                             setSongbadProtidinBreekingNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.manobKantha)) {
@@ -211,6 +215,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.liveMintBreakingNews)) {
                             setLiveMintBreakingNews(document);
                         }
+//                        Log.d(Constants.TAG,"base url:- "+document.baseUri());
                     }
 
                     @Override
@@ -1245,6 +1250,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.prothomAlo);
             list.add(newsAndLinkModel);
         }
+
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("প্রথম আলো (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
@@ -1340,6 +1346,27 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
     }
+    private void setBhorerKagojBreekingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.podan10-news h4.news-title a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String link = allList.get(i).attr("href");
+                String news = allList.get(i).text();
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bhorerKagoj);
+            list.add(newsAndLinkModel);
+            Log.d(Constants.TAG, "error is " + e.getMessage());
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("ভোরের কাগজ (ব্রেকিং নিউজ)");
+        itemModel.setNewsAndLinkModelList(list);
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
     private void setDailyInqilabBreekingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
@@ -1422,6 +1449,30 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         }
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("দৈনিক ইত্তেফাক (ব্রেকিং নিউজ)");
+        itemModel.setNewsAndLinkModelList(list);
+        temporaryList.add(itemModel);
+        itemList.setValue(temporaryList);
+    }
+    private void setManobJominBreekingNews(Document document) {
+        List<NewsAndLinkModel> list = new ArrayList<>();
+        try {
+            Elements allList = document.select("div.sec-box-home h4 a[href]");
+            for (int i = 0; i < allList.size(); i++) {
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.manobJomin+temporaryLink;
+                String news = allList.get(i).text();
+                if (news.length() >= 20) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
+            }
+        } catch (Exception e) {
+            NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.manobJomin);
+            list.add(newsAndLinkModel);
+            Log.d(Constants.TAG, "error is " + e.getMessage());
+        }
+        RecyclerItemModel itemModel = new RecyclerItemModel();
+        itemModel.setTitle("মানবজমিন (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
         temporaryList.add(itemModel);
         itemList.setValue(temporaryList);
@@ -1521,7 +1572,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         try {
             Elements allList = document.select("div.abp-atf-left-story-block a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String temporaryLink = allList.get(i).attr("href");
+                String link=MyUrl.anandaBazarBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
@@ -1996,7 +2048,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private void setHariBhoomiBreakingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div#home_top_right_level_1 ul.news-post.news-feature-mb li h4 a[href]");
+            Elements allList = document.select("div#home_top_right_level_1 h3 a[href]");
             for (int i = 0; i < allList.size(); i++) {
                 String temporaryLink = allList.get(i).attr("href");
                 String link=MyUrl.hariBhoomiBreakingNews+temporaryLink;
@@ -2061,12 +2113,14 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private void setDeshDootBreakingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div[data-infinite-scroll=1] a[href^=https://www.deshdoot.com/]");
+            Elements allList = document.select("a[href^=https://www.deshdoot.com/local-news/]");
             for (int i = 0; i < allList.size(); i++) {
                 String link = allList.get(i).attr("href");
                 String news = allList.get(i).text();
-                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                list.add(newsAndLinkModel);
+                if (news.length()>=15) {
+                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                    list.add(newsAndLinkModel);
+                }
             }
         } catch (Exception e) {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.deshDootBreakingNews);
@@ -2150,9 +2204,11 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
     private void setHindustanTimesBreakingNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("div.new-topnews-left ul li h2 a[href]");
+            Elements allList = document.select("div.storyShortDetail h3 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
+                String link=MyUrl.hindustanTimesBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 if (news.length()>=15) {
                     NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
@@ -2284,7 +2340,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         try {
             Elements allList = document.select("div.single_left_coloum_wrapper.other-top-stories h3 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
                 String link=MyUrl.asianAgeBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
@@ -2418,7 +2475,9 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
         try {
             Elements allList = document.select("h2.headline a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
+                String link=MyUrl.liveMintBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);

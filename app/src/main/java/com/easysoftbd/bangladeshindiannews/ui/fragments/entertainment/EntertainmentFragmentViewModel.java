@@ -124,7 +124,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             setAmarDesh24EntertainmentNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyIttefaqEntertainment)){
                             setDailyIttefaqEntertainmentNews(document);
-                        } else if (document.baseUri().equalsIgnoreCase(MyUrl.dailyManobJominEntertainment)){
+                        } else if (document.baseUri().equalsIgnoreCase("https://mzamin.com/category.php?cid=5")){
                             setDailyManobJominEntertainmentNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.sangbadpratidinEntertainment)){
                             setSangbadPratidinEntertainmentNews(document);
@@ -194,7 +194,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.patrikaEntertainmentNews)){
                             setPatrikaEntertainmentNews(document);
                         }// Indian Hindi entertainment news papers link are staying above.
-                        else if (document.baseUri().equalsIgnoreCase(MyUrl.hindustanTimesEntertainmentNews)){
+                        else if (MyUrl.hindustanTimesEntertainmentNews.contains(document.baseUri())){
                             setHindustanTimesEntertainmentNews(document);
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.indianExpressEntertainmentNews)){
                             setIndianExpressEntertainmentNews(document);
@@ -215,6 +215,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                         } else if (document.baseUri().equalsIgnoreCase(MyUrl.tribuneIndiaEntertainmentNews)){
                             setTribuneIndiaEntertainmentNews(document);
                         }
+//                        Log.d(Constants.TAG,"base url:- "+document.baseUri());
                     }
 
                     @Override
@@ -1441,11 +1442,11 @@ public class EntertainmentFragmentViewModel extends ViewModel {
     private void setBanglaTribuneEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements newsList = document.select("h2.title_holder a[href]");
+            Elements newsList = document.select("a.link_overlay[href]");
             for (int i = 0; i < newsList.size(); i++) {
-                String news = newsList.get(i).text();
+                String news = newsList.get(i).attr("title");
                 String temporaryLink=newsList.get(i).attr("href");
-                String link="https://www.banglatribune.com"+temporaryLink;
+                String link="https://"+temporaryLink.substring(2);
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
                 list.add(newsAndLinkModel);
             }
@@ -1454,7 +1455,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
             list.add(newsAndLinkModel);
         }
         RecyclerItemModel itemModel=new RecyclerItemModel();
-        itemModel.setTitle("বাংলা ট্রিবিউন (সর্বশেষ খবর)");
+        itemModel.setTitle("বাংলা ট্রিবিউন (বিনোদনের খবর)");
         itemModel.setNewsAndLinkModelList(list);
 
         temporaryList.add(itemModel);
@@ -1770,9 +1771,10 @@ public class EntertainmentFragmentViewModel extends ViewModel {
     private void setOneIndiaEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("h2.collection-heading a[href]");
+            Elements allList = document.select("ul li div.cityblock-title.news-desc a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
                 String link=MyUrl.oneIndiaBanglaBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
@@ -2166,14 +2168,14 @@ public class EntertainmentFragmentViewModel extends ViewModel {
     private void setHindustanTimesEntertainmentNews(Document document) {
         List<NewsAndLinkModel> list = new ArrayList<>();
         try {
-            Elements allList = document.select("a[href^=https://www.hindustantimes.com/]");
+            Elements allList = document.select("div.storyShortDetail h2 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String link = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
+                String link=MyUrl.hindustanTimesBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
-                if (news.length()>=21) {
-                    NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
-                    list.add(newsAndLinkModel);
-                }
+                NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
+                list.add(newsAndLinkModel);
             }
         } catch (Exception e) {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.hindustanTimesEntertainmentNews);
@@ -2300,7 +2302,8 @@ public class EntertainmentFragmentViewModel extends ViewModel {
         try {
             Elements allList = document.select("h3 a[href]");
             for (int i = 0; i < allList.size(); i++) {
-                String temporaryLink = allList.get(i).attr("href");
+                String linkWithExtras = allList.get(i).attr("href");
+                String temporaryLink=linkWithExtras.substring(1);
                 String link=MyUrl.asianAgeBreakingNews+temporaryLink;
                 String news = allList.get(i).text();
                 NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(news, link);
