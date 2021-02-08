@@ -3,6 +3,7 @@ package com.easysoftbd.bangladeshindiannews.ui;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.res.Resources;
 import android.os.Build;
 
 import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
@@ -18,11 +19,13 @@ public class MyApplication  extends Application {
 
     public static final String MY_NOTIFICATION_CHANNEL_ID="BangladeshIndianNews";
     private String notificationName="BangladeshIndianNews";
+    private static Resources resources;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        resources=getResources();
         createNotificationChannel();
 
         Constants.platformName= CommonMethods.getStringFromSharedPreference(this, Constants.platformNameKey,"unity");
@@ -57,6 +60,10 @@ public class MyApplication  extends Application {
             NotificationManager manager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.createNotificationChannel(notificationChannel);
         }
+    }
+
+    public static Resources getRes() {
+        return resources;
     }
 
 

@@ -10,6 +10,8 @@ public class Constants {
     public static final String selectedCountryTag="SelectedCountryTag";
     public static final String selectedLanguageTag="SelectedLanguageTag";
 
+    public static final String notificationStatusSwitchKey="NotificationStatusSwitchKey";
+    public static final String notificationSoundSwitchKey="NotificationSoundSwitchKey";
     public static final String ipCheckSwitchKey="IpCheckSwitchKey";
     public static final String countryNameKey="CountryNameKey";
     public static final String languageNameKey="LanguageNameKey";

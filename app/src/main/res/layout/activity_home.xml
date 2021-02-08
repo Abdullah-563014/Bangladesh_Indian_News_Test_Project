@@ -17,8 +17,9 @@
             app:tabMode="scrollable"
             app:tabGravity="fill"
             app:tabPadding="0dp"
+            android:backgroundTint="@color/colorTealGreenDark"
             app:tabIndicatorColor="@color/colorAccent"
-            app:tabSelectedTextColor="@color/colorBlack"
+            app:tabSelectedTextColor="@color/colorWhite"
             app:tabTextColor="@color/colorTabItemColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

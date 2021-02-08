@@ -24,4 +24,9 @@
     <color name="colorFuchsia">#FF00FF</color>
     <color name="colorPurple">#800080</color>
     <color name="colorSkyBlue">#2196F3</color>
+    <color name="colorTealGreen">#128C7E</color>
+    <color name="colorTealGreenDark">#075E54</color>
+
+
+
 </resources>

@@ -179,6 +179,14 @@ public class SportsNewsAdapter extends RecyclerView.Adapter<SportsNewsAdapter.Sp
                 color= R.color.colorSkyBlue;
                 break;
 
+            case "TealGreen":
+                color= R.color.colorTealGreen;
+                break;
+
+            case "TealGreenDark":
+                color= R.color.colorTealGreenDark;
+                break;
+
             default:
                 color= R.color.colorWhite;
                 break;

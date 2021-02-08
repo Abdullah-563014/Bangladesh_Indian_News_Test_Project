@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdFinance;
@@ -23,6 +24,7 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
 import com.easysoftbd.bangladeshindiannews.data.repositories.MyResponse;
+import com.easysoftbd.bangladeshindiannews.ui.MyApplication;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import org.jsoup.nodes.Document;
@@ -880,7 +882,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             bdTvChannel.setVisibilityStatus("visible");
                             bdTvChannel.setPaperUrl(urlList.get(i));
                             bdTvChannel.setPaperName(nameList.get(i));
-                            bdTvChannel.setBackgroundColor("SkyBlue");
+                            bdTvChannel.setBackgroundColor("TealGreen");
                             bdTvChannel.setTextColor("White");
                             bdTvChannel.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -974,7 +976,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianBanglaTvChannel.setVisibilityStatus("visible");
                             indianBanglaTvChannel.setPaperUrl(urlList.get(i));
                             indianBanglaTvChannel.setPaperName(nameList.get(i));
-                            indianBanglaTvChannel.setBackgroundColor("SkyBlue");
+                            indianBanglaTvChannel.setBackgroundColor("TealGreen");
                             indianBanglaTvChannel.setTextColor("White");
                             indianBanglaTvChannel.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1068,7 +1070,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianHindiTvChannel.setVisibilityStatus("visible");
                             indianHindiTvChannel.setPaperUrl(urlList.get(i));
                             indianHindiTvChannel.setPaperName(nameList.get(i));
-                            indianHindiTvChannel.setBackgroundColor("SkyBlue");
+                            indianHindiTvChannel.setBackgroundColor("TealGreen");
                             indianHindiTvChannel.setTextColor("White");
                             indianHindiTvChannel.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1162,7 +1164,7 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
                             indianEnglishTvChannel.setVisibilityStatus("visible");
                             indianEnglishTvChannel.setPaperUrl(urlList.get(i));
                             indianEnglishTvChannel.setPaperName(nameList.get(i));
-                            indianEnglishTvChannel.setBackgroundColor("SkyBlue");
+                            indianEnglishTvChannel.setBackgroundColor("TealGreen");
                             indianEnglishTvChannel.setTextColor("White");
                             indianEnglishTvChannel.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1468,6 +1470,9 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.abpLiveTvChannelNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.abpLiveTvChannelNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আনন্দ (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
@@ -1532,6 +1537,9 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.calcuttaNewsTvChannelNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.calcuttaNewsTvChannelNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("কলকাতা নিউস (ব্রেকিং নিউস)");
         itemModel.setNewsAndLinkModelList(list);
@@ -1595,6 +1603,9 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.indianExpressTvChannelNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.indianExpressTvChannelNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ইন্ডিয়ান এক্সপ্রেস বাংলা (ট্রেডিং নিউস)");
         itemModel.setNewsAndLinkModelList(list);
@@ -1706,6 +1717,9 @@ public class TvChannelNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.hindiNews24OnlineTvChannelNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.hindiNews24OnlineTvChannelNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("समाचार 24 ऑनलाइन (ट्रेंडिंग न्यूज़)");
         itemModel.setNewsAndLinkModelList(list);

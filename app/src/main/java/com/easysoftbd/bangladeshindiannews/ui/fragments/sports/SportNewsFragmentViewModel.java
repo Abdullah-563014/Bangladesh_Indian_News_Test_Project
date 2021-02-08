@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdSports;
@@ -20,6 +21,7 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
 import com.easysoftbd.bangladeshindiannews.data.repositories.MyResponse;
+import com.easysoftbd.bangladeshindiannews.ui.MyApplication;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import org.jsoup.nodes.Document;
@@ -901,7 +903,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             bdSport.setVisibilityStatus("visible");
                             bdSport.setPaperUrl(urlList.get(i));
                             bdSport.setPaperName(nameList.get(i));
-                            bdSport.setBackgroundColor("SkyBlue");
+                            bdSport.setBackgroundColor("TealGreen");
                             bdSport.setTextColor("White");
                             bdSport.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -995,7 +997,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianBanglaSport.setVisibilityStatus("visible");
                             indianBanglaSport.setPaperUrl(urlList.get(i));
                             indianBanglaSport.setPaperName(nameList.get(i));
-                            indianBanglaSport.setBackgroundColor("SkyBlue");
+                            indianBanglaSport.setBackgroundColor("TealGreen");
                             indianBanglaSport.setTextColor("White");
                             indianBanglaSport.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1089,7 +1091,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianHindiSport.setVisibilityStatus("visible");
                             indianHindiSport.setPaperUrl(urlList.get(i));
                             indianHindiSport.setPaperName(nameList.get(i));
-                            indianHindiSport.setBackgroundColor("SkyBlue");
+                            indianHindiSport.setBackgroundColor("TealGreen");
                             indianHindiSport.setTextColor("White");
                             indianHindiSport.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1183,7 +1185,7 @@ public class SportNewsFragmentViewModel extends ViewModel {
                             indianEnglishSports.setVisibilityStatus("visible");
                             indianEnglishSports.setPaperUrl(urlList.get(i));
                             indianEnglishSports.setPaperName(nameList.get(i));
-                            indianEnglishSports.setBackgroundColor("SkyBlue");
+                            indianEnglishSports.setBackgroundColor("TealGreen");
                             indianEnglishSports.setTextColor("White");
                             indianEnglishSports.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1792,6 +1794,9 @@ public class SportNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.oneIndiaSportsNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.oneIndiaSportsNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("ওয়ান ইন্ডিয়া (খেলার খবর)");
         itemModel.setNewsAndLinkModelList(list);

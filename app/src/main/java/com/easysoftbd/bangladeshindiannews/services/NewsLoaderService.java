@@ -849,8 +849,8 @@ public class NewsLoaderService extends Worker {
                     .setTicker(title)
                     .setContentText(description)
                     .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorAccent))
-                    .setPriority(NotificationManager.IMPORTANCE_DEFAULT)
-                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setPriority(CommonMethods.getBooleanFromSharedPreference(getApplicationContext(),Constants.notificationSoundSwitchKey,true) ? NotificationManager.IMPORTANCE_DEFAULT : NotificationManager.IMPORTANCE_MIN)
+                    .setDefaults(CommonMethods.getBooleanFromSharedPreference(getApplicationContext(),Constants.notificationSoundSwitchKey,true) ? Notification.DEFAULT_ALL : Notification.DEFAULT_LIGHTS)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.ic_launcher);
@@ -860,14 +860,14 @@ public class NewsLoaderService extends Worker {
                     .setTicker(title)
                     .setContentText(description)
                     .setColor(ContextCompat.getColor(getApplicationContext(),R.color.colorAccent))
-                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setDefaults(CommonMethods.getBooleanFromSharedPreference(getApplicationContext(),Constants.notificationSoundSwitchKey,true) ? Notification.DEFAULT_ALL : Notification.DEFAULT_LIGHTS)
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .setSmallIcon(R.mipmap.ic_launcher);
         }
 
         Notification notification=builder.build();
-        if (!Constants.isUserActive) {
+        if (!Constants.isUserActive && CommonMethods.getBooleanFromSharedPreference(getApplicationContext(),Constants.notificationStatusSwitchKey,true)) {
             notificationManager.notify(CommonMethods.getRandomNumber(99999),notification);
         }
 

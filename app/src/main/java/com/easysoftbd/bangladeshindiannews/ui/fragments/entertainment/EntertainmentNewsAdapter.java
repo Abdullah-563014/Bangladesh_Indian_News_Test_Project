@@ -177,6 +177,14 @@ public class EntertainmentNewsAdapter extends RecyclerView.Adapter<Entertainment
                 color= R.color.colorSkyBlue;
                 break;
 
+            case "TealGreen":
+                color= R.color.colorTealGreen;
+                break;
+
+            case "TealGreenDark":
+                color= R.color.colorTealGreenDark;
+                break;
+
             default:
                 color= R.color.colorWhite;
                 break;

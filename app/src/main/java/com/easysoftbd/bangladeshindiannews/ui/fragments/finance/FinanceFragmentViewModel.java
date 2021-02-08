@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
@@ -22,6 +23,7 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
 import com.easysoftbd.bangladeshindiannews.data.repositories.MyResponse;
+import com.easysoftbd.bangladeshindiannews.ui.MyApplication;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import org.jsoup.nodes.Document;
@@ -900,7 +902,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                             bdFinance.setVisibilityStatus("visible");
                             bdFinance.setPaperUrl(urlList.get(i));
                             bdFinance.setPaperName(nameList.get(i));
-                            bdFinance.setBackgroundColor("SkyBlue");
+                            bdFinance.setBackgroundColor("TealGreen");
                             bdFinance.setTextColor("White");
                             bdFinance.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -994,7 +996,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                             indianBanglaFinance.setVisibilityStatus("visible");
                             indianBanglaFinance.setPaperUrl(urlList.get(i));
                             indianBanglaFinance.setPaperName(nameList.get(i));
-                            indianBanglaFinance.setBackgroundColor("SkyBlue");
+                            indianBanglaFinance.setBackgroundColor("TealGreen");
                             indianBanglaFinance.setTextColor("White");
                             indianBanglaFinance.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1088,7 +1090,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                             indianHindiFinance.setVisibilityStatus("visible");
                             indianHindiFinance.setPaperUrl(urlList.get(i));
                             indianHindiFinance.setPaperName(nameList.get(i));
-                            indianHindiFinance.setBackgroundColor("SkyBlue");
+                            indianHindiFinance.setBackgroundColor("TealGreen");
                             indianHindiFinance.setTextColor("White");
                             indianHindiFinance.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1182,7 +1184,7 @@ public class FinanceFragmentViewModel extends ViewModel {
                             indianEnglishFinance.setVisibilityStatus("visible");
                             indianEnglishFinance.setPaperUrl(urlList.get(i));
                             indianEnglishFinance.setPaperName(nameList.get(i));
-                            indianEnglishFinance.setBackgroundColor("SkyBlue");
+                            indianEnglishFinance.setBackgroundColor("TealGreen");
                             indianEnglishFinance.setTextColor("White");
                             indianEnglishFinance.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1230,6 +1232,9 @@ public class FinanceFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.jugantorFinance);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.jugantorFinance);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("যুগান্তর (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
@@ -1556,6 +1561,9 @@ public class FinanceFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.anandaBazarFinanceNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.anandaBazarFinanceNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আনন্দবাজার পত্রিকা (ব্যবসা ও অর্থনীতির সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
@@ -1599,6 +1607,9 @@ public class FinanceFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.ganashaktiFinanceNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.ganashaktiFinanceNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("গণশক্তি (শিল্প কারখানার খবর)");
         itemModel.setNewsAndLinkModelList(list);

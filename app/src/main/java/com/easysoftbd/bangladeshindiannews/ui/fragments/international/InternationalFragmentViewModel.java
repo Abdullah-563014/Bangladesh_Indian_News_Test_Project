@@ -904,7 +904,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             bdInternational.setVisibilityStatus("visible");
                             bdInternational.setPaperUrl(urlList.get(i));
                             bdInternational.setPaperName(nameList.get(i));
-                            bdInternational.setBackgroundColor("SkyBlue");
+                            bdInternational.setBackgroundColor("TealGreen");
                             bdInternational.setTextColor("White");
                             bdInternational.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -998,7 +998,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             indianBanglaInternational.setVisibilityStatus("visible");
                             indianBanglaInternational.setPaperUrl(urlList.get(i));
                             indianBanglaInternational.setPaperName(nameList.get(i));
-                            indianBanglaInternational.setBackgroundColor("SkyBlue");
+                            indianBanglaInternational.setBackgroundColor("TealGreen");
                             indianBanglaInternational.setTextColor("White");
                             indianBanglaInternational.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1092,7 +1092,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             indianHindiInternational.setVisibilityStatus("visible");
                             indianHindiInternational.setPaperUrl(urlList.get(i));
                             indianHindiInternational.setPaperName(nameList.get(i));
-                            indianHindiInternational.setBackgroundColor("SkyBlue");
+                            indianHindiInternational.setBackgroundColor("TealGreen");
                             indianHindiInternational.setTextColor("White");
                             indianHindiInternational.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1186,7 +1186,7 @@ public class InternationalFragmentViewModel extends ViewModel {
                             indianEnglishInternational.setVisibilityStatus("visible");
                             indianEnglishInternational.setPaperUrl(urlList.get(i));
                             indianEnglishInternational.setPaperName(nameList.get(i));
-                            indianEnglishInternational.setBackgroundColor("SkyBlue");
+                            indianEnglishInternational.setBackgroundColor("TealGreen");
                             indianEnglishInternational.setTextColor("White");
                             indianEnglishInternational.setNotificationStatus("off");
                             Completable.fromAction(()->{

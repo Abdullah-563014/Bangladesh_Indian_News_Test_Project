@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdEntertainment;
@@ -22,6 +23,7 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
 import com.easysoftbd.bangladeshindiannews.data.repositories.MyResponse;
+import com.easysoftbd.bangladeshindiannews.ui.MyApplication;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import org.jsoup.nodes.Document;
@@ -908,7 +910,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             bdEntertainment.setVisibilityStatus("visible");
                             bdEntertainment.setPaperUrl(urlList.get(i));
                             bdEntertainment.setPaperName(nameList.get(i));
-                            bdEntertainment.setBackgroundColor("SkyBlue");
+                            bdEntertainment.setBackgroundColor("TealGreen");
                             bdEntertainment.setTextColor("White");
                             bdEntertainment.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1002,7 +1004,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             indianBanglaEntertainment.setVisibilityStatus("visible");
                             indianBanglaEntertainment.setPaperUrl(urlList.get(i));
                             indianBanglaEntertainment.setPaperName(nameList.get(i));
-                            indianBanglaEntertainment.setBackgroundColor("SkyBlue");
+                            indianBanglaEntertainment.setBackgroundColor("TealGreen");
                             indianBanglaEntertainment.setTextColor("White");
                             indianBanglaEntertainment.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1096,7 +1098,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             indianHindiEntertainment.setVisibilityStatus("visible");
                             indianHindiEntertainment.setPaperUrl(urlList.get(i));
                             indianHindiEntertainment.setPaperName(nameList.get(i));
-                            indianHindiEntertainment.setBackgroundColor("SkyBlue");
+                            indianHindiEntertainment.setBackgroundColor("TealGreen");
                             indianHindiEntertainment.setTextColor("White");
                             indianHindiEntertainment.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1190,7 +1192,7 @@ public class EntertainmentFragmentViewModel extends ViewModel {
                             indianEnglishEntertainment.setVisibilityStatus("visible");
                             indianEnglishEntertainment.setPaperUrl(urlList.get(i));
                             indianEnglishEntertainment.setPaperName(nameList.get(i));
-                            indianEnglishEntertainment.setBackgroundColor("SkyBlue");
+                            indianEnglishEntertainment.setBackgroundColor("TealGreen");
                             indianEnglishEntertainment.setTextColor("White");
                             indianEnglishEntertainment.setNotificationStatus("off");
                             Completable.fromAction(()->{
@@ -1570,6 +1572,9 @@ public class EntertainmentFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.anandaBazarEntertainmentNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.anandaBazarEntertainmentNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel=new RecyclerItemModel();
         itemModel.setTitle("আনন্দবাজার পত্রিকা (বিনোদনের শেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);

@@ -3,6 +3,7 @@ package com.easysoftbd.bangladeshindiannews.ui.activities.main;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.work.Constraints;
@@ -27,6 +28,7 @@ import android.service.notification.StatusBarNotification;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageNotice imageNotice;
     private NotificationManager mNotificationManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadAdminImageNotice();
 
         showAdminNoticeImage();
+
+        handleSwitchListener();
 
 
     }
@@ -300,15 +305,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startForgroundService() {
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
-            if (!isWorkScheduled(Constants.TAG) || !isForgroundServiceVisible()) {
-                Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
-                ContextCompat.startForegroundService(getApplicationContext(),intent);
-            }
-        } else {
-            if (!isWorkScheduled(Constants.TAG)) {
-                Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
-                ContextCompat.startForegroundService(getApplicationContext(),intent);
+        if (CommonMethods.getBooleanFromSharedPreference(getApplicationContext(),Constants.notificationStatusSwitchKey,true)) {
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+                if (!isWorkScheduled(Constants.TAG) || !isForgroundServiceVisible()) {
+                    Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
+                    ContextCompat.startForegroundService(getApplicationContext(),intent);
+                }
+            } else {
+                if (!isWorkScheduled(Constants.TAG)) {
+                    Intent intent = new Intent(MainActivity.this, MyForgroundService.class);
+                    ContextCompat.startForegroundService(getApplicationContext(),intent);
+                }
             }
         }
     }
@@ -430,6 +437,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void moreApps() {
         String url="https://play.google.com/store/apps/developer?id=Easy+Soft+BD&hl=en";
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
+    private void handleSwitchListener() {
+        binding.mainActivityNotificationOnOffSwitch.setChecked(CommonMethods.getBooleanFromSharedPreference(getApplicationContext(), Constants.notificationStatusSwitchKey, true));
+        binding.mainActivityNotificationSoundOnOffSwitch.setChecked(CommonMethods.getBooleanFromSharedPreference(getApplicationContext(), Constants.notificationSoundSwitchKey, true));
+        binding.mainActivityNotificationOnOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            CommonMethods.setBooleanToSharedPreference(getApplicationContext(), Constants.notificationStatusSwitchKey, b);
+            if (!b) {
+                mNotificationManager.cancelAll();
+                WorkManager instance = WorkManager.getInstance(getApplicationContext());
+                instance.cancelAllWork();
+            } else {
+                startForgroundService();
+            }
+        });
+        binding.mainActivityNotificationSoundOnOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> CommonMethods.setBooleanToSharedPreference(getApplicationContext(), Constants.notificationSoundSwitchKey, b));
     }
 
     @Override

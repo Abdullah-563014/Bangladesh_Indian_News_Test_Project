@@ -39,18 +39,18 @@
                 android:textSize="@dimen/_9ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintWidth_percent="0.33"
+                app:layout_constraintWidth_percent="0.50"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"/>
             <Button
                 android:id="@+id/nextButton"
                 app:layout_constraintTop_toBottomOf="@+id/setCountryButton"
                 style="@style/ButtonCustomStyle"
-                android:text="Next"
-                android:textSize="@dimen/_9ssp"
+                android:text="Go To Breaking News"
+                android:textSize="@dimen/_7ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintWidth_percent="0.33"
+                app:layout_constraintWidth_percent="0.50"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_35sdp"/>
             <Button
@@ -108,9 +108,39 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"/>
             </LinearLayout>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/mainActivityNotificationOnOffSwitch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mainActivityRatingButtonRootLayout"
+                app:layout_constraintBottom_toTopOf="@+id/mainActivityNotificationSoundOnOffSwitch"
+                android:checked="true"
+                android:text="Notification On/Off"
+                android:textOff="Off"
+                android:textOn="On"
+                app:showText="false"
+                app:switchPadding="@dimen/_5sdp"
+                app:switchTextAppearance="@style/CustomSwitch.text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/mainActivityNotificationSoundOnOffSwitch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mainActivityNotificationOnOffSwitch"
+                app:layout_constraintBottom_toTopOf="@+id/mainActivityAdminNoticeImageView"
+                android:checked="true"
+                android:text="Notification Sound On/Off"
+                android:textOff="Off"
+                android:textOn="On"
+                app:showText="false"
+                app:switchPadding="@dimen/_5sdp"
+                app:switchTextAppearance="@style/CustomSwitch.text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <ImageView
                 android:id="@+id/mainActivityAdminNoticeImageView"
-                app:layout_constraintTop_toBottomOf="@+id/mainActivityRatingButtonRootLayout"
+                app:layout_constraintTop_toBottomOf="@+id/mainActivityNotificationSoundOnOffSwitch"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginBottom="@dimen/_2sdp"
                 android:visibility="gone"

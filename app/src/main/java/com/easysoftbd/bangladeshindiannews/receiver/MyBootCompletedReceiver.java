@@ -19,6 +19,7 @@ import androidx.work.WorkManager;
 import com.easysoftbd.bangladeshindiannews.services.MyForgroundService;
 import com.easysoftbd.bangladeshindiannews.services.NewsLoaderService;
 import com.easysoftbd.bangladeshindiannews.ui.activities.main.MainActivity;
+import com.easysoftbd.bangladeshindiannews.utils.CommonMethods;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -70,15 +71,17 @@ public class MyBootCompletedReceiver extends BroadcastReceiver {
     }
 
     private void startForgroundService(Context context) {
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
-            if (!isWorkScheduled(context,Constants.TAG) || !isForgroundServiceVisible()) {
-                Intent intent = new Intent(context.getApplicationContext(), MyForgroundService.class);
-                ContextCompat.startForegroundService(context.getApplicationContext(),intent);
-            }
-        } else {
-            if (!isWorkScheduled(context,Constants.TAG)) {
-                Intent intent = new Intent(context.getApplicationContext(), MyForgroundService.class);
-                ContextCompat.startForegroundService(context.getApplicationContext(),intent);
+        if (CommonMethods.getBooleanFromSharedPreference(context.getApplicationContext(),Constants.notificationStatusSwitchKey,true)) {
+            if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+                if (!isWorkScheduled(context,Constants.TAG) || !isForgroundServiceVisible()) {
+                    Intent intent = new Intent(context.getApplicationContext(), MyForgroundService.class);
+                    ContextCompat.startForegroundService(context.getApplicationContext(),intent);
+                }
+            } else {
+                if (!isWorkScheduled(context,Constants.TAG)) {
+                    Intent intent = new Intent(context.getApplicationContext(), MyForgroundService.class);
+                    ContextCompat.startForegroundService(context.getApplicationContext(),intent);
+                }
             }
         }
     }

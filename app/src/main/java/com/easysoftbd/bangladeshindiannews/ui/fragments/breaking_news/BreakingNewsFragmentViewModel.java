@@ -1,13 +1,16 @@
 package com.easysoftbd.bangladeshindiannews.ui.fragments.breaking_news;
 
 
+import android.content.Context;
 import android.util.Log;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.easysoftbd.bangladeshindiannews.R;
 import com.easysoftbd.bangladeshindiannews.data.local.NewsDatabase;
 import com.easysoftbd.bangladeshindiannews.data.local.bangladesh.BdBreaking;
 import com.easysoftbd.bangladeshindiannews.data.local.india.bangla.IndianBanglaBreaking;
@@ -17,6 +20,7 @@ import com.easysoftbd.bangladeshindiannews.data.model.NewsAndLinkModel;
 import com.easysoftbd.bangladeshindiannews.data.model.RecyclerItemModel;
 import com.easysoftbd.bangladeshindiannews.data.network.MyUrl;
 import com.easysoftbd.bangladeshindiannews.data.repositories.MyResponse;
+import com.easysoftbd.bangladeshindiannews.ui.MyApplication;
 import com.easysoftbd.bangladeshindiannews.utils.Constants;
 
 import org.jsoup.nodes.Document;
@@ -902,7 +906,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             bdBreaking.setVisibilityStatus("visible");
                             bdBreaking.setPaperUrl(urlList.get(i));
                             bdBreaking.setPaperName(nameList.get(i));
-                            bdBreaking.setBackgroundColor("SkyBlue");
+                            bdBreaking.setBackgroundColor("TealGreen");
                             bdBreaking.setTextColor("White");
                             if (i==0) {
                                 bdBreaking.setNotificationStatus("on");
@@ -1000,7 +1004,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             indianBanglaBreaking.setVisibilityStatus("visible");
                             indianBanglaBreaking.setPaperUrl(urlList.get(i));
                             indianBanglaBreaking.setPaperName(nameList.get(i));
-                            indianBanglaBreaking.setBackgroundColor("SkyBlue");
+                            indianBanglaBreaking.setBackgroundColor("TealGreen");
                             indianBanglaBreaking.setTextColor("White");
                             if (i==0) {
                                 indianBanglaBreaking.setNotificationStatus("on");
@@ -1098,7 +1102,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             indianHindiBreaking.setVisibilityStatus("visible");
                             indianHindiBreaking.setPaperUrl(urlList.get(i));
                             indianHindiBreaking.setPaperName(nameList.get(i));
-                            indianHindiBreaking.setBackgroundColor("SkyBlue");
+                            indianHindiBreaking.setBackgroundColor("TealGreen");
                             indianHindiBreaking.setTextColor("White");
                             if (i==0) {
                                 indianHindiBreaking.setNotificationStatus("on");
@@ -1196,7 +1200,7 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
                             indianEnglishBreaking.setVisibilityStatus("visible");
                             indianEnglishBreaking.setPaperUrl(urlList.get(i));
                             indianEnglishBreaking.setPaperName(nameList.get(i));
-                            indianEnglishBreaking.setBackgroundColor("SkyBlue");
+                            indianEnglishBreaking.setBackgroundColor("TealGreen");
                             indianEnglishBreaking.setTextColor("White");
                             if (i==0) {
                                 indianEnglishBreaking.setNotificationStatus("on");
@@ -1250,6 +1254,8 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.prothomAlo);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.prothomAlo);
+        list.add(newsAndLinkModel);
 
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("প্রথম আলো (ব্রেকিং নিউজ)");
@@ -1582,6 +1588,9 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.anandaBazarBreakingNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.anandaBazarBreakingNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("আনন্দবাজার পত্রিকা (ব্রেকিং নিউজ)");
         itemModel.setNewsAndLinkModelList(list);
@@ -1627,6 +1636,9 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.bartamanPatrikaBreakingNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.bartamanPatrikaBreakingNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("বর্তমান (সর্বশেষ খবর)");
         itemModel.setNewsAndLinkModelList(list);
@@ -1951,6 +1963,9 @@ public class BreakingNewsFragmentViewModel extends ViewModel {
             NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(e.getMessage(), MyUrl.amarUjalaBreakingNews);
             list.add(newsAndLinkModel);
         }
+        NewsAndLinkModel newsAndLinkModel = new NewsAndLinkModel(MyApplication.getRes().getString(R.string.data_not_found_message), MyUrl.amarUjalaBreakingNews);
+        list.add(newsAndLinkModel);
+
         RecyclerItemModel itemModel = new RecyclerItemModel();
         itemModel.setTitle("अमर उजाला (शीर्ष ट्रेंडिंग)");
         itemModel.setNewsAndLinkModelList(list);

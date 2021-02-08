@@ -33,6 +33,8 @@
         <item>Fuchsia</item>
         <item>Purple</item>
         <item>SkyBlue</item>
+        <item>TealGreen</item>
+        <item>TealGreenDark</item>
     </string-array>
 
 
@@ -808,6 +810,7 @@
         To download content using this app, You need to provide Write_External_Storage permission to save the
         downloaded file on your phone storage.
     </string>
+    <string name="data_not_found_message">Data not found, please visit in website</string>
 
 
 </resources>
